@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             })
             .catch(error => {
-                console.error('Error during login:', error); // 오류 로그
+                console.log('Error during login:', error); // 오류 로그
                 alert('An error occurred while logging in');
             });
     });
