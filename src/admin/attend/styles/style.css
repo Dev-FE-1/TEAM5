@@ -92,12 +92,14 @@ header select {
   font-weight: bold;
   padding: 10px;
   background-color: var(--primary-100);
+  text-align: center;
 }
 
 .requests .request-item {
   background-color: var(--gray-100);
-  padding: 15px;
+  padding: 10px;
   border-radius: 5px;
+  text-align: center;
 }
 
 .request-item-content {
@@ -121,9 +123,17 @@ header select {
   align-items: start;
   gap: 16px;
   color: black;
+  justify-content: center;
 }
 
 .request-tools svg {
   width: 24px;
   height: 24px;
+}
+
+.반차 {
+  background-color: var(--primary-200);
+}
+.조퇴 {
+  background-color: var(--primary-900);
 }
