@@ -164,6 +164,37 @@ router.get("/:userId", (req, res) => {
     });
 });
 
+router.post("/login", (req, res) => {
+    const {userId, password} = req.body;
+
+    const sql = `
+    SELECT userId, email, name, team, position, isAdmin, imgUrl 
+    FROM Users 
+    WHERE userId=$userId and password = $password and withdraw = false
+  `;
+
+    const params = {
+        $userId: userId,
+        $password: password,
+    };
+
+    db.all(sql, params, (err, rows) => {
+        if (err) return handleError(res, err);
+
+        if (rows.length < 1) {
+            return res.status(401).json({
+                status: "NO_USER",
+                message: "일치하는 사용자가 없습니다.",
+            });
+        }
+
+        res.json({
+            status: "OK",
+            data: rows,
+        });
+    });
+});
+
 /**
  * @swagger
  * /api/users/{userId}:
@@ -328,40 +359,6 @@ router.delete("/:userId", (req, res) => {
         res.json({
             status: "DELETE",
             message: "사용자가 삭제되었습니다.",
-            data: rows,
-        });
-    });
-});
-
-// router.get("/login", (req, res) => {
-//   const { userId, password } = req.body;
-
-router.post("/login", (req, res) => {
-    const {userId, password} = req.body;
-
-    const sql = `
-    SELECT userId, email, name, team, position, isAdmin, imgUrl 
-    FROM Users 
-    WHERE userId=$userId and password = $password and withdraw = false
-  `;
-
-    const params = {
-        $userId: userId,
-        $password: password,
-    };
-
-    db.all(sql, params, (err, rows) => {
-        if (err) return handleError(res, err);
-
-        if (rows.length < 1) {
-            return res.status(401).json({
-                status: "NO_USER",
-                message: "일치하는 사용자가 없습니다.",
-            });
-        }
-
-        res.json({
-            status: "OK",
             data: rows,
         });
     });

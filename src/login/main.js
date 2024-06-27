@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         console.log('Attempting to log in with:', {userId, password}); // 디버깅용 로그
 
-        fetch(`localhost:8080/api/users/login`, { // URL 수정
+        fetch(`http://localhost:8080/api/users/login`, { // URL 수정
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
