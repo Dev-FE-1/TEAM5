@@ -13,6 +13,9 @@
   <!-- 이 HTML에 대한 스타일  -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- axios -->
+   <script defer src="./main.js" type="module"></script>
+
 </head>
 
 
@@ -41,12 +44,18 @@
         <!-- 프로필 -->
         <div class="profile content">
           <h2>프로필</h2>
-          <img src="./img/logo.jpg" alt="프로필사진">
-          <p>홍길동</p>
+          <!-- <img src="./img/logo.jpg" alt="프로필사진"> -->
+          <img id="profile-image" src="#" alt="프로필 이미지" />
+          <!-- <p>홍길동</p>
           <p>Email : 배달의 민족@intranet.com</p>
           <p>직급: 품질환경부서 부장</p>
           <p>사번: 123456</p>
-          <p>전화번호: 010-1234-5678</p>
+          <p>전화번호: 010-1234-5678</p> -->
+          <p>이름 : <span id="name"></span></p>
+          <p>팀 : <span id="team"></span></p>
+          <p>직급 : <span id="position"></span></p>
+          <p>이메일 : <span id="email"></span></p>
+          <p>사번 : <span id="userId"></span></p>
           <button class="open-modal-btn btn">프로필 수정하기</button>
         </div>
 
@@ -146,41 +155,6 @@
         modal.style.display="none";    
     });
 
-
-        // 타이머 관련 자바스크립트 코드
-        let timerInterval;
-    let startTime;
-
-    function updateTimer() {
-        const currentTime = Date.now();
-        const elapsedTime = currentTime - startTime;
-
-        const hours = Math.floor(elapsedTime / 3600000);
-        const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-        const seconds = Math.floor((elapsedTime % 60000) / 1000);
-
-        document.getElementById('timer').textContent =
-            `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-
-    document.getElementById('startButton').addEventListener('click', function() {
-        startTime = Date.now();
-        timerInterval = setInterval(updateTimer, 1000);
-        document.getElementById('status').textContent = '근무 중';
-        document.getElementById('status').className = 'badge working';
-        document.getElementById('startButton').disabled = true;
-        document.getElementById('endButton').disabled = false;
-        document.getElementById('toggleSwitch').checked = true;
-    });
-
-    document.getElementById('endButton').addEventListener('click', function() {
-        clearInterval(timerInterval);
-        document.getElementById('status').textContent = '근무 종료';
-        document.getElementById('status').className = 'badge not-working';
-        document.getElementById('startButton').disabled = false;
-        document.getElementById('endButton').disabled = true;
-        document.getElementById('toggleSwitch').checked = false;
-    });
   </script>
 
 

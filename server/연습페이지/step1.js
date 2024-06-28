@@ -30,3 +30,9 @@ const 서버에서가져온데이터 = {
 `
 
 document.getElementById('name').innerHTML = 서버에서가져온데이터.name
+document.getElementById('team').innerHTML = 서버에서가져온데이터.team
+document.getElementById('position').innerHTML = 서버에서가져온데이터.position
+document.getElementById('email').innerHTML = 서버에서가져온데이터.email
+document.getElementById('userId').innerHTML = 서버에서가져온데이터.userId
+
+document.getElementById("profile-image").setAttribute("src", 서버에서가져온데이터.imgUrl);
