@@ -30,6 +30,13 @@ document.getElementById("profile-image").setAttribute("src", imgUrl);
 
 
 
+
+
+
+
+
+
+
 // 모달
 const modal = document.querySelector('.modal');
     const btnOpenModal=document.querySelector('.open-modal-btn');
