@@ -1,7 +1,21 @@
 import express from "express";
 import db from "../database.js";
+import multer from "multer";
 
 const router = express.Router();
+
+// Multer 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "/assets/profile");
+  },
+  filename: (req, file, cb) => {
+    let { userId } = !req.params.filename ? req.params : req.body;
+    cb(null, userId);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // 유효성 검사 미들웨어
 const validateUserData = (req, res, next) => {
@@ -23,7 +37,7 @@ const validateUserData = (req, res, next) => {
 const handleError = (res, err) => {
   console.error(err);
   return res.status(500).json({
-    status: "ERROR",
+    status: "fail",
     error: err.message,
   });
 };
@@ -164,6 +178,34 @@ router.get("/:userId", (req, res) => {
   });
 });
 
+router.post("/login", (req, res) => {
+  const { userId, password } = req.body;
+
+  const sql = `
+    SELECT * FROM Users 
+    WHERE userId=? and password = ? and withdraw = false
+  `;
+
+  const params = [userId, password];
+
+  db.run(sql, params, function (err, user) {
+    if (err) return handleError(res, err);
+
+    if (!user) return res.status(400).json({
+      status: "fail",
+      message: "일치하는 사원이 존재하지 않습니다."
+    })
+
+    const isAdmin = userId === 'admin'
+
+    res.json({
+      status: "success",
+      message: '로그인 성공',
+      isAdmin
+    });
+  });
+});
+
 /**
  * @swagger
  * /api/users/{userId}:
@@ -196,22 +238,13 @@ router.get("/:userId", (req, res) => {
 router.post("/:userId", validateUserData, (req, res) => {
   const { userId } = req.params;
   const { password, email, name, team, position, imgUrl } = req.body;
-
   // TODO: 중복 아이디가 있는지 먼저 확인
   const sql = `
     INSERT INTO Users( userId, password, email, name, team, position, imgUrl) 
-    VALUES( $userId, $password, $email, $name, $team, $position, $imgUrl)
+    VALUES( ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  const params = {
-    $userId: userId,
-    $password: password,
-    $email: email,
-    $name: name,
-    $team: team,
-    $position: position,
-    $imgUrl: imgUrl,
-  };
+  const params = [userId, password, email, name, team, position, imgUrl];
 
   db.run(sql, params, (err) => {
     if (err) return handleError(res, err);
@@ -322,44 +355,19 @@ router.delete("/:userId", (req, res) => {
     WHERE userId = ? 
   `;
 
-  db.run(sql, [userId], (err, rows) => {
+  db.run(sql, [userId], function (err) {
     if (err) return handleError(res, err);
 
-    res.json({
-      status: "DELETE",
-      message: "사용자가 삭제되었습니다.",
-      data: rows,
-    });
-  });
-});
-
-router.get("/login", (req, res) => {
-  const { userId, password } = req.body;
-
-  const sql = `
-    SELECT userId, email, name, team, position, isAdmin, imgUrl 
-    FROM Users 
-    WHERE userId=$userId and password = $password and withdraw = false
-  `;
-
-  const params = {
-    $userId: userId,
-    $password: password,
-  };
-
-  db.all(sql, params, (err, rows) => {
-    if (err) return handleError(res, err);
-
-    if (rows < 1) {
-      return res.status(401).json({
-        status: "NO_USER",
-        message: "일치하는 사용자가 없습니다.",
+    if (this.changes === 0) {
+      return res.status(404).json({
+        status: "ERROR",
+        error: "User not found",
       });
     }
 
     res.json({
-      status: "OK",
-      data: rows,
+      status: "DELETE",
+      message: "사용자가 삭제되었습니다.",
     });
   });
 });
