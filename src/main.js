@@ -1,4 +1,4 @@
-import './styles/reset.css'
+import "./styles/reset.css";
 import "./styles/variables.css";
 import {
   Admin_Attend,
@@ -11,7 +11,7 @@ import {
   User_Attend,
   User_MyPage,
 } from "./pages";
-import { Layout } from './components';
+import { Layout } from "./components";
 
 const app = () => {
   init();
@@ -24,10 +24,10 @@ const init = () => {
   window.addEventListener("popstate", router);
 };
 
-function router() {
+const router = async () => {
   const routes = {
     "/": Home,
-  
+
     "/admin/attend": Admin_Attend,
     "/admin/commute": Admin_Commute,
     "/admin/notice": Admin_Notice,
@@ -42,7 +42,7 @@ function router() {
   const path = window.location.pathname;
   const render = routes[path] ?? NotFound;
 
-  document.getElementById("root").innerHTML = path !== '/login' ? Layout(render()) : render();
-}
+  root.innerHTML = path !== "/login" ? Layout(await render()) : render();
+};
 
 document.addEventListener("DOMContentLoaded", app);
