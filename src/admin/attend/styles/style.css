@@ -74,12 +74,12 @@ header select {
 /* request */
 .grid {
   display: grid;
-  grid-template-columns: 96px 2fr 96px 3fr 2fr;
+  grid-template-columns: 100px 20rem 10rem 2fr 3fr 2fr;
   gap: 10px;
 }
 
 .requests {
-  height: 70%;
+  height: 80%;
   border-radius: 5px;
   overflow-y: auto;
 }
@@ -113,9 +113,14 @@ header select {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+.list-item {
+  display: contents;
+}
 
 .request-date {
   font-size: 14px;
+  /* min-width: 25em;
+  width: 30em; */
 }
 
 .request-tools {
@@ -136,4 +141,8 @@ header select {
 }
 .조퇴 {
   background-color: var(--primary-900);
+}
+
+.request-btn {
+  cursor: pointer;
 }

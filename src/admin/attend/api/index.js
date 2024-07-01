@@ -1,4 +1,4 @@
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 
 const baseURL = 'http://localhost:8080';
 const attendURL = baseURL + '/api/attends';
@@ -23,22 +23,9 @@ export class AttendComp {
       value: "absent",
       text: "조퇴"
     }];
-    this.list_headers = ["구분", "일시", "사원명", "제목", "수정/삭제"];
+    this.list_headers = ["구분", "일시", "사원명", "제목", "내용", "수정/삭제"];
 
     this.dataList = dataList;
-  }
-}
-
-export class AttendData {
-  constructor(data) {
-    this.no = data.no;
-    this.userId = data.userId;
-    this.name = data.name;
-    this.startDate = data.startDate;
-    this.endDate = data.endDate;
-    this.subject = data.subject;
-    this.content = data.content;
-    this.type = data.type;
   }
 }
 
