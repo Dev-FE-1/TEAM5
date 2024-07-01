@@ -1,31 +1,48 @@
-// import './styles/reset.css'
-import './styles/variables.css'
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import './styles/reset.css'
+import "./styles/variables.css";
+import {
+  Admin_Attend,
+  Admin_Commute,
+  Admin_Notice,
+  Admin_UserList,
+  Home,
+  Login,
+  NotFound,
+  User_Attend,
+  User_MyPage,
+} from "./pages";
+import { Layout } from './components';
 
-async function app() {
-  document.querySelector('#app').innerHTML = `
-    <div>
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="${viteLogo}" class="logo" alt="Vite logo" />
-      </a>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-        <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-      </a>
-      <div class="test">test용 추가한 div임</div>
-      <h1>Okay</h1>
-      <div class="card">
-        <button id="counter" type="button"></button>
-      </div>
-      <p class="read-the-docs">
-        Click on the Vite logo to learn more
-      </p>
-    </div>
-  `
+const app = () => {
+  init();
+  router();
+};
+
+const root = document.querySelector("#root");
+
+const init = () => {
+  window.addEventListener("popstate", router);
+};
+
+function router() {
+  const routes = {
+    "/": Home,
   
-  setupCounter(document.querySelector('#counter'))
+    "/admin/attend": Admin_Attend,
+    "/admin/commute": Admin_Commute,
+    "/admin/notice": Admin_Notice,
+    "/admin/user-list": Admin_UserList,
+
+    "/user/attend": User_Attend,
+    "/user/my-page": User_MyPage,
+
+    "/login": Login,
+  };
+
+  const path = window.location.pathname;
+  const render = routes[path] ?? NotFound;
+
+  document.getElementById("root").innerHTML = path !== '/login' ? Layout(render()) : render();
 }
 
-document.addEventListener('DOMContentLoaded', app);
+document.addEventListener("DOMContentLoaded", app);

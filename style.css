@@ -1,0 +1,5 @@
+#root {
+  width: var(--container-width);
+  height: 100vh;
+  margin: 0 auto;
+}
