@@ -27,4 +27,7 @@
 
   /* z-index  */
   --modal-z-index: 2;
+
+  /* container */
+  --container-width : 80%
 }

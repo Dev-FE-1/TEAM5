@@ -1,5 +1,3 @@
-const Commute = () => {
-  return `<h1>Commute page</div>`
-}
+const Commute = () => `<h1>Commute page</div>`;
 
-export default Commute
+export default Commute;

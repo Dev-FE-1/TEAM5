@@ -1,15 +1,17 @@
-// import './styles/reset.css'
+import './styles/reset.css'
 import "./styles/variables.css";
 import {
   Admin_Attend,
   Admin_Commute,
   Admin_Notice,
   Admin_UserList,
+  Home,
   Login,
   NotFound,
   User_Attend,
   User_MyPage,
 } from "./pages";
+import { Layout } from './components';
 
 const app = () => {
   init();
@@ -20,24 +22,12 @@ const root = document.querySelector("#root");
 
 const init = () => {
   window.addEventListener("popstate", router);
-  // document.body.addEventListener("click", navigatePage);
 };
-
-// const navigatePage = (event) => {
-//   event.preventDefault();
-
-//   const path = event.target.getAttribute("href");
-//   const anchor = event.target.closest("a");
-
-//   if (anchor && anchor.href) {
-//     history.pushState(null, null, anchor.href);
-//     route();
-//   }
-// };
 
 function router() {
   const routes = {
-    "/": () => "<h1>Home</h1>",
+    "/": Home,
+  
     "/admin/attend": Admin_Attend,
     "/admin/commute": Admin_Commute,
     "/admin/notice": Admin_Notice,
@@ -52,7 +42,7 @@ function router() {
   const path = window.location.pathname;
   const render = routes[path] ?? NotFound;
 
-  document.getElementById("root").innerHTML = render();
+  document.getElementById("root").innerHTML = path !== '/login' ? Layout(render()) : render();
 }
 
 document.addEventListener("DOMContentLoaded", app);

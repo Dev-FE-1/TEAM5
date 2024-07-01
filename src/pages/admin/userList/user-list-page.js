@@ -1,5 +1,3 @@
-const UserList = () => {
-  return `<h1>User List Page</div>`
-}
+const UserList = () => `<h1>User List Page</div>`;
 
-export default UserList
+export default UserList;
