@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 const placeholder = "https://via.placeholder.com/100";
 
 const Header = () => `
-  <header class="${cx("container")}">
+  <header class="${cx("header")}">
     <div class="${cx("logo")}">Intranet</div>
     <nav class="${cx("menu")}">
         <a href="/admin/notice">공지사항</a>
