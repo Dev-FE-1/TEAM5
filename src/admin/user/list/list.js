@@ -1,32 +1,102 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const profilesPerPage = 11; // 페이지당 프로필 수
-    let currentPage = 1;
-    const pagesToShow = 5; // 한 번에 표시할 페이지 수
-    let profileCards = Array.from(document.querySelectorAll('.profile-card')).filter(card => !card.classList.contains('plus-box'));
+import axios from "/node_modules/axios/dist/esm/axios.min.js";
 
-    function renderProfiles(filteredProfiles = null) {
-        const displayProfiles = filteredProfiles || profileCards;
-        const totalProfiles = displayProfiles.length;
+document.addEventListener('DOMContentLoaded', async function() {
+    const profilesPerPage = 15;
+    let currentPage = 1;
+    const pagesToShow = 5;
+    let profileData = [];
+
+    async function fetchProfiles() {
+        const response = await axios.get("http://localhost:8080/api/users");
+        console.log("API Response:", response.data);
+        return response.data.data;
+    }
+
+    function createProfileCard(profile) {
+        const { imgUrl, name, userId, team, position, email } = profile;
+        const placeholder = "https://via.placeholder.com/100";
+        const profileCard = document.createElement('div');
+        profileCard.className = 'profile-card';
+        profileCard.dataset.name = name;
+        profileCard.dataset.userid = userId;
+        profileCard.dataset.team = team;
+        profileCard.dataset.position = position;
+        profileCard.dataset.email = email;
+        profileCard.dataset.imgurl = imgUrl ?? placeholder;
+
+        profileCard.innerHTML = `
+            <button class="close-button" title="Remove">×</button>
+            <img src="${imgUrl ?? placeholder}" alt="Profile Picture">
+            <div class="info">
+                <div class="info-item">
+                    <span class="label">이름 :</span>
+                    <span class="value">${name}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">사번 :</span>
+                    <span class="value">${userId}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">팀 :</span>
+                    <span class="value">${team}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">직급 :</span>
+                    <span class="value">${position}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">이메일 :</span>
+                    <span class="value">${email}</span>
+                </div>
+            </div>
+        `;
+
+        return profileCard;
+    }
+
+    async function renderProfiles() {
+        profileData = await fetchProfiles();
+        const profileContainer = document.getElementById('profile-container');
+
+        if (!profileContainer) {
+            console.error("Profile container not found.");
+            return;
+        }
+
+        const totalProfiles = profileData.length;
         const totalPages = Math.ceil(totalProfiles / profilesPerPage);
 
-        profileCards.forEach((card, index) => {
-            card.style.display = 'none';
-        });
+        profileContainer.innerHTML = '';
 
-        displayProfiles.forEach((card, index) => {
+        profileData.forEach((profile, index) => {
             if (index >= (currentPage - 1) * profilesPerPage && index < currentPage * profilesPerPage) {
-                card.style.display = 'flex';
+                const profileCard = createProfileCard(profile);
+                profileContainer.appendChild(profileCard);
             }
         });
 
-        // Always show the + card
-        document.getElementById('add-profile-card').style.display = 'flex';
+        const addProfileCard = document.getElementById('add-profile-card');
+        if (!addProfileCard) {
+            const plusBox = document.createElement('div');
+            plusBox.className = 'profile-card plus-box';
+            plusBox.id = 'add-profile-card';
+            plusBox.innerHTML = '<span class="material-icons">add</span>';
+            profileContainer.appendChild(plusBox);
+        } else {
+            profileContainer.appendChild(addProfileCard);
+        }
 
         renderPagination(totalPages);
     }
 
     function renderPagination(totalPages) {
         const paginationContainer = document.querySelector('.pagination');
+
+        if (!paginationContainer) {
+            console.error("Pagination container not found.");
+            return;
+        }
+
         paginationContainer.innerHTML = '';
 
         const prevButton = document.createElement('button');
@@ -53,174 +123,79 @@ document.addEventListener('DOMContentLoaded', function() {
         paginationContainer.appendChild(nextButton);
     }
 
-    // 모달 창 열기
     function openModal() {
         const modal = document.getElementById('modal');
-        modal.style.display = 'block';
+        if (modal) modal.style.display = 'block';
     }
 
-    // 모달 창 닫기
     function closeModal() {
         const modal = document.getElementById('modal');
-        modal.style.display = 'none';
+        if (modal) modal.style.display = 'none';
     }
 
-    // 새로운 프로필 카드 추가
-    function addProfileCard() {
-        // 새로운 프로필 정보를 모달에서 가져오기
+    async function addProfileCard() {
         const name = document.getElementById('modal-name').value;
         const userId = document.getElementById('modal-userId').value;
         const team = document.getElementById('modal-team').value;
         const position = document.getElementById('modal-position').value;
         const email = document.getElementById('modal-email').value;
         const imageInput = document.getElementById('modal-image');
-        let imageUrl = 'https://via.placeholder.com/100'; // 기본 이미지
+        let imageUrl = 'https://via.placeholder.com/100';
 
-        // 이미지 파일 읽기
         if (imageInput.files && imageInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 imageUrl = e.target.result;
-                createProfileCard(name, userId, team, position, email, imageUrl);
+                const newProfile = { name, userId, team, position, email, imgUrl: imageUrl };
+                await saveProfileToServer(newProfile);
+                renderProfiles();
+                closeModal();
             };
             reader.readAsDataURL(imageInput.files[0]);
         } else {
-            createProfileCard(name, userId, team, position, email, imageUrl);
-        }
-
-        // 모달 창 닫기
-        closeModal();
-    }
-
-    // 새로운 프로필 카드 생성
-    function createProfileCard(name, userId, team, position, email, imageUrl) {
-        const newProfileCard = document.createElement('div');
-        newProfileCard.className = 'profile-card';
-        newProfileCard.innerHTML = `
-            <button class="close-button" title="Remove">×</button>
-            <img src="${imageUrl}" alt="Profile Picture">
-            <div class="info">
-                <div class="info-item">
-                    <span class="label">이름 :</span>
-                    <span class="value">${name}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">사번 :</span>
-                    <span class="value">${userId}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">팀 :</span>
-                    <span class="value">${team}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">직급 :</span>
-                    <span class="value">${position}</span>
-                </div>
-                <div class="info-item">
-                    <span class="label">이메일 :</span>
-                    <span class="value">${email}</span>
-                </div>
-            </div>
-        `;
-        document.querySelector('.container').insertBefore(newProfileCard, document.getElementById('add-profile-card'));
-
-        // 새 프로필 카드에 이벤트 리스너 추가
-        newProfileCard.querySelector('.close-button').addEventListener('click', function(event) {
-            event.stopPropagation();
-            newProfileCard.remove();
-            profileCards = Array.from(document.querySelectorAll('.profile-card')).filter(card => !card.classList.contains('plus-box'));
+            const newProfile = { name, userId, team, position, email, imgUrl: imageUrl };
+            await saveProfileToServer(newProfile);
             renderProfiles();
-        });
-
-        newProfileCard.addEventListener('click', function() {
-            const profileInfo = {
-                name: newProfileCard.querySelector('.info-item:nth-child(1) .value').textContent,
-                userId: newProfileCard.querySelector('.info-item:nth-child(2) .value').textContent,
-                team: newProfileCard.querySelector('.info-item:nth-child(3) .value').textContent,
-                position: newProfileCard.querySelector('.info-item:nth-child(4) .value').textContent,
-                email: newProfileCard.querySelector('.info-item:nth-child(5) .value').textContent
-            };
-            const profileQueryString = new URLSearchParams(profileInfo).toString();
-            window.location.href = `/src/admin/user/profile/index.html?${profileQueryString}`;
-        });
-
-        profileCards = Array.from(document.querySelectorAll('.profile-card')).filter(card => !card.classList.contains('plus-box'));
-
-        const totalPages = Math.ceil(profileCards.length / profilesPerPage);
-        currentPage = totalPages;
-        renderProfiles();
+            closeModal();
+        }
     }
 
-    // 초기화 코드
-    document.getElementById('add-profile-card').addEventListener('click', openModal);
-    document.getElementById('modal-save').addEventListener('click', addProfileCard);
+    async function saveProfileToServer(profile) {
+        const response = await axios.post("http://localhost:8080/api/users", profile);
+        console.log("Profile saved:", response.data);
+    }
 
-    // 모달 닫기 버튼 클릭 시
+    async function deleteProfileFromServer(userId) {
+        const response = await axios.delete(`http://localhost:8080/api/users/${userId}`);
+        console.log("Profile deleted:", response.data);
+    }
+
+    document.getElementById('profile-container').addEventListener('click', function(event) {
+        const profileCard = event.target.closest('.profile-card');
+        if (profileCard && !profileCard.classList.contains('plus-box')) {
+            const name = profileCard.dataset.name;
+            const userId = profileCard.dataset.userid;
+            const team = profileCard.dataset.team;
+            const position = profileCard.dataset.position;
+            const email = profileCard.dataset.email;
+            const imgUrl = profileCard.dataset.imgurl;
+
+            console.log({ name, userId, team, position, email, imgUrl });
+
+            const url = `/src/admin/user/profile/index.html?name=${encodeURIComponent(name)}&userId=${encodeURIComponent(userId)}&team=${encodeURIComponent(team)}&position=${encodeURIComponent(position)}&email=${encodeURIComponent(email)}&imgUrl=${encodeURIComponent(imgUrl)}`;
+            window.location.href = url;
+        } else if (profileCard && profileCard.classList.contains('plus-box')) {
+            openModal();
+        }
+    });
+
+    document.getElementById('modal-save').addEventListener('click', addProfileCard);
     document.querySelector('.modal .close').addEventListener('click', closeModal);
 
-    // 모달 외부 클릭 시 닫기
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('modal');
         if (event.target === modal) {
             closeModal();
-        }
-    });
-
-    document.querySelectorAll('.close-button').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.stopPropagation();
-            button.parentElement.remove();
-            profileCards = Array.from(document.querySelectorAll('.profile-card')).filter(card => !card.classList.contains('plus-box'));
-            renderProfiles();
-        });
-    });
-
-    document.querySelectorAll('.profile-card').forEach(card => {
-        card.addEventListener('click', function(event) {
-            if (!event.target.classList.contains('close-button')) {
-                const profileInfo = {
-                    name: card.querySelector('.info-item:nth-child(1) .value').textContent,
-                    userId: card.querySelector('.info-item:nth-child(2) .value').textContent,
-                    team: card.querySelector('.info-item:nth-child(3) .value').textContent,
-                    position: card.querySelector('.info-item:nth-child(4) .value').textContent,
-                    email: card.querySelector('.info-item:nth-child(5) .value').textContent
-                };
-                const profileQueryString = new URLSearchParams(profileInfo).toString();
-                window.location.href = `/src/admin/user/profile/index.html?${profileQueryString}`;
-            }
-        });
-    });
-
-    const searchButton = document.getElementById('search-button');
-    const searchInput = document.getElementById('search');
-
-    function highlightSearchTerm() {
-        const searchTerm = searchInput.value.toLowerCase();
-        let filteredProfiles = profileCards.filter(card => {
-            let matchFound = false;
-            const infoItems = card.querySelectorAll('.info-item .value');
-            infoItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    matchFound = true;
-                    const regex = new RegExp(`(${searchTerm})`, 'gi');
-                    item.innerHTML = item.textContent.replace(regex, '<span class="highlight">$1</span>');
-                } else {
-                    item.innerHTML = item.textContent; // 검색어가 없으면 원래 텍스트로 되돌림
-                }
-            });
-            return matchFound;
-        });
-
-        currentPage = 1;
-        renderProfiles(filteredProfiles);
-    }
-
-    searchButton.addEventListener('click', highlightSearchTerm);
-
-    searchInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            highlightSearchTerm();
         }
     });
 
@@ -229,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentPage--;
             renderProfiles();
         } else if (event.target.id === 'nextPage') {
-            const totalPages = Math.ceil(profileCards.length / profilesPerPage);
+            const totalPages = Math.ceil(profileData.length / profilesPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
                 renderProfiles();
@@ -240,68 +215,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    renderProfiles(); // Initialize the rendering
-});
-document.addEventListener('DOMContentLoaded', function() {
-    function getQueryParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const params = {};
-        urlParams.forEach((value, key) => {
-            params[key] = value;
-        });
-        return params;
-    }
-
-    const params = getQueryParams();
-
-    if (params.name) {
-        document.getElementById('profile-picture').src = params.picture || 'https://via.placeholder.com/250x300';
-        document.getElementById('profile-name').textContent = params.name;
-        document.getElementById('profile-userId').textContent = params.userId;
-        document.getElementById('profile-team').textContent = params.team;
-        document.getElementById('profile-position').textContent = params.position;
-        document.getElementById('profile-email').textContent = params.email;
-    }
-
-    const modal = document.getElementById("modal");
-    const editBtn = document.getElementById("edit-btn");
-    const span = document.getElementsByClassName("close")[0];
-    const fileInput = document.getElementById("modal-image");
-
-    editBtn.onclick = function() {
-        document.getElementById('modal-name').value = document.getElementById('profile-name').textContent;
-        document.getElementById('modal-userId').value = document.getElementById('profile-userId').textContent;
-        document.getElementById('modal-team').value = document.getElementById('profile-team').textContent;
-        document.getElementById('modal-position').value = document.getElementById('profile-position').textContent;
-        document.getElementById('modal-email').value = document.getElementById('profile-email').textContent;
-        modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    document.getElementById("modal-save").onclick = function() {
-        document.getElementById('profile-name').textContent = document.getElementById('modal-name').value;
-        document.getElementById('profile-userId').textContent = document.getElementById('modal-userId').value;
-        document.getElementById('profile-team').textContent = document.getElementById('modal-team').value;
-        document.getElementById('profile-position').textContent = document.getElementById('modal-position').value;
-        document.getElementById('profile-email').textContent = document.getElementById('modal-email').value;
-
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profile-picture').src = e.target.result;
-            }
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-        
-        modal.style.display = "none";
-    }
+    renderProfiles();
 });

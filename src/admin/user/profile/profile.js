@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = getQueryParams();
 
     if (params.name) {
-        document.getElementById('profile-picture').src = params.picture || 'https://via.placeholder.com/250x300';
+        document.getElementById('profile-picture').src = params.imgUrl || 'https://via.placeholder.com/250x300';
         document.getElementById('profile-name').textContent = params.name;
         document.getElementById('profile-userId').textContent = params.userId;
         document.getElementById('profile-team').textContent = params.team;
