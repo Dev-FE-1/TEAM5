@@ -5,7 +5,7 @@ const HOST = "http://localhost:8080"; // 서버 주소
 ` step 2 : 서버에서 데이터 가져오기
 
   ※ 사전 준비 ※
-    index.html에서 <script src="./step1.js" type="module"></script>를 step1 => step2로 바꿉시다.
+    index.html에서 <script src="step1.js" type="module"></script>를 step1 => step2로 바꿉시다.
 
   1. 서버에서 데이터를 가져오기 위해서는 axios를 사용합니다.
   2. axios(주소) 형태로 사용하며, 이번에는 주소 = "http://localhost:8080/api/users/kimpra2989"에 요청을 보내는 연습을 해봅시다.
