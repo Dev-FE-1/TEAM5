@@ -2,7 +2,6 @@ import { AttendComp } from "../api";
 import { AttendList } from "../components";
 import Modal from "../components/Modal";
 
-
 const addElement = (prop, type) => {
   const elementHTML = [];
 

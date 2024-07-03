@@ -41,9 +41,9 @@ export const findAll = async () => {
   }
 };
 
-export const findOne = async (userId) => {
+export const findOne = async (props) => {
   try {
-    const {data} = await axios.get(attendURL+`/${userId}`);
+    const {data} = await axios.get(attendURL+`/${props.attendId}`);
 
     return data;
   } catch(err) {
@@ -54,4 +54,26 @@ export const findOne = async (userId) => {
 
 export const create = async (props) => {
 
+}
+
+export const modify = async (props) => {
+  try {
+    const {data} = await axios.put(attendURL+`/${props.attendId}`, props);
+
+    return data;
+  } catch(err) {
+    console.error(err);
+    return {error: err, msg: '에러가 발생했습니다.'};
+  }
+}
+
+export const remove = async (props) => {
+  try {
+    const {data} = await axios.delete(attendURL+`/${props.attendId}`);
+
+    return data;
+  } catch(err) {
+    console.error(err);
+    return {error: err, msg: '에러가 발생했습니다.'};
+  }
 }
