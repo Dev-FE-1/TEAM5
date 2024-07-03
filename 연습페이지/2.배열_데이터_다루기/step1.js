@@ -54,10 +54,10 @@ const 응답 = await axios("http://localhost:8080/api/users");
 console.log(응답.data.data);
 
 // 6. 하나의 데이터로 해보기
-const 데이터 = 응답.data.data[0];
+const 데이터 = 응답.data.data[1];
 
-const { imgUrl, name, userId } = 데이터;
-console.log("imgUrl : ", imgUrl, "name : ", name, "userId : ", userId);
+const { imgUrl, name, userId, team, position, email } = 데이터;
+console.log("imgUrl : ", imgUrl, "name : ", name, "userId : ", userId,"team : ", team,"position  : ", position, "email  : ", email);
 
 // 이미지가 없을 때(imgUrl == null) 자리 채울 이미지
 const placeholder = "https://via.placeholder.com/100";
@@ -73,11 +73,17 @@ const template = `
   <span class="name">${name}</span>
 </div>
 <div>
-  <span class="userId">사번</span>
+  <span class="userId">${userId}</span>
 </div>
-<div class="team">팀</div>
-<div class="position">직급</div>
-<div class="email">이메일</div>
+<div> 
+  <span class="team">${team}</span>
+</div>
+<div> 
+  <span class="position">${position}</span>
+</div>
+<div> 
+  <span class="email">${email}</span>
+</div>
 `;
 
 // 8. div 안쪽에 html 집어넣기
