@@ -4,10 +4,10 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 const Login = () => {
-  return `
+    return `
 <main>
     <section class=${cx("login-form")}>
-        <h1><a href="index.html">Intranet</a></h1>
+        <h1>Intranet</h1>
         <form action="">
             <div class=${cx("int-area")}>
                 <input type="text" name="id" id="id" autocomplete="off" required>
@@ -23,10 +23,11 @@ const Login = () => {
         </form>
     </section>
 </main>
-<footer>
-    <p>&copy; 2024 Intranet. All rights reserved.</p>
-</footer>
+<!--<footer>-->
+<!--    <p>&copy; 2024 Intranet. All rights reserved.</p>-->
+<!--</footer>-->
   `;
 };
+
 
 export default Login;
