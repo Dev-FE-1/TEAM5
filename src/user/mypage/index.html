@@ -62,14 +62,38 @@
         <!-- 공지사항 -->
         <div class="notices content">
           <h2>공지사항</h2>
-          <p>공지사항 내용 1</p>
-          <p>공지사항 내용 2</p>
-          <p>공지사항 내용 3</p>
+          <div class="notices-content">
+            <!-- <div class="notices-item">
+              <img class="notices-image" src="#" alt="이미지1" />
+              <div class="notice-text">
+                <p>2024년 회사 연말 파티</p>
+                <p>2024년 연말 파티가 12월 24일에 열립니다. 많은 참여 바랍니다</p>
+                <p>2024-12-24</p>
+              </div>
+            </div>
+            <div class="notices-item">
+              <img class="notices-image" src="#" alt="이미지2" />
+              <div class="notice-text">
+                <p>2024년 여름 휴가 일정</p>
+                <p>2024년 여름 휴가는 7월 20일부터 8월 5일까지입니다</p>
+                <p>2024-07-20</p>
+              </div>
+            </div>
+            <div class="notices-item">
+              <img class="notices-image" src="#" alt="이미지3" />
+              <div class="notice-text">
+                <p>보안 점검 안내</p>
+                <p>보안 점검이 2024년 10월 10일에 실시됩니다</p>
+                <p>2024-10-10</p>
+              </div>             
+            </div> -->
+          </div>
         </div>
 
 
+
         <!-- 출퇴근 -->
-        <div class="commutes content">
+        <!-- <div class="commutes content">
           <h2> 출퇴근현황</h2>
           <div class="work-timer">
             <div class="timer">
@@ -85,7 +109,33 @@
               <button class="stop-btn btn">근무종료</button>
             </div>
           </div>
+        </div> -->
+
+        <!-- 출퇴근 -->
+        <div class="commutes content">
+          <h2> 출퇴근현황</h2>
+          <div class="work-timer">
+              <div class="timer">
+                  <span id="timer">00:00:00</span>
+              </div>
+              <p> 현시각 : <span id="statusBadge" class="badge">출근 전</span></p>
+              <div class="work-controls">
+                  <button id="startButton" class="start-btn btn">출 근</button>
+                  <label class="switch">
+                      <input type="checkbox" id="workToggle">
+                      <span class="slider round"></span>
+                  </label>
+                  <button id="endButton" class="stop-btn btn">퇴 근</button>
+              </div>
+          </div>
         </div>
+
+
+
+
+
+
+
 
         <!-- 근태 -->
         <div class="attends content">
@@ -93,11 +143,13 @@
             <div class="attends-list">
               <div class="attends-header">
                 <span>구분</span>
-                <span>날짜</span>
+                <span>시작일</span>
+                <span>종료일</span>
                 <span>내용</span>
                 <span>이름</span>
               </div>
-              <div class="attends-item">
+              <div class="attends-content"></div>
+              <!-- <div class="attends-item">
                 <span class="badge">조퇴</span>
                 <span>6/19</span>
                 <span>병원내원</span>
@@ -114,7 +166,7 @@
                 <span>6/21</span>
                 <span>아파</span>
                 <span>홍길동</span>
-              </div>
+              </div> -->
             </div>
             
             <a href="./now.html"><button class="attends-btn btn">근태신청 바로가기</button></a>
@@ -156,6 +208,8 @@
     });
 
   </script>
+
+
 
 
 </body>
