@@ -235,9 +235,8 @@ router.post("/login", (req, res) => {
  *       400:
  *         description: Bad request
  */
-router.post("/:userId", validateUserData, (req, res) => {
-  const { userId } = req.params;
-  const { password, email, name, team, position, imgUrl } = req.body;
+router.post("/", validateUserData, (req, res) => {
+  const { userId, password, email, name, team, position, imgUrl } = req.body;
   // TODO: 중복 아이디가 있는지 먼저 확인
   const sql = `
     INSERT INTO Users( userId, password, email, name, team, position, imgUrl) 
