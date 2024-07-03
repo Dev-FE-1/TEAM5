@@ -38,8 +38,7 @@
   border-radius: 5px;
 }
 
-.header svg,
-.search svg {
+.icon {
   width: 32px;
   cursor: pointer;
 }
@@ -102,7 +101,7 @@
   gap: 16px;
 }
 
-.request-tools svg {
+.request-tools img {
   width: 24px;
   height: 24px;
   cursor: pointer;

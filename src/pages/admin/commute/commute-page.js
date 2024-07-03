@@ -1,12 +1,11 @@
 import { fetchCommutes } from "../../../api/commuteApi";
-import { delete_icon, edit_icon, search_icon } from "../../../icons";
 import styles from "./commute.module.css";
 import classNames from "classnames/bind";
+import { search_icon, edit_icon, delete_icon } from "../../../icons";
 
 const cx = classNames.bind(styles);
 
 const Commute = async () => {
-
   return `
   <section class="${cx("container")}">
     <header class="${cx("header")}">
@@ -14,7 +13,7 @@ const Commute = async () => {
         <h1>출퇴근 관리(admin)</h1>
         <div class="${cx("search")}">
           <input type="text" placeholder="사원명" />
-          ${search_icon}
+          <img src=${search_icon} class="${cx("icon")}" alt='search-icon'>
         </div>
       </div>
       <select>
@@ -50,8 +49,8 @@ const list_items = async () => {
       <div>${arriveTime}</div>
       <div>${leaveTime}</div>
       <div class="${cx("request-tools")}">
-        ${edit_icon}
-        ${delete_icon}
+        <img src=${edit_icon} class="${cx("icon")}" alt="edit-icon">
+        <img src=${delete_icon} class="${cx("icon")}" alt="delete-icon">
       </div>
     </div>
   `
