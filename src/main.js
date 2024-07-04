@@ -41,11 +41,14 @@ const routes = {
 };
 
 async function router() {
-
   const path = window.location.pathname;
-  const render = routes[path] ?? NotFound;
+  const { render, init } = routes[path] ?? NotFound;
 
   root.innerHTML = path !== "/login" ? Layout(await render()) : render();
-};
+
+  if (init) {
+    init();
+  }
+}
 
 document.addEventListener("DOMContentLoaded", app);

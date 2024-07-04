@@ -1,12 +1,11 @@
-import { fetchCommutes } from "../../../api/commuteApi";
-import styles from "./commute.module.css";
 import classNames from "classnames/bind";
-import { search_icon, edit_icon, delete_icon } from "../../../icons";
+import { fetchCommutes } from "../../../api/commuteApi";
+import { delete_icon, edit_icon, search_icon } from "../../../icons";
+import styles from "./commute.module.css";
 
 const cx = classNames.bind(styles);
 
-const Commute = async () => {
-  return `
+const render = async () => `
   <section class="${cx("container")}">
     <header class="${cx("header")}">
       <div class="${cx("header-title")}">
@@ -35,7 +34,6 @@ const Commute = async () => {
       </div>
     ${await list_items()}    
 `;
-};
 
 const list_items = async () => {
   const res = await fetchCommutes();
@@ -58,4 +56,4 @@ const list_items = async () => {
     .join("");
 };
 
-export default Commute;
+export default render;
