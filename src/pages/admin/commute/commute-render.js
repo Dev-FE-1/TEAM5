@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { fetchCommutes } from "../../../api/commuteApi";
-import { delete_icon, edit_icon, search_icon } from "../../../icons";
+import { delete_icon, edit_icon, search_icon } from "../../../assets/icons";
 import styles from "./commute.module.css";
 
 const cx = classNames.bind(styles);

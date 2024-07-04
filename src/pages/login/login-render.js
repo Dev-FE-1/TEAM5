@@ -3,10 +3,10 @@ import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
 
-const Login = () => {
-    return `
-<main>
-    <section class=${cx("login-form")}>
+const render = () => {
+  return `
+<main class=${cx("main")}>
+    <section class=${cx("login-form")} id="login-form">
         <h1>Intranet</h1>
         <form action="">
             <div class=${cx("int-area")}>
@@ -29,5 +29,4 @@ const Login = () => {
   `;
 };
 
-
-export default Login;
+export default render;
