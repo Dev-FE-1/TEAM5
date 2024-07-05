@@ -109,9 +109,34 @@ const deleteUser = async (userId) => {
   alert(resjson.message);
 };
 
-document.getElementById("req").addEventListener("click", () => {
-  editUser("kimpra3");
-});
+const login = async () => {
+  const body = {
+    userId: "lovelace",
+    password: "password",
+  };
+
+  const res = await fetch(`http://localhost:8080/api/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.error("Error:", errorData);
+    alert(errorData.message);
+    return;
+  }
+
+  const resjson = await res.json();
+  console.log(resjson);
+  alert(resjson.message);
+};
+
+document.getElementById("req").addEventListener("click", login
+);
 
 document
   .getElementById("fetch-user-info")
@@ -119,7 +144,7 @@ document
     const res = await fetch(`${HOST}/api/users/kimpra2989`);
     const user = await res.json();
 
-    console.log(user)
+    console.log(user);
 
     const { email, imgUrl, name, position, team, userId } = user.data;
 

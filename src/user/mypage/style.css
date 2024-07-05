@@ -91,11 +91,43 @@
 
 
 /* 공지사항 */
- .notices p {
+.notices-content {
+  display: flex;
+  flex-direction: column; /* 한 줄씩 표시 */
+  gap: 20px;
+}
+
+.notices-item {
+  display: flex;
+  align-items: center; /* 이미지와 텍스트를 수직 가운데 정렬 */
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd; /* 각 항목을 구분하는 실선 */
+}
+
+.notices img {
+  max-width: 100px;
+  height: auto;
+  border-radius: 5px;
+  margin-left: 50px;
+  margin-right: 50px; /* 이미지와 텍스트 사이 간격 */
+}
+
+.notice-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 텍스트를 수직 가운데 정렬 */
+}
+
+.notice-text p {
+  margin: 0; /* p 태그의 기본 마진을 제거 */
+  margin-bottom: 10px; /* 각 p 태그 간의 간격을 설정 */
+}
+
+ /* .notices p {
   border-bottom: 1px solid #ddd;
   margin-bottom: 50px;
   padding: 8px 0;
- }
+ } */
 
 
 /* 출퇴근 */
@@ -217,7 +249,7 @@ input:checked + .slider:before {
 .attends-header,
 .attends-item {
   display: grid;
-  grid-template-columns: 45px 90px 1fr 50px;
+  grid-template-columns: 45px 90px 120px 1fr 100px;
   gap: 15px;
   padding: 16px 0;
   border-bottom: 1px solid #ddd;

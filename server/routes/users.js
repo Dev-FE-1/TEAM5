@@ -1,31 +1,45 @@
 import express from "express";
 import db from "../database.js";
+import multer from "multer";
 
 const router = express.Router();
 
+// Multer 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "/assets/profile");
+  },
+  filename: (req, file, cb) => {
+    let { userId } = !req.params.filename ? req.params : req.body;
+    cb(null, userId);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 // 유효성 검사 미들웨어
 const validateUserData = (req, res, next) => {
-    console.log("validate");
-    const {userId} = req.params;
-    const {password, email, name, team, position} = req.body;
-    //imgUrl은 필수 아닌 것 같아서 뺌
-    if (!userId || !password || !email || !name || !team || !position) {
-        return res.status(400).json({
-            status: "ERROR",
-            error: "All fields are required",
-        });
-    }
+  console.log("validate");
+  const { userId } = req.params;
+  const { password, email, name, team, position } = req.body;
+  //imgUrl은 필수 아닌 것 같아서 뺌
+  if (!userId || !password || !email || !name || !team || !position) {
+    return res.status(400).json({
+      status: "ERROR",
+      error: "All fields are required",
+    });
+  }
 
-    next();
+  next();
 };
 
 // 에러 처리 함수
 const handleError = (res, err) => {
-    console.error(err);
-    return res.status(500).json({
-        status: "ERROR",
-        error: err.message,
-    });
+  console.error(err);
+  return res.status(500).json({
+    status: "fail",
+    error: err.message,
+  });
 };
 
 /**
@@ -99,20 +113,20 @@ const handleError = (res, err) => {
  *         description: 네트워크 오류
  */
 router.get("/", (req, res) => {
-    const sql = `
+  const sql = `
     SELECT userId, email, name, team, position, isAdmin, imgUrl 
     FROM Users 
     WHERE isAdmin != true
   `;
 
-    db.all(sql, [], (err, rows) => {
-        if (err) return handleError(res, err);
+  db.all(sql, [], (err, rows) => {
+    if (err) return handleError(res, err);
 
-        res.json({
-            status: "OK",
-            data: rows,
-        });
+    res.json({
+      status: "OK",
+      data: rows,
     });
+  });
 });
 
 /**
@@ -139,60 +153,57 @@ router.get("/", (req, res) => {
  *         description: 해당 사번의 사원이 존재하지 않음
  */
 router.get("/:userId", (req, res) => {
-    const {userId} = req.params;
+  const { userId } = req.params;
 
-    const sql = `
+  const sql = `
     SELECT userId, email, name, team, position, isAdmin, imgUrl 
     FROM Users 
     WHERE userId=?
   `;
 
-    db.get(sql, [userId], (err, row) => {
-        if (err) return handleError(res, err);
+  db.get(sql, [userId], (err, row) => {
+    if (err) return handleError(res, err);
 
-        if (!row)
-            return res.status(404).json({
-                status: "ERROR",
-                error: "User not found",
-            });
+    if (!row)
+      return res.status(404).json({
+        status: "ERROR",
+        error: "User not found",
+      });
 
-        res.json({
-            status: "OK",
-            message: `${row.userId}님의 정보를 갖고왔다이놈아콘솔서확인해`,
-            data: row,
-        });
+    res.json({
+      status: "OK",
+      message: `${row.userId}님의 정보를 갖고왔다이놈아콘솔서확인해`,
+      data: row,
     });
+  });
 });
 
 router.post("/login", (req, res) => {
-    const {userId, password} = req.body;
+  const { userId, password } = req.body;
 
-    const sql = `
-    SELECT userId, email, name, team, position, isAdmin, imgUrl 
-    FROM Users 
-    WHERE userId=$userId and password = $password and withdraw = false
+  const sql = `
+    SELECT * FROM Users 
+    WHERE userId=? and password = ? and withdraw = false
   `;
 
-    const params = {
-        $userId: userId,
-        $password: password,
-    };
+  const params = [userId, password];
 
-    db.all(sql, params, (err, rows) => {
-        if (err) return handleError(res, err);
+  db.run(sql, params, function (err, user) {
+    if (err) return handleError(res, err);
 
-        if (rows.length < 1) {
-            return res.status(401).json({
-                status: "NO_USER",
-                message: "일치하는 사용자가 없습니다.",
-            });
-        }
+    if (!user) return res.status(400).json({
+      status: "fail",
+      message: "일치하는 사원이 존재하지 않습니다."
+    })
 
-        res.json({
-            status: "OK",
-            data: rows,
-        });
+    const isAdmin = userId === 'admin'
+
+    res.json({
+      status: "success",
+      message: '로그인 성공',
+      isAdmin
     });
+  });
 });
 
 /**
@@ -224,34 +235,24 @@ router.post("/login", (req, res) => {
  *       400:
  *         description: Bad request
  */
-router.post("/:userId", validateUserData, (req, res) => {
-    const {userId} = req.params;
-    const {password, email, name, team, position, imgUrl} = req.body;
-
-    // TODO: 중복 아이디가 있는지 먼저 확인
-    const sql = `
+router.post("/", validateUserData, (req, res) => {
+  const { userId, password, email, name, team, position, imgUrl } = req.body;
+  // TODO: 중복 아이디가 있는지 먼저 확인
+  const sql = `
     INSERT INTO Users( userId, password, email, name, team, position, imgUrl) 
-    VALUES( $userId, $password, $email, $name, $team, $position, $imgUrl)
+    VALUES( ?, ?, ?, ?, ?, ?, ?)
   `;
 
-    const params = {
-        $userId: userId,
-        $password: password,
-        $email: email,
-        $name: name,
-        $team: team,
-        $position: position,
-        $imgUrl: imgUrl,
-    };
+  const params = [userId, password, email, name, team, position, imgUrl];
 
-    db.run(sql, params, (err) => {
-        if (err) return handleError(res, err);
+  db.run(sql, params, (err) => {
+    if (err) return handleError(res, err);
 
-        res.json({
-            status: "REGISTER",
-            message: `${userId}가 등록되었습니다.`,
-        });
+    res.json({
+      status: "REGISTER",
+      message: `${userId}가 등록되었습니다.`,
     });
+  });
 });
 
 /**
@@ -282,10 +283,10 @@ router.post("/:userId", validateUserData, (req, res) => {
  *               $ref: '#/components/schemas/User'
  */
 router.put("/:userId", validateUserData, (req, res) => {
-    const {userId} = req.params;
-    const {password, email, name, team, position, imgUrl} = req.body;
+  const { userId } = req.params;
+  const { password, email, name, team, position, imgUrl } = req.body;
 
-    const updateSql = `
+  const updateSql = `
     UPDATE Users SET 
       password = $password,
       email = $email,
@@ -296,24 +297,24 @@ router.put("/:userId", validateUserData, (req, res) => {
     WHERE userId = $userId
   `;
 
-    const params = {
-        $password: password,
-        $email: email,
-        $name: name,
-        $team: team,
-        $position: position,
-        $imgUrl: imgUrl,
-        $userId: userId,
-    };
+  const params = {
+    $password: password,
+    $email: email,
+    $name: name,
+    $team: team,
+    $position: position,
+    $imgUrl: imgUrl,
+    $userId: userId,
+  };
 
-    db.run(updateSql, params, (err) => {
-        if (err) return handleError(res, err);
+  db.run(updateSql, params, (err) => {
+    if (err) return handleError(res, err);
 
-        res.json({
-            status: "UPDATE",
-            message: `${userId}님의 정보가 수정되었습니다.`,
-        });
+    res.json({
+      status: "UPDATE",
+      message: `${userId}님의 정보가 수정되었습니다.`,
     });
+  });
 });
 
 /**
@@ -345,23 +346,29 @@ router.put("/:userId", validateUserData, (req, res) => {
  *                   example: 사용자 삭제됨
  */
 router.delete("/:userId", (req, res) => {
-    const {userId} = req.params;
+  const { userId } = req.params;
 
-    // TODO: 관리자인지 확인
-    const sql = `
+  // TODO: 관리자인지 확인
+  const sql = `
     DELETE FROM Users 
     WHERE userId = ? 
   `;
 
-    db.run(sql, [userId], (err, rows) => {
-        if (err) return handleError(res, err);
+  db.run(sql, [userId], function (err) {
+    if (err) return handleError(res, err);
 
-        res.json({
-            status: "DELETE",
-            message: "사용자가 삭제되었습니다.",
-            data: rows,
-        });
+    if (this.changes === 0) {
+      return res.status(404).json({
+        status: "ERROR",
+        error: "User not found",
+      });
+    }
+
+    res.json({
+      status: "DELETE",
+      message: "사용자가 삭제되었습니다.",
     });
+  });
 });
 
 export default router;
