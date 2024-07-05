@@ -25,7 +25,7 @@ const init = async () => {
   document.querySelector(`.${cx("profile-image")}`).setAttribute("src", imgUrl);
 
   
-  // 공지사항
+  // 공지사항git 
   const noticesResponse = await axios("http://localhost:8080/api/notices");
   
   const placeholder = "https://via.placeholder.com/100";
