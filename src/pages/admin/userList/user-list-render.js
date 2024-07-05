@@ -5,18 +5,15 @@ const cx = classNames.bind(styles);
 
 const render = () => `
 <section class="${cx("section")}">
-    <!-- 검색창 -->
-    <div class="${cx("search-container")}">
-        <input type="text" id="search" placeholder="검색어를 입력하세요...">
-        <button id="search-button">
-            <span class="material-icons">search</span>
+    <!-- 등록 -->
+    <div class="${cx("add-container")}">
+        <button class="${cx("add-button")}">
+        등록
         </button>
     </div>
     <!-- 프로필카드 전체 박스 -->
     <div class="${cx("container")}" id="profile-container">
-        <div class="${cx("profile-card", "plus-box")}" id="add-profile-card">
-            <span class="material-icons">add</span>
-        </div>
+    <!-- 기존 프로필 카드가 여기 렌더링될 것입니다 -->
     </div>
     <div class="${cx("pagination")}">
         <button id="prevPage" disabled>Previous</button>
@@ -27,14 +24,14 @@ const render = () => `
     <!-- 모달 창 -->
     <div id="modal" class="${cx("modal")}">
         <div class="${cx("modal-content")}">
-            <span class="close">&times;</span>
+            <span class="${cx("close")}">&times;</span>
             <h2>새 프로필 추가</h2>
             <div class="${cx("info-item")}">
                 <label for="modal-name">이름:</label>
                 <input type="text" id="modal-name">
             </div>
             <div class="${cx("info-item")}">
-                <label for="modal-id">사번:</label>
+                <label for="modal-userId">사번:</label>
                 <input type="text" id="modal-userId">
             </div>
             <div class="${cx("info-item")}">

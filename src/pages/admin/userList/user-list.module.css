@@ -21,7 +21,7 @@
     height: 100%;
 }
 
-.search-container { 
+.add-container { 
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -31,17 +31,8 @@
     box-sizing: border-box;
 }
 
-.search-container input[type="text"] {
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 300px;
-    box-sizing: border-box;
-}
-
-.search-container button {
-    padding: 5px;
+.add-button {
+    padding: 7px;
     margin-left: 10px;
     background-color: #6d40c8;
     border: none;
@@ -51,10 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.search-container button .material-icons {
-    font-size: 24px;
+    font-size: 15px;
 }
 
 /* 기본 스타일 */
