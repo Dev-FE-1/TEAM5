@@ -1,5 +1,15 @@
-import { findAll } from "../api";
+import { findAll, findOne } from "../api";
+import { reRender } from "../main";
 import ListItem from "./ListItem";
+import { setModifyData } from "./Modal";
+
+class Pagenation {
+  constructor(props) {
+    this.curPage = props?.curPage ?? 1;
+    this.countPerPage = 10;
+    this.totalPage = Math.ceil((props.data?.length ?? 0) / 10) ?? 1;
+  }
+}
 
 const createList = (dataList) => {
   const menuHtml = [];
@@ -17,72 +27,67 @@ const createList = (dataList) => {
   return menuHtml.join('');
 };
 
-/**
- * const props = {
-    title: "근태관리 (관리자)",
-    select_options: [
-      {
-        value: "all",
-        text: "모두보기"
-      }, 
-      {
-        value: "leave",
-        text: "연차"
-      },
-      {
-        value: "halfday",
-        text: "반차"
-      },
-      {
-        value: "absent",
-        text: "조퇴"
-      }
-    ],
-    list_headers: [
-      "구분",
-      "일시",
-      "사원명",
-      "사유",
-      "수정/삭제"
-    ],
-    list: [
-      {
-        type: "연차",
-        startDate: "2024.06.25",
-        endDate: "2024.06.25",
-        name: "홍길동",
-        content: "개인사유"
-      }, 
-      {
-        type: "연차",
-        startDate: "2024.06.25",
-        endDate: "2024.06.25",
-        name: "홍길동",
-        content: "개인사유"
-      }, 
-      {
-        type: "연차",
-        startDate: "2024.06.25",
-        endDate: "2024.06.25",
-        name: "홍길동",
-        content: "개인사유"
-      }, 
-      {
-        type: "연차",
-        startDate: "2024.06.25",
-        endDate: "2024.06.25",
-        name: "홍길동",
-        content: "개인사유"
-      }
-    ]
-  };
- */
+export const addListEvent = () => {
 
-export default async function AttendList () {
+  // 수정 버튼(open modal)
+  document.querySelectorAll('.btn-modify').forEach((item) => {
+    item.addEventListener('click', openModal);
+  });
 
-  const {data} = await findAll();
+  // 삭제 버튼
+  document.querySelectorAll('.btn-delete').forEach((item) => {
+    item.addEventListener('click', deleteAttend);
+  });
 
-  const listHtml = createList(data);
+  document.querySelector('#searchType').addEventListener('change', chgType);
+
+  document.querySelector('.pagenation').addEventListener('click', () => {console.log('paging~!')});
+}
+
+// 모달 오픈 버튼, 
+export const openModal = async (event) => {
+  const id = event.target.closest('div.list-item').querySelector('.attendId').value;
+
+  const modalContainer = document.querySelector('.modal-container');
+  modalContainer.classList.remove('disappear');
+  modalContainer.classList.add('appear');
+
+  const {status, data} = await findOne({attendId: id});
+  if(status === 'OK') setModifyData({data: data, obj: modalContainer});
+}
+
+// 근태 1개 삭제
+export const deleteAttend = async (event) => {
+  const id = event.target.closest('div.list-item').querySelector('.attendId').value;
+
+  const apiResult = await remove({attendId: id});
+  if(apiResult?.status === "DELETE") reloadLayout();
+}
+
+export const chgType = async (event) => {
+  const curType = event.target.value;
+
+  await reRender({type: curType});
+}
+
+export const createPagenation = (props) => {
+  const pagenation = new Pagenation({curPage: props?.curPage ?? 1, data: props.data});
+  console.log(pagenation, pagenation.curPage, pagenation.curPage == 1 ?? 'curPage');
+
+  const pageHTML = [];
+  pageHTML.push(`<div class='pagenation'>`);
+  for(let i = 0; i < pagenation.totalPage; i++) {
+    pageHTML.push(`<div class='pageNum ${pagenation.curPage == i+1 ? 'curPage' : ''}'>${i+1}</div>`);
+  }
+
+  pageHTML.push(`</div>`);
+
+  return pageHTML.join('');
+}
+
+export default async function AttendList (prop) {
+
+  let listHtml = createList(prop.data);
 
   return listHtml;
 }

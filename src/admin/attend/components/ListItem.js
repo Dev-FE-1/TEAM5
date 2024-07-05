@@ -1,4 +1,4 @@
-import { openModal, deleteAttend } from "./Modal";
+// import { openModal, deleteAttend } from "./Modal";
 
 const createItem = (prop) => {
   const itemHTML = `
