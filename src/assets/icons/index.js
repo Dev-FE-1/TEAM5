@@ -1,4 +1,5 @@
-export { default as add_icon } from "./add-icon.svg";
+// export { default as add_icon } from "./add-icon.svg";
+export { default as add_icon } from "./add-icon.js";
 export { default as close_primary } from "./close_primary.svg";
 export { default as close_white } from "./close_white.svg";
 export { default as delete_icon } from "./delete-icon.svg";
