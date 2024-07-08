@@ -111,14 +111,14 @@ section {
 /* 프로필 상세 */
 .profile-container {
     width: 100%;
-    max-width: 68%;
+    max-width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
     position: relative;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 /* 프로필 컨테이너 */

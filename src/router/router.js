@@ -44,7 +44,7 @@ const routes = {
   "/admin/commute": Admin_Commute,
   "/admin/notice": Admin_Notice,
   "/admin/users": Admin_UserList,
-  "/admin/users/": Admin_UserProfile,
+  "/admin/users/profile/": Admin_UserProfile,
 
   //user
   "/user/attend": User_Attend,

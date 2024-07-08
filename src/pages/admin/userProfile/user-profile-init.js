@@ -4,79 +4,87 @@ import styles from "./user-profile.module.css";
 
 const cx = classNames.bind(styles);
 
-async function init(param) {
-    const getQueryParams = async (param) => {
-      const {data} = await axios.get(`http://localhost:8080/api/users/${param}`);
-      return data?.data;
-    }
+async function init(userId) {
+    const getQueryParams = async (userId) => {
+        const { data } = await axios.get(`http://localhost:8080/api/users/${userId}`);
+        return data?.data;
+    };
 
-    const params = await getQueryParams(param);
+    const params = await getQueryParams(userId);
 
-    if (params.name) {
+    if (params) {
         document.getElementById('profile-picture').src = params.imgUrl || 'https://via.placeholder.com/250x300';
         document.getElementById('profile-name').textContent = params.name;
         document.getElementById('profile-userId').textContent = params.userId;
         document.getElementById('profile-team').textContent = params.team;
         document.getElementById('profile-position').textContent = params.position;
         document.getElementById('profile-email').textContent = params.email;
+    } else {
+        // 데이터가 없을 때 기본 값을 설정
+        document.getElementById('profile-picture').src = 'https://via.placeholder.com/250x300';
+        document.getElementById('profile-name').textContent = 'N/A';
+        document.getElementById('profile-userId').textContent = 'N/A';
+        document.getElementById('profile-team').textContent = 'N/A';
+        document.getElementById('profile-position').textContent = 'N/A';
+        document.getElementById('profile-email').textContent = 'N/A';
     }
 
-    const modal = document.getElementById(cx("modal"));
-    const editBtn = document.getElementById(cx("edit-btn"));
-    const span = document.getElementsByClassName(cx("close"))[0];
-    const fileInput = document.getElementById(cx("modal-image"));
-    const modalPreview = document.getElementById(cx("modal-profile-picture"));
-    const deleteImageButton = document.getElementById(cx("delete-image"));
+    const modal = document.getElementById('modal');
+    const editBtn = document.getElementById('edit-btn');
+    const span = document.querySelector(`.${cx("close")}`);
+    const fileInput = document.getElementById('modal-image');
+    const modalPreview = document.getElementById('modal-profile-picture');
+    const deleteImageButton = document.getElementById('delete-image');
 
-    editBtn.onclick = function() {
-        document.getElementById(cx('modal-name')).value = document.getElementById('profile-name').textContent;
-        document.getElementById(cx('modal-userId')).value = document.getElementById('profile-userId').textContent;
-        document.getElementById(cx('modal-team')).value = document.getElementById('profile-team').textContent;
-        document.getElementById(cx('modal-position')).value = document.getElementById('profile-position').textContent;
-        document.getElementById(cx('modal-email')).value = document.getElementById('profile-email').textContent;
+    editBtn.onclick = function () {
+        document.getElementById('modal-name').value = document.getElementById('profile-name').textContent;
+        document.getElementById('modal-userId').value = document.getElementById('profile-userId').textContent;
+        document.getElementById('modal-team').value = document.getElementById('profile-team').textContent;
+        document.getElementById('modal-position').value = document.getElementById('profile-position').textContent;
+        document.getElementById('modal-email').value = document.getElementById('profile-email').textContent;
         modal.style.display = "block";
-    }
+    };
 
-    span.onclick = function() {
+    span.onclick = function () {
         modal.style.display = "none";
-    }
+    };
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
 
     // 이미지 업로드 시 미리보기 업데이트
-    fileInput.addEventListener('change', function() {
+    fileInput.addEventListener('change', function () {
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 modalPreview.src = e.target.result;
-            }
+            };
             reader.readAsDataURL(fileInput.files[0]);
         }
     });
 
     // 이미지 삭제 기능 추가
-    deleteImageButton.addEventListener('click', function() {
+    deleteImageButton.addEventListener('click', function () {
         modalPreview.src = 'https://via.placeholder.com/100';
         fileInput.value = ''; // 파일 입력 초기화
     });
 
-    document.getElementById(cx("modal-save")).onclick = function() {
-        document.getElementById('profile-name').textContent = document.getElementById(cx('modal-name')).value;
-        document.getElementById('profile-userId').textContent = document.getElementById(cx('modal-userId')).value;
-        document.getElementById('profile-team').textContent = document.getElementById(cx('modal-team')).value;
-        document.getElementById('profile-position').textContent = document.getElementById(cx('modal-position')).value;
-        document.getElementById('profile-email').textContent = document.getElementById(cx('modal-email')).value;
+    document.getElementById('modal-save').onclick = function () {
+        document.getElementById('profile-name').textContent = document.getElementById('modal-name').value;
+        document.getElementById('profile-userId').textContent = document.getElementById('modal-userId').value;
+        document.getElementById('profile-team').textContent = document.getElementById('modal-team').value;
+        document.getElementById('profile-position').textContent = document.getElementById('modal-position').value;
+        document.getElementById('profile-email').textContent = document.getElementById('modal-email').value;
 
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const img = new Image();
                 img.src = e.target.result;
-                img.onload = function() {
+                img.onload = function () {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.width = 250;
@@ -85,15 +93,13 @@ async function init(param) {
                     const resizedImageUrl = canvas.toDataURL('image/jpeg');
                     document.getElementById('profile-picture').src = resizedImageUrl;
 
-                    // 업데이트된 이미지 URL을 URLSearchParams에 추가하여 다시 설정
                     params.picture = resizedImageUrl;
                     const newParams = new URLSearchParams(params).toString();
                     window.history.replaceState({}, '', `${window.location.pathname}?${newParams}`);
-                }
-            }
+                };
+            };
             reader.readAsDataURL(fileInput.files[0]);
         } else {
-            // 이미지가 업로드되지 않았고, 삭제된 상태일 때
             document.getElementById('profile-picture').src = 'https://via.placeholder.com/250x300';
             params.picture = 'https://via.placeholder.com/250x300';
             const newParams = new URLSearchParams(params).toString();
@@ -101,14 +107,16 @@ async function init(param) {
         }
 
         modal.style.display = "none";
-    }
+    };
 
     // 윈도우 크기에 따라 스케일 조정 함수
     function adjustScale() {
-        const profileContainer = document.getElementById(cx('profile-container'));
-        const scale = Math.min(window.innerWidth / profileContainer.offsetWidth, 1);
-        profileContainer.style.transform = `scale(${scale})`;
-        profileContainer.style.transformOrigin = 'top left';
+        const profileContainer = document.getElementById('profile-container');
+        if (profileContainer) {
+            const scale = Math.min(window.innerWidth / profileContainer.offsetWidth, 1);
+            profileContainer.style.transform = `scale(${scale})`;
+            profileContainer.style.transformOrigin = 'top left';
+        }
     }
 
     // 윈도우 크기 변경 시 스케일 조정
@@ -117,5 +125,12 @@ async function init(param) {
     // 초기 로드 시 스케일 조정
     adjustScale();
 }
+
+// DOMContentLoaded 이벤트 사용
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = 'some-user-id'; // userId 값을 적절히 설정
+    console.log("Fetching data for userId:", userId); // 추가된 콘솔 로그
+    init(userId);
+});
 
 export default init;

@@ -166,30 +166,23 @@ const init = () => {
         console.log("Profile deleted:", response.data);
     }
 
-    document.getElementById('profile-container').addEventListener('click', function(event) {
-        const profileCard = event.target.closest(`.${cx('profile-card')}`);
 
-        if (event.target.classList.contains(cx('close-button'))) {
-            event.stopPropagation();
-            const userId = profileCard.dataset.userid;
-            deleteProfileFromServer(userId).then(renderProfiles);
-            return;
-        }
+document.getElementById('profile-container').addEventListener('click', function(event) {
+    const profileCard = event.target.closest(`.${cx('profile-card')}`);
 
-        if (profileCard) {
-            //const name = profileCard.dataset.name;
-            const userId = profileCard.dataset.userid;
-            //const team = profileCard.dataset.team;
-            //const position = profileCard.dataset.position;
-            //const email = profileCard.dataset.email;
-            //const imgUrl = profileCard.dataset.imgurl;
+    if (event.target.classList.contains(cx('close-button'))) {
+        event.stopPropagation();
+        const userId = profileCard.dataset.userid;
+        deleteProfileFromServer(userId).then(renderProfiles);
+        return;
+    }
 
-            //console.log({name, userId, team, position, email, imgUrl });
-
-            const url = `/admin/users/profile/${encodeURIComponent(userId)}`;
-            window.location.href = url;
-        }
-    });
+    if (profileCard) {
+        const userId = profileCard.dataset.userid;
+        const url = `/admin/users/profile/${encodeURIComponent(userId)}`;
+        window.location.href = url;
+    }
+});
 
     document.getElementById('modal-save').addEventListener('click', addProfileCard);
     document.querySelector(`.${cx('modal')} .${cx('close')}`).addEventListener('click', closeModal);
