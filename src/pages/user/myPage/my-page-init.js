@@ -1,4 +1,9 @@
 import axios from "axios";
+import classNames from "classnames/bind";
+import styles from "./my-page.module.css";
+
+const cx = classNames.bind(styles);
+
 
 const init = async () => {
   const HOST = "http://localhost:8080"; // 서버 주소
@@ -15,17 +20,17 @@ const init = async () => {
   const userId = 데이터.data.data.userId;
   const imgUrl = 데이터.data.data.imgUrl;
   
-  document.querySelector(`.${cx("name")}`).textContent = name;
-  document.querySelector(`.${cx("team")}`).textContent = team;
-  document.querySelector(`.${cx("position")}`).textContent = position;
-  document.querySelector(`.${cx("email")}`).textContent = email;
-  document.querySelector(`.${cx("userId")}`).textContent = userId;
-  console.log("프로필",name);
+  document.getElementById("name").textContent = name;
+  document.getElementById("team").textContent = team;
+  document.getElementById("position").textContent = position;
+  document.getElementById("email").textContent = email;
+  document.getElementById("userId").textContent = userId;
   
-  document.querySelector(`.${cx("profile-image")}`).setAttribute("src", imgUrl);
-
+  // console.log(imgUrl)
   
-  // 공지사항git 
+  document.getElementById("profile-image").setAttribute("src", imgUrl);
+  
+  // 공지사항
   const noticesResponse = await axios("http://localhost:8080/api/notices");
   
   const placeholder = "https://via.placeholder.com/100";
@@ -90,7 +95,9 @@ const init = async () => {
   btnCloseModal.addEventListener("click", () => {
       modal.style.display = "none";    
   });
-  
+
+
+
   // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수
   
@@ -99,7 +106,7 @@ const init = async () => {
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
-      document.querySelector(`.${cx("timer")}`).innerText = formatTime(hours * 3600 + minutes * 60 + seconds);
+      document.getElementById('timer').innerText = formatTime(hours * 3600 + minutes * 60 + seconds);
   }
   
   // 시간을 형식화하는 함수
@@ -113,29 +120,42 @@ const init = async () => {
   function startWork() {
       if (!isWorking) {
           isWorking = true; // 근무 상태로 변경
-          document.querySelector(`.${cx("workToggle")}`).checked = true; // 토글 버튼 켜기
-          document.querySelector(`.${cx("statusBadge")}`).innerText = '근무중'; // 상태 배지 변경
+          document.getElementById('workToggle').checked = true;
+          document.getElementById('statusBadge').innerText = '근무중';
+
+          // 출근 시간 표시 추가
+          const now = new Date();
+          const formattedTime = now.toLocaleTimeString();
+          document.getElementById('startWorkTime').innerText = `출근 시간: ${formattedTime}`;
       }
   }
   
   function endWork() {
       if (isWorking) {
           isWorking = false; // 근무 상태 해제
-          document.querySelector(`.${cx("workToggle")}`).checked = false; // 토글 버튼 끄기
-          document.querySelector(`.${cx("statusBadge")}`).innerText = '근무종료'; // 상태 배지 변경
+          document.getElementById('workToggle').checked = false;
+          document.getElementById('statusBadge').innerText = '근무종료';
+
+          // 퇴근 시간 표시 추가
+          const now = new Date();
+          const formattedTime = now.toLocaleTimeString();
+          document.getElementById('endWorkTime').innerText = `퇴근 시간: ${formattedTime}`;
       }
   }
   
-  document.querySelector(`.${cx("startButton")}`).addEventListener('click', startWork); // 근무 시작 버튼 클릭 이벤트 리스너 추가
-  document.querySelector(`.${cx("endButton")}`).addEventListener('click', endWork); // 근무 종료 버튼 클릭 이벤트 리스너 추가
+  document.getElementById('startButton').addEventListener('click', startWork);
+  document.getElementById('endButton').addEventListener('click', endWork);
   
+  // 페이지 로드 시 초기 상태 설정
+  // document.addEventListener('DOMContentLoaded', (event) => {
   function initialize() {
-      document.querySelector(`.${cx("statusBadge")}`).innerText = '근무 전'; // 초기 상태 배지 설정
+      document.getElementById('statusBadge').innerText = '근무 전';
       updateClock(); // 초기 시계 설정
       setInterval(updateClock, 1000); // 1초마다 시계 업데이트
-  }
+  };
   
   initialize();
+  
 };
 
 export default init;
