@@ -11,13 +11,7 @@ const render = () => `
     <!-- 프로필 -->
     <div class="${cx("profile", "content")}">
       <h2>프로필</h2>
-      <!-- <img src="./img/logo.jpg" alt="프로필사진"> -->
       <img id="profile-image" src="#" alt="프로필 이미지" />
-      <!-- <p>홍길동</p>
-      <p>Email : 배달의 민족@intranet.com</p>
-      <p>직급: 품질환경부서 부장</p>
-      <p>사번: 123456</p>
-      <p>전화번호: 010-1234-5678</p> -->
       <p>이름 : <span id="name"></span></p>
       <p>팀 : <span id="team"></span></p>
       <p>직급 : <span id="position"></span></p>
@@ -82,18 +76,23 @@ const render = () => `
     <div class="${cx("commutes", "content")}">
       <h2> 출퇴근현황</h2>
       <div class="${cx("work-timer")}">
-          <div class="${cx("timer")}">
-              <span id="timer">00:00:00</span>
+        <div class="${cx("timer")}">
+            <span id="timer">00:00:00</span>
+        </div>
+        <p> 현시각 : <span id="statusBadge" class="${cx("badge")}">출근 전</span></p>
+        <div class="${cx("work-controls")}">
+          <button id="startButton" class="${cx("start-btn", "btn")}">출 근</button>
+          <label class="${cx("switch")}">
+            <input type="checkbox" id="workToggle">
+            <span class="${cx("slider", "round")}"></span>
+          </label>
+          <button id="endButton" class="${cx("stop-btn", "btn")}">퇴 근</button>
           </div>
-          <p> 현시각 : <span id="statusBadge" class="${cx("badge")}">출근 전</span></p>
-          <div class="${cx("work-controls")}">
-              <button id="startButton" class="${cx("start-btn", "btn")}">출 근</button>
-              <label class="${cx("switch")}">
-                  <input type="checkbox" id="workToggle">
-                  <span class="${cx("slider", "round")}"></span>
-              </label>
-              <button id="endButton" class="${cx("stop-btn", "btn")}">퇴 근</button>
+          <!-- 출근 시간과 퇴근 시간을 표시할 요소 추가 -->
+          <p id="startWorkTime">출근 시간: </p>
+          <p id="endWorkTime">퇴근 시간: </p>
           </div>
+        </div>
       </div>
     </div>
 
@@ -141,16 +140,34 @@ const render = () => `
 
 
     <!-- 모달  -->
-    <div class="${cx('modal')}">
-      <div class="${cx('modal-profile')}">
-        <h2>프로필 수정</h2>
-        <ul>
-          <li>이름</li>
-          <li>이메일</li>
-          <li>직급</li>
-          <li>전화번호</li>
-          <li>선아님 코드로 넣기, 성현님이 주신 변수명으로 적용해보기</li>
-        </ul>
+    <div id="modal" class="${cx("modal")}">
+      <div class="${cx("modal-content")}">
+        <span class="${cx("close")}">&times;</span>
+        <h2>새 프로필 추가</h2>
+        <div class="${cx("info-item")}">
+          <label for="modal-name">이름:</label>
+          <input type="text" id="modal-name">
+        </div>
+        <div class="${cx("info-item")}">
+          <label for="modal-team">팀:</label>
+          <input type="text" id="modal-team">
+        </div>
+        <div class="${cx("info-item")}">
+          <label for="modal-position">직급:</label>
+          <input type="text" id="modal-position">
+        </div>
+        <div class="${cx("info-item")}">
+          <label for="modal-email">이메일:</label>
+          <input type="text" id="modal-email">
+        </div>
+        <div class="${cx("info-item")}">
+          <label for="modal-password">비밀번호:</label>
+          <input type="text" id="modal-password">
+        </div>
+        <div class="${cx("info-item")}">
+          <label for="modal-image">이미지 첨부:</label>
+          <input type="file" id="modal-image" accept="image/*">
+        </div>
         <button class="${cx('close-modal-btn', 'btn')}">수정완료</button>
       </div>
     </div>
