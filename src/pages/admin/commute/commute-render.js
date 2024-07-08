@@ -2,6 +2,7 @@ import { fetchCommutes } from "../../../api/commuteApi";
 import { delete_icon, edit_icon, search_icon } from "../../../assets/icons";
 import classNames from "classnames/bind";
 import styles from "./commute.module.css";
+import { black } from "../../../constants/colors";
 
 const cx = classNames.bind(styles);
 
@@ -12,7 +13,7 @@ const render = async () => `
         <h1>출퇴근 관리(admin)</h1>
         <div class="${cx("search")}">
           <input type="text" placeholder="사원명" />
-          <img src=${search_icon} class="${cx("icon")}" alt='search-icon'>
+          ${search_icon()}
         </div>
       </div>
       <select>
@@ -47,8 +48,8 @@ const list_items = async () => {
       <div>${arriveTime}</div>
       <div>${leaveTime}</div>
       <div class="${cx("request-tools")}">
-        <img src=${edit_icon} class="${cx("icon")}" alt="edit-icon">
-        <img src=${delete_icon} class="${cx("icon")}" alt="delete-icon">
+        ${edit_icon(black)}
+        ${delete_icon(black)}
       </div>
     </div>
   `

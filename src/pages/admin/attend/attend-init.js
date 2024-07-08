@@ -254,11 +254,11 @@ export const renderList = async (data = null, type = '', curPage = 1) => {
             <div class="${cx("request-content")}">${prop.content}</div>
             <div class="${cx("request-tools")}">
               <div class="${cx("request-btn", "btn-modify")}">
-                <img src=${edit_icon} class="${cx("icon")}" alt="edit-icon">
+                ${edit_icon()}
               </div>
 
               <div class="${cx("request-btn", "btn-delete")}">
-                <img src=${delete_icon} class="${cx("icon")}" alt="delete-icon">
+                ${delete_icon()}
               </div>
             </div>
           </div>`
