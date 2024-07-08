@@ -145,7 +145,6 @@ router.get("/:userId", (req, res) => {
 
     res.json({
       status: SUCCESS_STATUS,
-      message: USER_RETRIEVED_SUCCESS,
       data: row,
     });
   });
