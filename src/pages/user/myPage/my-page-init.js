@@ -6,7 +6,6 @@ const cx = classNames.bind(styles);
 
 const loginUser = `kimpra2989`;
 const init = async () => {
-  const HOST = "http://localhost:8080"; // 서버 주소
   
   // 프로필
   const 데이터 = await axios(`http://localhost:8080/api/users/${loginUser}`);

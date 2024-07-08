@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../database.js";
+import { SUCCESS_STATUS } from "../constants.js";
 
 const router = express.Router();
 
@@ -376,6 +377,38 @@ router.delete("/:commuteId", (req, res) => {
     res.json({
       status: "DELETE",
       message: "출퇴근 기록이 삭제되었습니다",
+    });
+  });
+});
+
+router.get("/status/:userId", (req, res) => {
+  const { userId } = req.params;
+  const today = getToday();
+
+  const sql = `
+  SELECT arriveTime, leaveTime FROM Commutes 
+  WHERE userId = ? 
+  AND date = '${today}'
+  `;
+
+  db.get(sql, [userId], (err, row) => {
+    if (err) return handleError(res, err);
+    console.log("row", row);
+
+    if (!row)
+      return res.json({
+        status: SUCCESS_STATUS,
+        commute: "before",
+      });
+
+    const { leaveTime } = row;
+
+    const commute_status = leaveTime ? "after" : "ing";
+
+    res.json({
+      status: SUCCESS_STATUS,
+      commute: commute_status,
+      row,
     });
   });
 });
