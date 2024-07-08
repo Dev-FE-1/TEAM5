@@ -1,44 +1,17 @@
 import express from "express";
 import db from "../database.js";
-import multer from "multer";
+import { ERROR_STATUS, HOST, SUCCESS_STATUS } from "../constants.js";
+import { checkUserIdExists, validateUserData } from '../middleware/index.js';
+import upload from "../multer/multer-config.js";
 
 const router = express.Router();
-
-// Multer 설정
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "/assets/profile");
-  },
-  filename: (req, file, cb) => {
-    let { userId } = !req.params.filename ? req.params : req.body;
-    cb(null, userId);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-// 유효성 검사 미들웨어
-const validateUserData = (req, res, next) => {
-  console.log("validate");
-  const { userId } = req.params;
-  const { password, email, name, team, position } = req.body;
-  //imgUrl은 필수 아닌 것 같아서 뺌
-  if (!userId || !password || !email || !name || !team || !position) {
-    return res.status(400).json({
-      status: "ERROR",
-      error: "All fields are required",
-    });
-  }
-
-  next();
-};
 
 // 에러 처리 함수
 const handleError = (res, err) => {
   console.error(err);
   return res.status(500).json({
-    status: "fail",
-    error: err.message,
+    status: ERROR_STATUS,
+    message: err.message,
   });
 };
 
@@ -123,7 +96,7 @@ router.get("/", (req, res) => {
     if (err) return handleError(res, err);
 
     res.json({
-      status: "OK",
+      status: SUCCESS_STATUS,
       data: rows,
     });
   });
@@ -166,13 +139,12 @@ router.get("/:userId", (req, res) => {
 
     if (!row)
       return res.status(404).json({
-        status: "ERROR",
-        error: "User not found",
+        status: ERROR_STATUS,
+        error: USER_NOT_FOUND,
       });
 
     res.json({
-      status: "OK",
-      message: `${row.userId}님의 정보를 갖고왔다이놈아콘솔서확인해`,
+      status: SUCCESS_STATUS,
       data: row,
     });
   });
@@ -188,20 +160,21 @@ router.post("/login", (req, res) => {
 
   const params = [userId, password];
 
-  db.run(sql, params, function (err, user) {
+  db.get(sql, params, (err, user) => {
     if (err) return handleError(res, err);
 
-    if (!user) return res.status(400).json({
-      status: "fail",
-      message: "일치하는 사원이 존재하지 않습니다."
-    })
+    if (!user)
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: USER_NOT_FOUND,
+      });
 
-    const isAdmin = userId === 'admin'
+    const isAdmin = userId === "admin";
 
     res.json({
-      status: "success",
-      message: '로그인 성공',
-      isAdmin
+      status: SUCCESS_STATUS,
+      message: "로그인 성공",
+      isAdmin,
     });
   });
 });
@@ -249,11 +222,97 @@ router.post("/", validateUserData, (req, res) => {
     if (err) return handleError(res, err);
 
     res.json({
-      status: "REGISTER",
+      status: SUCCESS_STATUS,
       message: `${userId}가 등록되었습니다.`,
     });
   });
 });
+
+/**
+ * @swagger
+ * /users/{userId}/profile-image:
+ *   put:
+ *     summary: "프로필 이미지 수정"
+ *     description: "사용자의 프로필 이미지를 수정합니다."
+ *     tags: [Users]
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 사용자 ID
+ *       - in: formData
+ *         name: profile-image
+ *         type: file
+ *         required: true
+ *         description: 프로필 이미지 파일 (jpg, jpeg, png, webp)
+ *     responses:
+ *       200:
+ *         description: "프로필 이미지가 업데이트되었습니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "SUCCESS"
+ *                 message:
+ *                   type: string
+ *                   example: "{userId} 님의 프로필 사진이 등록되었습니다."
+ *       400:
+ *         description: "잘못된 요청입니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "jpg, jpeg, png, webp 파일만 프로필 이미지로 설정가능합니다."
+ *       500:
+ *         description: "서버 오류가 발생했습니다."
+ */
+router.put(
+  "/:userId/profile-image",
+  checkUserIdExists,
+  upload.single("profile-image"),
+  (req, res) => {
+    if (!req.file)
+      return res.status(400).json({
+        status: ERROR_STATUS,
+        message: "jpg, jpeg, png, webp 파일만 프로필 이미지로 설정가능합니다.",
+      });
+
+    const { userId } = req.params;
+    const filename = req.file.filename;
+    const path = `${HOST}/profile/${filename}`;
+    // const {originalname, mimetype, destination, filename, path } = req.file
+
+    const updateSql = `
+      UPDATE Users SET
+        imgUrl = ?
+      WHERE userId = ?
+    `;
+
+    const params = [path, userId];
+
+    db.run(updateSql, params, (err) => {
+      if (err) return handleError(res, err);
+
+      return res.json({
+        status: SUCCESS_STATUS,
+        message: `${userId} 님의 프로필 사진이 등록되었습니다.`,
+      });
+    });
+  }
+);
 
 /**
  * @swagger
@@ -311,8 +370,71 @@ router.put("/:userId", validateUserData, (req, res) => {
     if (err) return handleError(res, err);
 
     res.json({
-      status: "UPDATE",
+      status: SUCCESS_STATUS,
       message: `${userId}님의 정보가 수정되었습니다.`,
+    });
+  });
+});
+
+/**
+ * @swagger
+ * /users/{userId}/profile-image:
+ *   delete:
+ *     summary: "프로필 이미지 삭제"
+ *     description: "사용자의 프로필 이미지를 삭제합니다."
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 사용자 ID
+ *     responses:
+ *       200:
+ *         description: "프로필 이미지가 삭제되었습니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "SUCCESS"
+ *                 message:
+ *                   type: string
+ *                   example: "{userId} 님의 프로필 사진이 삭제되었습니다."
+ *       404:
+ *         description: "사용자를 찾을 수 없습니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "ERROR"
+ *                 message:
+ *                   type: string
+ *                   example: "사용자를 찾을 수 없습니다."
+ *       500:
+ *         description: "서버 오류가 발생했습니다."
+ */
+router.delete("/:userId/profile-image", checkUserIdExists, (req, res) => {
+  const { userId } = req.params;
+
+  const deleteSql = `
+          UPDATE Users SET
+            imgUrl = NULL
+          WHERE userId = ?
+        `;
+
+  db.run(deleteSql, [userId], (err) => {
+    if (err) return handleError(res, err);
+
+    return res.json({
+      status: SUCCESS_STATUS,
+      message: `${userId} 님의 프로필 사진이 삭제되었습니다.`,
     });
   });
 });
@@ -359,13 +481,13 @@ router.delete("/:userId", (req, res) => {
 
     if (this.changes === 0) {
       return res.status(404).json({
-        status: "ERROR",
-        error: "User not found",
+        status: ERROR_STATUS,
+        error: USER_NOT_FOUND,
       });
     }
 
     res.json({
-      status: "DELETE",
+      status: SUCCESS_STATUS,
       message: "사용자가 삭제되었습니다.",
     });
   });
