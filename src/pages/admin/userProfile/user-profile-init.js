@@ -4,17 +4,13 @@ import styles from "./user-profile.module.css";
 
 const cx = classNames.bind(styles);
 
-function init() {
-    function getQueryParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const params = {};
-        urlParams.forEach((value, key) => {
-            params[key] = value;
-        });
-        return params;
+async function init(param) {
+    const getQueryParams = async (param) => {
+      const {data} = await axios.get(`http://localhost:8080/api/users/${param}`);
+      return data?.data;
     }
 
-    const params = getQueryParams();
+    const params = await getQueryParams(param);
 
     if (params.name) {
         document.getElementById('profile-picture').src = params.imgUrl || 'https://via.placeholder.com/250x300';
