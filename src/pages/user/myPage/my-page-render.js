@@ -53,24 +53,6 @@ const render = () => `
 
 
 
-    <!-- 출퇴근 -->
-    <!-- <div class="${cx("commutes", "content")}">
-      <h2> 출퇴근현황</h2>
-      <div class="${cx("work-timer")}">
-        <div class="${cx("timer")}">
-          <span id="timer">00:00:00</span>
-        </div>
-        <p> 현시각 : <span class="${cx("badge")}">근무중</span></p>
-        <div class="${cx("work-controls")}">
-          <button class="${cx("start-btn", "btn")}">근무시작</button>
-          <label class="${cx("switch")}">
-            <input type="checkbox">
-            <span class="${cx("slider", "round")}"></span>
-          </label>
-          <button class="${cx("stop-btn", "btn")}">근무종료</button>
-        </div>
-      </div>
-    </div> -->
 
     <!-- 출퇴근 -->
     <div class="${cx("commutes", "content")}">
@@ -142,7 +124,7 @@ const render = () => `
     <!-- 모달  -->
     <div id="modal" class="${cx("modal")}">
       <div class="${cx("modal-content")}">
-        <span class="${cx("close")}">&times;</span>
+        <div class="${cx("close")}">&times;</div>
         <h2>새 프로필 추가</h2>
         <div class="${cx("info-item")}">
           <label for="modal-name">이름:</label>

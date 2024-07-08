@@ -4,7 +4,7 @@ import styles from "./my-page.module.css";
 
 const cx = classNames.bind(styles);
 
-const loginUser = `Panda-raccoon`;
+const loginUser = `kimpra2989`;
 const init = async () => {
   const HOST = "http://localhost:8080"; // 서버 주소
   
@@ -87,8 +87,9 @@ const init = async () => {
   // 모달
   const modal = document.querySelector(`.${cx("modal")}`);
   const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
-  const btnCloseModal = document.querySelector(`.${cx("close-modal-btn")}`);
-  
+  const btnSaveModal = document.querySelector(`.${cx("close-modal-btn")}`);
+  const btnCloseModal = document.querySelector(`.${cx("close")}`);
+
   // 모달 켜기
   btnOpenModal.addEventListener("click", () => {
       modal.style.display = "block";  
@@ -102,7 +103,7 @@ const init = async () => {
   });
 
   // 모달 수정하기 버튼
-  btnCloseModal.addEventListener("click", async() =>  {
+  btnSaveModal.addEventListener("click", async() =>  {
       // 1. api연동
 
       // 1-1. 수정할 데이터 세팅
@@ -129,6 +130,17 @@ const init = async () => {
       modal.style.display = "none";
 
   });
+
+
+  btnCloseModal.addEventListener("click", async() =>  {
+
+    // 3. 모달 닫기
+    modal.style.display = "none";
+
+});
+
+
+
 
   // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수
@@ -161,6 +173,19 @@ const init = async () => {
           document.getElementById('startWorkTime').innerText = `출근 시간: ${formattedTime}`;
       }
   }
+
+    // 출근 눌렀을때
+    isArrive.addEventListener("click", async() =>  {
+
+        const props2 = { 
+          userId: loginUser,         
+          arriveTime: document.querySelector('#timer').value,
+        }
+  
+        const modifyResult = await axios.put(`http://localhost:8080/api/commutes/arrive/${loginUser}`, props2);
+
+  
+    });
   
   function endWork() {
       if (isWorking) {
@@ -175,7 +200,7 @@ const init = async () => {
       }
   }
   
-  document.getElementById('startButton').addEventListener('click', startWork);
+  document.getElementById('startButton').addEventListener('click', isArrive);
   document.getElementById('endButton').addEventListener('click', endWork);
   
   // 페이지 로드 시 초기 상태 설정
