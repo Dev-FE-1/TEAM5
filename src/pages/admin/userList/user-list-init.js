@@ -177,16 +177,16 @@ const init = () => {
         }
 
         if (profileCard) {
-            const name = profileCard.dataset.name;
+            //const name = profileCard.dataset.name;
             const userId = profileCard.dataset.userid;
-            const team = profileCard.dataset.team;
-            const position = profileCard.dataset.position;
-            const email = profileCard.dataset.email;
-            const imgUrl = profileCard.dataset.imgurl;
+            //const team = profileCard.dataset.team;
+            //const position = profileCard.dataset.position;
+            //const email = profileCard.dataset.email;
+            //const imgUrl = profileCard.dataset.imgurl;
 
-            console.log({ name, userId, team, position, email, imgUrl });
+            //console.log({name, userId, team, position, email, imgUrl });
 
-            const url = `/src/admin/user/profile/index.html?name=${encodeURIComponent(name)}&userId=${encodeURIComponent(userId)}&team=${encodeURIComponent(team)}&position=${encodeURIComponent(position)}&email=${encodeURIComponent(email)}&imgUrl=${encodeURIComponent(imgUrl)}`;
+            const url = `/admin/users/profile/${encodeURIComponent(userId)}`;
             window.location.href = url;
         }
     });

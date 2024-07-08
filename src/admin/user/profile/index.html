@@ -1,22 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<main lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Details</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../list/style.css">
     <link rel="stylesheet" href="../profile/style.css">
+    <title>마이페이지</title>
 </head>
 
-<body>
-    <header>
+<section>
+
+<header>
+    <div class="logo">Intranet</div>
+    <nav>
+        <a href="#">공지사항</a>
+        <a href="#">직원정보</a>
+        <a href="#">출결정보</a>
+        <a href="#">근태관리</a>
+        <a href="#">근태현황</a>
+        <a href="#2">마이페이지</a>
+        <img src="image.jpg" alt="사진임">
+    </nav>
+</header>
+
+<main>
+    <section> 
+        
         <div class="details">임직원 상세</div>
-    </header>
-    <div class="save-button-container">
-        <button id="edit-btn">정보변경</button>
-    </div>
-    <main>
+    
+        <div class="save-button-container">
+            <button id="edit-btn" class="edit-btn">정보변경</button>
+        </div>
         <div class="profile-container">
             <div class="image-container">
                 <img id="profile-picture" src="https://via.placeholder.com/250x300" alt="Profile Picture">
@@ -44,49 +61,51 @@
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+</main>
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>정보 변경</h2>
-            <div class="image-container">
-                <img id="modal-profile-picture" src="https://via.placeholder.com/100" alt="Profile Picture">
-                <div class="button-container">
-                    <input type="file" id="modal-image" accept="image/*">
-                    <button id="delete-image">삭제</button>
-                </div>
+<!-- Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>정보 변경</h2>
+        <div class="image-container">
+            <img id="modal-profile-picture" src="https://via.placeholder.com/100" alt="Profile Picture">
+            <div class="button-container">
+                <input type="file" id="modal-image" accept="image/*">
+                <button id="delete-image">삭제</button>
             </div>
-            <div class="info-item">
-                <label for="modal-name">이름:</label>
-                <input type="text" id="modal-name">
-            </div>
-            <div class="info-item">
-                <label for="modal-userId">사번:</label>
-                <input type="text" id="modal-userId">
-            </div>
-            <div class="info-item">
-                <label for="modal-team">팀:</label>
-                <input type="text" id="modal-team">
-            </div>
-            <div class="info-item">
-                <label for="modal-position">직급:</label>
-                <input type="text" id="modal-position">
-            </div>
-            <div class="info-item">
-                <label for="modal-email">이메일:</label>
-                <input type="text" id="modal-email">
-            </div>
-            <div class="info-item">
-                <label for="modal-password">비밀번호:</label>
-                <input type="text" id="modal-password">
-            </div>
-            <button id="modal-save">Save</button>
         </div>
+        <div class="info-item">
+            <label for="modal-name">이름:</label>
+            <input type="text" id="modal-name">
+        </div>
+        <div class="info-item">
+            <label for="modal-userId">사번:</label>
+            <input type="text" id="modal-userId">
+        </div>
+        <div class="info-item">
+            <label for="modal-team">팀:</label>
+            <input type="text" id="modal-team">
+        </div>
+        <div class="info-item">
+            <label for="modal-position">직급:</label>
+            <input type="text" id="modal-position">
+        </div>
+        <div class="info-item">
+            <label for="modal-email">이메일:</label>
+            <input type="text" id="modal-email">
+        </div>
+        <div class="info-item">
+            <label for="modal-password">비밀번호:</label>
+            <input type="text" id="modal-password">
+        </div>
+        <button id="modal-save">Save</button>
     </div>
+</div>
 
-    <script src="../profile/profile.js"></script>
+<script src="../profile/profile.js"></script>
+</section>
+</main>
 </body>
-
 </html>

@@ -10,7 +10,7 @@ const Header = () => `
     <div class="${cx("logo")}">Intranet</div>
     <nav class="${cx("menu")}">
         <a href="/admin/notice">공지사항</a>
-        <a href="/admin/user-list">직원정보</a>
+        <a href="/admin/users">직원정보</a>
         <a href="/user/commute">출결정보</a>
         <a href="/admin/attend">근태관리</a>
         <a href="/user/attend">근태현황</a>

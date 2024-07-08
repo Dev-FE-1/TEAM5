@@ -1,22 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 body {
     font-family: "Noto Sans KR", sans-serif;
     margin: 0;
-    background-color: #f0f0f0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-size: 30px;
+    font-size: 15px;
 }
 
+:root {
+    --container-width: 80%;
+    --container-height: 80vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* header */
 header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: var(--container-width);
+    margin: 0 auto;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 30px;
+    color: #6d40c8;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+}
+
+nav a {
+    color: #4e4e4e;
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+nav a[href*="#2"] {
+    color: #6d40c8;
+}
+
+nav img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 20px;
+}
+
+main {
+    width: var(--container-width);
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 870px; 
+}
+
+/* section */
+
+section {
+    background-color: white;
     width: 100%;
-    background-color: #6d40c8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
+    height: 100%;
+}
+
+.details {
+    width: 100%;
     padding: 10px 0;
     text-align: center;
-    color: white;
+    color: #333;
     position: relative;
+    font-size: 40px;
 }
 
 /* 정보변경 버튼 */
@@ -24,11 +95,11 @@ header {
     display: flex;
     justify-content: flex-end;
     margin: 20px 0;
-    width: 55%;
+    width: 65%;
     box-sizing: border-box;
 }
 
-#edit-btn {
+.edit-btn {
     padding: 10px 20px;
     background-color: #6d40c8;
     color: white;
@@ -38,7 +109,7 @@ header {
 }
 
 /* 프로필 상세 */
-main {
+.profile-container {
     width: 100%;
     max-width: 68%;
     box-sizing: border-box;
@@ -47,6 +118,7 @@ main {
     align-items: center;
     flex-grow: 1;
     position: relative;
+    font-size: 20px;
 }
 
 /* 프로필 컨테이너 */
@@ -119,7 +191,7 @@ main {
 }
 
 /* 정보변경 모달 */
-#modal {
+.modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -144,6 +216,7 @@ main {
     position: relative;
     font-size: 15px; 
 }
+
 
 .modal-content .image-container img {
     width: 80%;
