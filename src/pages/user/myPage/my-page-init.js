@@ -4,12 +4,12 @@ import styles from "./my-page.module.css";
 
 const cx = classNames.bind(styles);
 
-
+const loginUser = `Panda-raccoon`;
 const init = async () => {
   const HOST = "http://localhost:8080"; // 서버 주소
   
   // 프로필
-  const 데이터 = await axios("http://localhost:8080/api/users/kimpra2989");
+  const 데이터 = await axios(`http://localhost:8080/api/users/${loginUser}`);
   
   console.log("데이터", 데이터);
   
@@ -60,7 +60,7 @@ const init = async () => {
   document.querySelector(`.${cx("notices-content")}`).innerHTML = noticesHtml;
   
   // 근태사항
-  const attendssResponse = await axios("http://localhost:8080/api/attends");
+  const attendssResponse = await axios(`http://localhost:8080/api/attends/user/${loginUser}`);
   
   let attendsHtml = ""; // 템플릿을 저장할 변수
   
@@ -89,14 +89,46 @@ const init = async () => {
   const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
   const btnCloseModal = document.querySelector(`.${cx("close-modal-btn")}`);
   
+  // 모달 켜기
   btnOpenModal.addEventListener("click", () => {
-      modal.style.display = "block";    
-  });
-  btnCloseModal.addEventListener("click", () => {
-      modal.style.display = "none";    
+      modal.style.display = "block";  
+      // 데이터 불러오기
+      document.querySelector('#modal-name').value = document.querySelector('#name').innerText;
+      document.querySelector('#modal-team').value = document.querySelector('#team').innerText;
+      document.querySelector('#modal-position').value = document.querySelector('#position').innerText;
+      document.querySelector('#modal-email').value = document.querySelector('#email').innerText;
+
+    //   document.querySelector('#modal-p').value = document.querySelector('#name').innerText;
   });
 
+  // 모달 수정하기 버튼
+  btnCloseModal.addEventListener("click", async() =>  {
+      // 1. api연동
 
+      // 1-1. 수정할 데이터 세팅
+      const props = {
+        userId: loginUser,
+        password: document.querySelector('#modal-password').value,
+        email: document.querySelector('#modal-email').value,
+        name: document.querySelector('#modal-name').value,
+        team: document.querySelector('#modal-team').value,
+        position: document.querySelector('#modal-position').value,
+        imgUrl: "http://localhost:8080/profile/Panda-raccoon.jpg"
+      }
+
+      const modifyResult = await axios.put(`http://localhost:8080/api/users/${loginUser}`, props);
+      
+      // 2. 데이터 삭제하기
+      document.querySelector('#modal-name').value = '';
+      document.querySelector('#modal-team').value = '';
+      document.querySelector('#modal-position').value = '';
+      document.querySelector('#modal-email').value = '';
+      document.querySelector('#modal-password').value = '';
+
+      // 3. 모달 닫기
+      modal.style.display = "none";
+
+  });
 
   // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수

@@ -162,7 +162,7 @@ const render = () => `
         </div>
         <div class="${cx("info-item")}">
           <label for="modal-password">비밀번호:</label>
-          <input type="text" id="modal-password">
+          <input type="password" id="modal-password">
         </div>
         <div class="${cx("info-item")}">
           <label for="modal-image">이미지 첨부:</label>
