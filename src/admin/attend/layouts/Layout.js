@@ -17,7 +17,8 @@ const render = async ( type ) => {
 
   const layoutHTML = [];
 
-  const preLayout = `<header class="main-content-header">
+  const preLayout = `
+    <header class="main-content-header">
       <div class="header-title">
         <h1>${props.title}</h1>
       </div>
