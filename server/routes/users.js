@@ -19,8 +19,9 @@ const upload = multer({ storage: storage });
 
 // 유효성 검사 미들웨어
 const validateUserData = (req, res, next) => {
-  console.log("validate");
-  const { userId } = req.params;
+  let { userId } = req.params;
+  if( !userId ) userId = req.body?.userId;
+  
   const { password, email, name, team, position } = req.body;
   //imgUrl은 필수 아닌 것 같아서 뺌
   if (!userId || !password || !email || !name || !team || !position) {
@@ -236,6 +237,7 @@ router.post("/login", (req, res) => {
  *         description: Bad request
  */
 router.post("/", validateUserData, (req, res) => {
+  console.log('post', req.body);
   const { userId, password, email, name, team, position, imgUrl } = req.body;
   // TODO: 중복 아이디가 있는지 먼저 확인
   const sql = `
@@ -283,6 +285,7 @@ router.post("/", validateUserData, (req, res) => {
  *               $ref: '#/components/schemas/User'
  */
 router.put("/:userId", validateUserData, (req, res) => {
+  
   const { userId } = req.params;
   const { password, email, name, team, position, imgUrl } = req.body;
 
