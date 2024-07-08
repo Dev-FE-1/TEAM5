@@ -1,4 +1,4 @@
-import { HOST } from "../constants.js";
+import { HOST } from "../../constants.js";
 const mockUsers = [
   {
     userId: "kimisadev27",
