@@ -13,7 +13,7 @@
   grid-template-rows: 1fr 2fr; /* 2행 구성 */
   gap: 20px;
   padding: 30px;
-  background-color: #eee;
+  background-color: aqua;
   height: 80vh;
   /* overflow: auto; 회색배경이 감싸도록 하고 싶은데 스크롤이 발생이 됨 */
 }
@@ -72,8 +72,10 @@
 
 
 .profile img {
-  width: 113.3px;
-  height: 151.1px;  /* 이미지사이즈 */
+  width: 100px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 5px;
   margin-bottom: 20px;
 }
 
@@ -312,6 +314,25 @@ input:checked + .slider:before {
   position: relative;
 }
 
+.modal h2 {
+  margin-bottom: 30px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer; /* 손가락 모양 커서 */
+  background-color: #f2f2f2; /* 배경색 */
+  padding: 5px 10px; /* 여백 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.close:hover {
+  background-color: #d9d9d9; /* 마우스를 올렸을 때 배경색 */
+}
+
 .modal-content .info-item {
   display: flex;
   align-items: center;
@@ -332,4 +353,53 @@ input:checked + .slider:before {
 .info-item label {
   display: inline-block;
   width: 100px;
+}
+
+
+
+/* 반응형 디자인 */
+/* 1. 화면 너비가 768px 이하일 때 */
+@media (max-width: 768px) {
+  .content-container {
+    grid-template-columns: 1fr; /* 단일 열 구성 */
+    grid-template-rows: auto; /* 자동 행 구성 */
+  }
+
+  .profile, .notices, .commutes, .attends {
+    grid-column: 1 / 2; /* 모든 항목이 한 열에 배치 */
+    grid-row: auto; /* 자동 행 구성 */
+  }
+
+  .notices-item {
+    flex-direction: column; /* 이미지와 텍스트가 세로로 배치 */
+    align-items: flex-start; /* 텍스트가 이미지 아래로 이동 */
+  }
+
+  .notices img {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .work-controls {
+    flex-direction: column;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
+
+/* 2. 화면 너비가 480px 이하일 때 */
+@media (max-width: 480px) {
+  .profile img {
+    width: 80px;
+    height: 100px;
+  }
+
+  .work-timer .timer {
+    width: 150px;
+    height: 150px;
+    font-size: 20px;
+  }
 }

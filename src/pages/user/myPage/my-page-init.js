@@ -175,17 +175,32 @@ const init = async () => {
   }
 
     // 출근 눌렀을때
-    isArrive.addEventListener("click", async() =>  {
-
-        const props2 = { 
-          userId: loginUser,         
-          arriveTime: document.querySelector('#timer').value,
+    document.getElementById('startButton').addEventListener("click", async () => {
+        const now = new Date();
+        const arriveTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+      
+        const props2 = {
+          userId: loginUser,
+          arriveTime: arriveTime,
         }
-  
-        const modifyResult = await axios.put(`http://localhost:8080/api/commutes/arrive/${loginUser}`, props2);
+      
+        try {
+          const modifyResult = await axios.post(`http://localhost:8080/api/commutes/arrive`, props2);
+          if (modifyResult.data.status === "success") {
+            const actualArriveTime = modifyResult.data.data.arriveTime || arriveTime;
+            document.getElementById('startWorkTime').innerText = `출근 시간: ${actualArriveTime}`;
+          } else {
+            throw new Error('출근 처리 실패');
+          }
+        } catch (error) {
+          alert("출근 처리에 실패했습니다.");
+        }
+      });
 
-  
-    });
+
+
+
+
   
   function endWork() {
       if (isWorking) {
@@ -200,7 +215,7 @@ const init = async () => {
       }
   }
   
-  document.getElementById('startButton').addEventListener('click', isArrive);
+  document.getElementById('startButton').addEventListener('click',startWork);
   document.getElementById('endButton').addEventListener('click', endWork);
   
   // 페이지 로드 시 초기 상태 설정

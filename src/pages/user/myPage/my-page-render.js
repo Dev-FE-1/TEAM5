@@ -125,7 +125,7 @@ const render = () => `
     <div id="modal" class="${cx("modal")}">
       <div class="${cx("modal-content")}">
         <div class="${cx("close")}">&times;</div>
-        <h2>새 프로필 추가</h2>
+        <h2>프로필 수정</h2>
         <div class="${cx("info-item")}">
           <label for="modal-name">이름:</label>
           <input type="text" id="modal-name">
