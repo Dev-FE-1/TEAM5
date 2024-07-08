@@ -5,27 +5,51 @@ const cx = classNames.bind(styles);
 
 const render = () => `
 <section class="${cx("section")}">
-    <!-- 등록 -->
-    <div class="${cx("add-container")}">
-        <button class="${cx("add-button")}">
-            등록
-        </button>
+    <div class="${cx("details")}">임직원 상세</div>
+
+    <div class="${cx("save-button-container")}">
+        <button id="edit-btn" class="${cx("edit-btn")}">정보변경</button>
     </div>
-    <!-- 프로필카드 전체 박스 -->
-    <div class="${cx("container")}" id="profile-container">
-        <!-- 기존 프로필 카드가 여기 렌더링될 것입니다 -->
-    </div>
-    <div class="${cx("pagination")}">
-        <button id="prevPage" disabled>Previous</button>
-        <span id="pageNumber">1</span>
-        <button id="nextPage">Next</button>
+    <div class="${cx("profile-container")}">
+        <div class="${cx("image-container")}">
+            <img id="profile-picture" src="https://via.placeholder.com/250x300" alt="Profile Picture">
+        </div>
+        <div class="${cx("info")}">
+            <div class="${cx("info-item")}">
+                <span class="${cx("label")}">이름:</span>
+                <span class="${cx("value")}" id="profile-name"></span>
+            </div>
+            <div class="${cx("info-item")}">
+                <span class="${cx("label")}">사번:</span>
+                <span class="${cx("value")}" id="profile-userId"></span>
+            </div>
+            <div class="${cx("info-item")}">
+                <span class="${cx("label")}">팀:</span>
+                <span class="${cx("value")}" id="profile-team"></span>
+            </div>
+            <div class="${cx("info-item")}">
+                <span class="${cx("label")}">직급:</span>
+                <span class="${cx("value")}" id="profile-position"></span>
+            </div>
+            <div class="${cx("info-item")}">
+                <span class="${cx("label")}">이메일:</span>
+                <span class="${cx("value")}" id="profile-email"></span>
+            </div>
+        </div>
     </div>
 
     <!-- 모달 창 -->
     <div id="modal" class="${cx("modal")}">
         <div class="${cx("modal-content")}">
             <span class="${cx("close")}">&times;</span>
-            <h2>새 프로필 추가</h2>
+            <h2>정보 변경</h2>
+            <div class="${cx("image-container")}">
+                <img id="modal-profile-picture" src="https://via.placeholder.com/100" alt="Profile Picture">
+                <div class="${cx("button-container")}">
+                    <input type="file" id="modal-image" accept="image/*">
+                    <button id="delete-image" class="${cx("delete-image")}">삭제</button>
+                </div>
+            </div>
             <div class="${cx("info-item")}">
                 <label for="modal-name">이름:</label>
                 <input type="text" id="modal-name">
@@ -50,15 +74,11 @@ const render = () => `
                 <label for="modal-password">비밀번호:</label>
                 <input type="text" id="modal-password">
             </div>
-            <div class="${cx("info-item")}">
-                <label for="modal-image">이미지 첨부:</label>
-                <input type="file" id="modal-image" accept="image/*">
-            </div>
-            <button id="modal-save">Save</button>
+            <button id="modal-save" class="${cx("modal-save")}">Save</button>
         </div>
     </div>
 
-    <script src="../list/list.js" type="module"></script>
+    <script src="../profile/profile.js"></script>
 </section>
 `;
 

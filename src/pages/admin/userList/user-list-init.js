@@ -186,8 +186,8 @@ const init = () => {
 
             //console.log({name, userId, team, position, email, imgUrl });
 
-            const url = `/admin/users/profile/${encodeURIComponent(userId)}`;
-            window.location.href = url;
+            //const url = `/admin/users/profile/${encodeURIComponent(userId)}`;
+            window.location.href = `/admin/users/profile/${encodeURIComponent(userId)}`;
         }
     });
 

@@ -4,13 +4,20 @@ import styles from "./user-profile.module.css";
 
 const cx = classNames.bind(styles);
 
-async function init(param) {
-    const getQueryParams = async (param) => {
-      const {data} = await axios.get(`http://localhost:8080/api/users/${param}`);
-      return data?.data;
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+async function init() {
+    const userId = getQueryParam('userId');
+
+    const getQueryParams = async (userId) => {
+        const {data} = await axios.get(`http://localhost:8080/api/users/${userId}`);
+        return data?.data;
     }
 
-    const params = await getQueryParams(param);
+    const params = await getQueryParams(userId);
 
     if (params.name) {
         document.getElementById('profile-picture').src = params.imgUrl || 'https://via.placeholder.com/250x300';
@@ -47,7 +54,6 @@ async function init(param) {
         }
     }
 
-    // 이미지 업로드 시 미리보기 업데이트
     fileInput.addEventListener('change', function() {
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
@@ -58,10 +64,9 @@ async function init(param) {
         }
     });
 
-    // 이미지 삭제 기능 추가
     deleteImageButton.addEventListener('click', function() {
         modalPreview.src = 'https://via.placeholder.com/100';
-        fileInput.value = ''; // 파일 입력 초기화
+        fileInput.value = '';
     });
 
     document.getElementById(cx("modal-save")).onclick = function() {
@@ -85,7 +90,6 @@ async function init(param) {
                     const resizedImageUrl = canvas.toDataURL('image/jpeg');
                     document.getElementById('profile-picture').src = resizedImageUrl;
 
-                    // 업데이트된 이미지 URL을 URLSearchParams에 추가하여 다시 설정
                     params.picture = resizedImageUrl;
                     const newParams = new URLSearchParams(params).toString();
                     window.history.replaceState({}, '', `${window.location.pathname}?${newParams}`);
@@ -93,7 +97,6 @@ async function init(param) {
             }
             reader.readAsDataURL(fileInput.files[0]);
         } else {
-            // 이미지가 업로드되지 않았고, 삭제된 상태일 때
             document.getElementById('profile-picture').src = 'https://via.placeholder.com/250x300';
             params.picture = 'https://via.placeholder.com/250x300';
             const newParams = new URLSearchParams(params).toString();
@@ -103,7 +106,6 @@ async function init(param) {
         modal.style.display = "none";
     }
 
-    // 윈도우 크기에 따라 스케일 조정 함수
     function adjustScale() {
         const profileContainer = document.getElementById(cx('profile-container'));
         const scale = Math.min(window.innerWidth / profileContainer.offsetWidth, 1);
@@ -111,10 +113,7 @@ async function init(param) {
         profileContainer.style.transformOrigin = 'top left';
     }
 
-    // 윈도우 크기 변경 시 스케일 조정
     window.addEventListener('resize', adjustScale);
-
-    // 초기 로드 시 스케일 조정
     adjustScale();
 }
 

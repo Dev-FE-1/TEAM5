@@ -111,7 +111,7 @@ section {
 /* 프로필 상세 */
 .profile-container {
     width: 100%;
-    max-width: 68%;
+    max-width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
