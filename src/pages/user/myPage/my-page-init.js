@@ -76,15 +76,37 @@ const init = async () => {
 
   document.querySelector(`.${cx("attends-content")}`).innerHTML = attendsHtml;
 
+  // 출퇴근 상태 확인
+  const statusResponse = await axios.get(`http://localhost:8080/api/commutes/status/${loginUser}`);
+  const { commute, row } = statusResponse.data;
+
+  let isWorking = false;
+
+  if (commute === 'ing') {
+    document.getElementById("workToggle").checked = true;
+    document.getElementById("startWorkTime").innerText = `출근 시간: ${row.arriveTime}`;
+    document.getElementById("statusBadge").innerText = "근무중";
+    isWorking = true;
+  } else if (commute === 'after') {
+    document.getElementById("workToggle").checked = false;
+    document.getElementById("startWorkTime").innerText = `출근 시간: ${row.arriveTime}`;
+    document.getElementById("endWorkTime").innerText = `퇴근 시간: ${row.leaveTime}`;
+    document.getElementById("statusBadge").innerText = "근무종료";
+    isWorking = false;
+  } else {
+    document.getElementById("workToggle").checked = false;
+    document.getElementById("statusBadge").innerText = "출근 전";
+    isWorking = false;
+  }
+
   // 모달
   const modal = document.querySelector(`.${cx("modal")}`);
   const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
   const btnSaveModal = document.querySelector(`.${cx("modify-modal-btn")}`);
-  const btnCloseModal = document.querySelector(`.${cx("close")}`);
+  const btnCloseModal = document.getElementById("closeModalButton");
   const confirmButton = document.getElementById("confirmButton");
   const cancelButton = document.getElementById("cancelButton");
 
-  let isWorking = false; // 근무 상태를 나타내는 변수
   let workAction = null; // 출근/퇴근 액션 저장
 
   function updateClock() {
@@ -133,6 +155,7 @@ const init = async () => {
           document.getElementById("startWorkTime").innerText = `출근 시간: ${actualArriveTime}`;
           isWorking = true;
           document.getElementById("statusBadge").innerText = "근무중";
+          alert(`출근 시간을 ${actualArriveTime}로 설정하였습니다.`);
         } else {
           throw new Error("출근 처리 실패");
         }
@@ -156,6 +179,7 @@ const init = async () => {
           document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
           isWorking = false;
           document.getElementById("statusBadge").innerText = "근무종료";
+          alert(`퇴근 시간을 ${time}로 설정하였습니다.`);
         } else {
           throw new Error("퇴근 처리 실패");
         }
@@ -190,10 +214,10 @@ const init = async () => {
 
   btnCloseModal.addEventListener("click", () => {
     modal.style.display = "none";
+    document.getElementById("workToggle").checked = isWorking;
   });
 
   function initialize() {
-    document.getElementById("statusBadge").innerText = "근무 전";
     updateClock(); // 초기 시계 설정
     setInterval(updateClock, 1000); // 1초마다 시계 업데이트
   }
