@@ -81,20 +81,11 @@ const init = async () => {
   const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
   const btnSaveModal = document.querySelector(`.${cx("modify-modal-btn")}`);
   const btnCloseModal = document.querySelector(`.${cx("close")}`);
+  const confirmButton = document.getElementById("confirmButton");
+  const cancelButton = document.getElementById("cancelButton");
 
-  // 모달 켜기
-  btnOpenModal.addEventListener("click", () => {
-    modal.style.display = "block";
-    // 데이터 불러오기
-    document.querySelector("#modal-name").value = document.querySelector("#name").innerText;
-  });
-  btnCloseModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-
-  // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수
+  let workAction = null; // 출근/퇴근 액션 저장
 
   function updateClock() {
     const now = new Date();
@@ -117,9 +108,7 @@ const init = async () => {
     )}:${String(seconds).padStart(2, "0")}`;
   }
 
-  async function toggleWork() {
-    const modal = document.querySelector(`.${cx("modal")}`);
-    const aText = document.querySelector(`.${cx("a-text")}`);
+  async function handleWorkAction() {
     const now = new Date();
     const time =
       now.getHours().toString().padStart(2, "0") +
@@ -128,8 +117,7 @@ const init = async () => {
       ":" +
       now.getSeconds().toString().padStart(2, "0");
 
-    if (!isWorking) {
-      // 출근 처리
+    if (workAction === 'arrive') {
       const props2 = {
         userId: loginUser,
         arriveTime: time,
@@ -145,19 +133,15 @@ const init = async () => {
           document.getElementById("startWorkTime").innerText = `출근 시간: ${actualArriveTime}`;
           isWorking = true;
           document.getElementById("statusBadge").innerText = "근무중";
-          aText.innerText = `출근 시간을 ${actualArriveTime}로 설정하였습니다.`; // 메시지 업데이트
-          modal.style.display = "block"; // 모달창 표시
         } else {
           throw new Error("출근 처리 실패");
         }
       } catch (error) {
         console.error(error);
-        aText.innerText = "출근 처리에 실패했습니다."; // 메시지 업데이트
-        modal.style.display = "block"; // 모달창 표시
+        alert("출근 처리에 실패했습니다.");
         document.getElementById("workToggle").checked = false;
       }
-    } else {
-      // 퇴근 처리
+    } else if (workAction === 'leave') {
       const props2 = {
         userId: loginUser,
         leaveTime: time,
@@ -172,21 +156,41 @@ const init = async () => {
           document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
           isWorking = false;
           document.getElementById("statusBadge").innerText = "근무종료";
-          aText.innerText = `퇴근 시간을 ${time}로 설정하였습니다.`; // 메시지 업데이트
-          modal.style.display = "block"; // 모달창 표시
         } else {
           throw new Error("퇴근 처리 실패");
         }
       } catch (error) {
         console.error(error);
-        aText.innerText = "퇴근 처리에 실패했습니다."; // 메시지 업데이트
-        modal.style.display = "block"; // 모달창 표시
+        alert("퇴근 처리에 실패했습니다.");
         document.getElementById("workToggle").checked = true;
       }
     }
   }
 
-  document.getElementById("workToggle").addEventListener("change", toggleWork);
+  document.getElementById("workToggle").addEventListener("change", (event) => {
+    if (event.target.checked) {
+      workAction = 'arrive';
+      document.querySelector(`.${cx("a-text")}`).innerText = "근무를 시작하시겠습니까?";
+    } else {
+      workAction = 'leave';
+      document.querySelector(`.${cx("a-text")}`).innerText = "근무를 종료하시겠습니까?";
+    }
+    modal.style.display = "block";
+  });
+
+  confirmButton.addEventListener("click", () => {
+    modal.style.display = "none";
+    handleWorkAction();
+  });
+
+  cancelButton.addEventListener("click", () => {
+    modal.style.display = "none";
+    document.getElementById("workToggle").checked = isWorking;
+  });
+
+  btnCloseModal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
 
   function initialize() {
     document.getElementById("statusBadge").innerText = "근무 전";

@@ -62,8 +62,11 @@ const render = () => `
     <!-- 모달  -->
     <div id="modal" class="${cx("modal")}">
       <div class="${cx("modal-content")}">
-      <button class="${cx("close")}">X</button>
         <div class="${cx("a-text")}"></div>
+        <div class="${cx("modal-actions")}">
+          <button id="confirmButton" class="${cx("btn")}">확인</button>
+          <button id="cancelButton" class="${cx("btn")}">취소</button>
+        </div>
       </div>
     </div>
   </section>
