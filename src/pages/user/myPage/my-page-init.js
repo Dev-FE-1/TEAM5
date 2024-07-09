@@ -61,12 +61,11 @@ const init = async () => {
 
   attends.slice(0, 4).forEach(({ type, startDate, endDate, content, userId }) => {
     const template = `
-      <div class="${cx("attends-item")}">
+      <div class="${cx("attends-grid", "attends-item")}">
         <span class="${cx("badge")}">${type}</span>
         <span>${startDate}</span>
         <span>${endDate}</span>
         <span>${content}</span>
-        <span>${userId}</span>
       </div>
     `;
     attendsHtml += template;

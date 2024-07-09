@@ -1,72 +1,28 @@
-/* 기본 스타일 */
-.container {
-  margin: 0 auto;
-  height: 100vh; /* 전체 화면 높이 */
-  /* background-color: aqua; */
-}
-
-/* 마이페이지(프로필,출퇴근,공지사항,근태관리)  */
 /* 전체 컨테이너를 뷰포트 높이에 맞춤 */
 .content-container {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* 기존 설정 유지 */
+  grid-template-columns: 2fr 3fr; /* 기존 설정 유지 */
   grid-template-rows: 50% 50%; /* 두 행이 전체 높이의 50%씩 차지하도록 조정 */
   gap: 20px;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: white;
   height: 80vh; /* 뷰포트 높이에 맞춤 */
-  overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨김 처리 */
 }
 
 /* 내부 콘텐츠의 최소 높이 조정 */
 .content {
   padding: 20px;
+  padding-top: 0;
   background-color: #fff;
-  border: 2px solid var(--primary-400);
+  border: 3px solid var(--primary-400);
   box-sizing: border-box;
   min-width: 250px;
-  min-height: 90%; /* 내부 콘텐츠의 최소 높이를 각 행의 90%로 설정 */
   border-radius: 5px;
-  overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨김 처리 */
   overflow-y: auto; /* 콘텐츠가 넘칠 경우 스크롤 허용 */
-}
-.content h2 {
-  margin-bottom: 20px;
-  font-weight: bold;
-  font-size: 24px;
-}
-
-/* 개별 그리드 아이템 간격 설정 */
-.profile {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-  display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.notices {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-}
-
-.commutes {
-  display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    grid-column: 1 / 2;
-}
-
-.attends {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
 }
 
 /* 버튼공통 */
 .btn {
-  padding: 5px 10px; 
+  padding: 5px 10px;
   border: none;
   height: 40px;
   cursor: pointer;
@@ -80,17 +36,40 @@
   color: #666;
 }
 
+/* 서브타이틀 */
+.subtitle {
+  position: sticky;
+  top: 0;
+  display: block;
+  background-color: white;
+  padding: 20px 0;
+}
+
+.attends-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.attends-subtitle a:hover {
+  color: var(--primary-400);
+}
 /* 프로필 */
 .profile img {
   width: 100px;
   height: 130px;
   object-fit: cover;
   border-radius: 5px;
-  margin-bottom: 20px;
 }
 
 .profile p {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .open-modal-btn {
@@ -141,22 +120,18 @@
 
 /* 출퇴근 */
 .work-timer {
-  align-items: center; /* 수평 가운데 정렬 */
-  text-align: center; /* 텍스트 가운데 정렬 */
+  text-align: center;
 }
 
 .work-timer .timer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 26px;
   font-weight: bold;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 4px double var(--primary);
+  width: 160px;
   color: var(--primary-400);
-  border: 4px solid var(--primary-400);
-  border-radius: 50%;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 20px;
 }
 
 .commutes p .badge {
@@ -166,7 +141,7 @@
   border-radius: 15px;
   font-size: 14px;
   display: inline-block;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .work-controls {
@@ -177,8 +152,7 @@
 }
 
 .work-timer p {
-    margin-bottom: 5px;
-
+  margin-bottom: 5px;
 }
 
 .commutes .btn {
@@ -208,7 +182,7 @@
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50px;
 }
 
@@ -220,7 +194,7 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50%;
 }
 
@@ -232,25 +206,27 @@ input:checked + .slider:before {
   transform: translateX(16px);
 }
 
-
 /* 추가된 출근, 퇴근 시간 표시 스타일 */
-#startWorkTime, #endWorkTime {
+#startWorkTime,
+#endWorkTime {
   font-size: 16px;
   font-weight: bold;
 }
 
 /* 근태현황 */
-.attends-list {
-  margin-bottom: 50px;
-}
-
-.attends-header,
-.attends-item {
+.attends-grid {
   display: grid;
-  grid-template-columns: 45px 90px 120px 1fr 100px;
+  grid-template-columns: 45px 90px 120px 1fr;
   gap: 15px;
   padding: 16px 0;
   border-bottom: 1px solid #ddd;
+  background-color: white;
+}
+
+.attends-header {
+  position: sticky;
+  top: 64px; /* subtitle 높이 */
+  background-color: white;
 }
 
 .attends-item .badge {
@@ -262,16 +238,6 @@ input:checked + .slider:before {
   display: inline-block;
   text-align: center;
   white-space: nowrap; /*배지의 글자가 길어지지 않도록 설정*/
-}
-
-.attends-btn {
-  border-radius: 15px;
-  background-color: var(--primary-300);
-  float: right;
-}
-
-.attends-btn:hover {
-  background-color: yellowgreen;
 }
 
 /* 모달 창 */
@@ -306,8 +272,8 @@ input:checked + .slider:before {
 }
 
 .modal button {
-    margin: 25px 5px;
-    padding: 0 20px;
+  margin: 25px 5px;
+  padding: 0 20px;
   background-color: #6d40c8;
   border-radius: 5px;
 }
@@ -330,7 +296,7 @@ input:checked + .slider:before {
 .modal-content .info-item {
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -357,7 +323,10 @@ input:checked + .slider:before {
     grid-template-rows: auto; /* 자동 행 구성 */
   }
 
-  .profile, .notices, .commutes, .attends {
+  .profile,
+  .notices,
+  .commutes,
+  .attends {
     grid-column: 1 / 2; /* 모든 항목이 한 열에 배치 */
     grid-row: auto; /* 자동 행 구성 */
   }
