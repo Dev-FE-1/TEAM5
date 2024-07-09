@@ -6,25 +6,29 @@
 }
 
 /* 마이페이지(프로필,출퇴근,공지사항,근태관리)  */
+/* 전체 컨테이너를 뷰포트 높이에 맞춤 */
 .content-container {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* 2열 구성 */
-  grid-template-rows: 1fr 2fr; /* 2행 구성 */
+  grid-template-columns: 1fr 2fr; /* 기존 설정 유지 */
+  grid-template-rows: 50% 50%; /* 두 행이 전체 높이의 50%씩 차지하도록 조정 */
   gap: 20px;
   padding: 30px;
-  background-color: aqua;
-  height: 80vh;
+  background-color: rgba(255, 255, 255, 0);
+  height: 100vh; /* 뷰포트 높이에 맞춤 */
+  overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨김 처리 */
 }
 
+/* 내부 콘텐츠의 최소 높이 조정 */
 .content {
   padding: 20px;
   background-color: #fff;
   border: 3px solid var(--primary);
   box-sizing: border-box;
   min-width: 250px;
+  min-height: 90%; /* 내부 콘텐츠의 최소 높이를 각 행의 90%로 설정 */
   border-radius: 10px;
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 스크롤 허용 */
 }
-
 .content h2 {
   margin-bottom: 20px;
   font-weight: bold;
@@ -351,19 +355,5 @@ input:checked + .slider:before {
 
   .modal-content {
     width: 90%;
-  }
-}
-
-/* 2. 화면 너비가 480px 이하일 때 */
-@media (max-width: 480px) {
-  .profile img {
-    width: 80px;
-    height: 100px;
-  }
-
-  .work-timer .timer {
-    width: 150px;
-    height: 150px;
-    font-size: 20px;
   }
 }
