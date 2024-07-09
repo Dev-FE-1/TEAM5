@@ -5,9 +5,7 @@ const cx = classNames.bind(styles);
 
 const render = () => `
 <section class="${cx("section")}">
-    <div class="${cx("save-button-container")}">
-        <button id="edit-btn" class="${cx("edit-btn")}">정보변경</button>
-    </div>
+    <button id="edit-btn" class="${cx("edit-btn")}">정보변경</button>
     <div class="${cx("profile-container")}">
     <!-- 프로필 -->
     </div>
