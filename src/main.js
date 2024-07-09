@@ -1,6 +1,7 @@
 import router from "./router/router";
 import "./styles/reset.css";
 import "./styles/variables.css";
+import "./styles/shared.css";
 
 const app = () => {
   init();
