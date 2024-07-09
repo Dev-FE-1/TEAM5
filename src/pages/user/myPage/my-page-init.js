@@ -59,10 +59,13 @@ const init = async () => {
   const attends = attendssResponse.data.data;
   console.log("attends", attends);
 
-  attends.slice(0, 4).forEach(({ type, startDate, endDate, content, userId }) => {
+  attends.slice(0, 4).forEach(({ type, startDate, endDate, content }) => {
+    const typeClass = cx(type);
+
+
     const template = `
       <div class="${cx("attends-grid", "attends-item")}">
-        <span class="${cx("badge")}">${type}</span>
+        <span class="${cx("badge", typeClass)}">${type}</span>
         <span>${startDate}</span>
         <span>${endDate}</span>
         <span>${content}</span>
@@ -83,6 +86,7 @@ const init = async () => {
     commute: commute,
     row: row,
   }
+
 
   // 출퇴근상태 api 재 호출
   const reloadCommuteData = async () => {
@@ -118,14 +122,11 @@ const init = async () => {
     document.getElementById("statusBadge").innerText = "출근 전";
     isWorking = false;
   }
-
+  
   
 
   // 모달
   const modal = document.querySelector(`.${cx("modal")}`);
-  const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
-  const btnSaveModal = document.querySelector(`.${cx("modify-modal-btn")}`);
-  const btnCloseModal = document.getElementById("closeModalButton");
   const confirmButton = document.getElementById("confirmButton");
   const cancelButton = document.getElementById("cancelButton");
 
@@ -253,10 +254,6 @@ const init = async () => {
     document.getElementById("workToggle").checked = isWorking;
   });
 
-  btnCloseModal?.addEventListener("click", () => {
-    modal.style.display = "none";
-    document.getElementById("workToggle").checked = isWorking;
-  });
 
   function initialize() {
     updateClock(); // 초기 시계 설정

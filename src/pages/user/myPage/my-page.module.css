@@ -60,6 +60,7 @@
   height: 130px;
   object-fit: cover;
   border-radius: 5px;
+  margin-right: 16px;
 }
 
 .profile p {
@@ -72,17 +73,6 @@
   gap: 20px;
 }
 
-.open-modal-btn {
-  background-color: var(--primary-300);
-  width: 100%;
-  border-radius: 5px;
-  float: right;
-  margin-top: 20px;
-}
-
-.open-modal-btn:hover {
-  background-color: var(--primary-500);
-}
 
 /* 공지사항 */
 .notices-content {
@@ -135,7 +125,7 @@
 }
 
 .commutes p .badge {
-  background-color: var(--primary-400);
+  background-color: var(--primary-500);
   color: #fff;
   padding: 5px 10px;
   border-radius: 15px;
@@ -155,16 +145,11 @@
   margin-bottom: 5px;
 }
 
-.commutes .btn {
-  border-radius: 5px;
-  font-size: 16px;
-}
-
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 28px;
+  width: 57px;
+  height: 30px;
   margin-bottom: 15px;
 }
 
@@ -189,9 +174,9 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
+  height: 22px;
+  width: 22px;
+  left: 5px;
   bottom: 4px;
   background-color: white;
   transition: 0.4s;
@@ -208,8 +193,9 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(16px);
+  transform: translateX(26px);
 }
+
 
 /* 추가된 출근, 퇴근 시간 표시 스타일 */
 #startWorkTime,
@@ -235,14 +221,25 @@ input:checked + .slider:before {
 }
 
 .attends-item .badge {
-  background-color: var(--primary-400);
+  /* background-color: var(--primary-400); */
   color: #fff;
   padding: 5px 8px;
-  border-radius: 15px;
+  border-radius: 5px;
   font-size: 14px;
   display: inline-block;
   text-align: center;
   white-space: nowrap; /*배지의 글자가 길어지지 않도록 설정*/
+}
+
+
+.연차 {
+  background-color: var(--primary-300);
+}
+.반차 {
+  background-color: var(--primary-200);
+}
+.조퇴 {
+  background-color: var(--primary-900);
 }
 
 /* 모달 창 */
@@ -258,11 +255,11 @@ input:checked + .slider:before {
 }
 
 .modal-content {
-  background-color: #fefefe;
-  border-radius: 15px;
+  background-color: var(--primary-100);
+  border-radius: 10px;
   margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
+  padding: 40px;
+  border: 3px solid #F6F5F0;
   width: 60%;
   max-width: 300px;
   text-align: left;
@@ -272,33 +269,31 @@ input:checked + .slider:before {
   position: relative;
 }
 
-.modal h2 {
-  margin-bottom: 30px;
-}
 
 .modal button {
-  margin: 25px 5px;
+  margin: 30px 15px;
   padding: 0 20px;
-  background-color: #6d40c8;
-  border-radius: 5px;
+  border-radius: 10px;
+  font-weight: bold;
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer; /* 손가락 모양 커서 */
-  background-color: #f2f2f2; /* 배경색 */
-  padding: 5px 10px; /* 여백 */
-  border-radius: 5px; /* 모서리 둥글게 */
-  transition: background-color 0.3s; /* 배경색 전환 효과 */
+.btn-confirm {
+  background-color: #28a745;
 }
 
-.close:hover {
-  background-color: #d9d9d9; /* 마우스를 올렸을 때 배경색 */
+.btn-confirm:hover {
+  background-color: #218838;
 }
 
-.modal-content .info-item {
+.btn-cancel {
+  background-color: #dc3545;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.modal-content {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -306,19 +301,6 @@ input:checked + .slider:before {
   width: 100%;
 }
 
-.modify-modal-btn {
-  background-color: var(--primary-300);
-  border-radius: 15px;
-}
-
-.modify-modal-btn:hover {
-  background-color: var(--primary-500);
-}
-
-.info-item label {
-  display: inline-block;
-  width: 100px;
-}
 
 /* 반응형 디자인 */
 /* 1. 화면 너비가 768px 이하일 때 */

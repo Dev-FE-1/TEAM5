@@ -41,8 +41,8 @@ const render = () => `
             <span class="${cx("slider", "round")}"></span>
           </label>
         </div>
-        <p class="startWorkTime" id="startWorkTime">출근 시간: </p>
-        <p class="endWorkTime" id="endWorkTime">퇴근 시간: </p>
+        <p class="startWorkTime" id="startWorkTime">출근 시간 : </p>
+        <p class="endWorkTime" id="endWorkTime">퇴근 시간 : </p>
       </div>
     </div>
 
@@ -68,8 +68,8 @@ const render = () => `
       <div class="${cx("modal-content")}">
         <div class="${cx("a-text")}"></div>
         <div class="${cx("modal-actions")}">
-          <button id="confirmButton" class="${cx("btn")}">확인</button>
-          <button id="cancelButton" class="${cx("btn")}">취소</button>
+          <button id="confirmButton" class="${cx("btn", "btn-confirm")}">확 인</button>
+          <button id="cancelButton" class="${cx("btn", "btn-cancel")}">취 소</button>
         </div>
       </div>
     </div>
