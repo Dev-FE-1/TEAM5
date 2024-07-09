@@ -204,8 +204,8 @@ const init = async () => {
             props2
           );
           if (modifyResult.data.status === "success") {
-            const actualLeaveTime = modifyResult.data.data.leaveTime || time;
-            document.getElementById("endWorkTime").innerText = `퇴근 시간: ${actualLeaveTime}`;
+            // const actualLeaveTime = modifyResult.data.data.leaveTime || time;
+            document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
             isWorking = false;
             document.getElementById("statusBadge").innerText = "근무종료";
           } else {

@@ -14,7 +14,7 @@
   gap: 20px;
   padding: 30px;
   background-color: rgba(255, 255, 255, 0);
-  height: 100vh; /* 뷰포트 높이에 맞춤 */
+  height: 80vh; /* 뷰포트 높이에 맞춤 */
   overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨김 처리 */
 }
 
