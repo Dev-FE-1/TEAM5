@@ -31,15 +31,15 @@ const render = () => `
         <div class="${cx("timer")}">
             <span id="timer">00:00:00</span>
         </div>
-        <p> 현시각 : <span id="statusBadge" class="${cx("badge")}">출근 전</span></p>
+        <p> 상태 : <span id="statusBadge" class="${cx("badge")}">출근 전</span></p>
         <div class="${cx("work-controls")}">
           <label class="${cx("switch")}">
             <input type="checkbox" id="workToggle">
             <span class="${cx("slider", "round")}"></span>
           </label>
         </div>
-        <p id="startWorkTime">출근 시간: </p>
-        <p id="endWorkTime">퇴근 시간: </p>
+        <p class="startWorkTime" id="startWorkTime">출근 시간: </p>
+        <p class="endWorkTime" id="endWorkTime">퇴근 시간: </p>
       </div>
     </div>
 
