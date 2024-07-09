@@ -61,12 +61,11 @@ const init = async () => {
 
   attends.slice(0, 4).forEach(({ type, startDate, endDate, content, userId }) => {
     const template = `
-      <div class="${cx("attends-item")}">
+      <div class="${cx("attends-grid", "attends-item")}">
         <span class="${cx("badge")}">${type}</span>
         <span>${startDate}</span>
         <span>${endDate}</span>
         <span>${content}</span>
-        <span>${userId}</span>
       </div>
     `;
     attendsHtml += template;
@@ -80,8 +79,27 @@ const init = async () => {
   const statusResponse = await axios.get(`http://localhost:8080/api/commutes/status/${loginUser}`);
   const { commute, row } = statusResponse.data;
 
+  const commuteData = {
+    commute: commute,
+    row: row,
+  }
+
+  // 출퇴근상태 api 재 호출
+  const reloadCommuteData = async () => {
+    const apiResult = await axios.get(`http://localhost:8080/api/commutes/status/${loginUser}`);
+    if(apiResult?.status == '200') {
+      commuteData.commute = apiResult.data?.commute;
+      commuteData.row = apiResult.data?.row;
+    }
+  }
+
   let isWorking = false;
 
+  /**
+   * before - 출근전
+   * ing - 근무중
+   * after - 근무종료
+   */
   if (commute === 'ing') {
     document.getElementById("workToggle").checked = true;
     document.getElementById("startWorkTime").innerText = `출근 시간: ${row.arriveTime}`;
@@ -89,6 +107,8 @@ const init = async () => {
     isWorking = true;
   } else if (commute === 'after') {
     document.getElementById("workToggle").checked = false;
+    document.getElementById("workToggle").disabled = 'disabled';
+    document.querySelector(`.${cx('slider')}`).classList.add(`${cx('disabled')}`);
     document.getElementById("startWorkTime").innerText = `출근 시간: ${row.arriveTime}`;
     document.getElementById("endWorkTime").innerText = `퇴근 시간: ${row.leaveTime}`;
     document.getElementById("statusBadge").innerText = "근무종료";
@@ -98,6 +118,8 @@ const init = async () => {
     document.getElementById("statusBadge").innerText = "출근 전";
     isWorking = false;
   }
+
+  
 
   // 모달
   const modal = document.querySelector(`.${cx("modal")}`);
@@ -109,14 +131,31 @@ const init = async () => {
 
   let workAction = null; // 출근/퇴근 액션 저장
 
-  function updateClock() {
+  function updateClock({commute, row} = commuteData ) {
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-    document.getElementById("timer").innerText = formatTime(
-      hours * 3600 + minutes * 60 + seconds
-    );
+
+    const timer = document.getElementById('timer');
+    if(commute == 'before' ) return;
+
+    //          time1     time2
+    // ing -> 현재시간 - 출근시간
+    // after -> 퇴근시간 - 출근시간
+    let time1 = 0;
+    if(commute == 'ing') {
+      time1 = hours * 3600 + minutes * 60 + seconds;
+    } else if (commute == 'after') {
+      const [lHour, lMin, lSec] = row.leaveTime?.split(':');
+      time1 = Number(lHour) * 3600 + Number(lMin) * 60 + Number(lSec);
+    }
+    
+    const [aHour, aMin, aSec] = row.arriveTime?.split(':');
+    const time2 = Number(aHour) * 3600 + Number(aMin) * 60 + Number(aSec);
+
+    // 계산된 시간 출력
+    timer.innerText = formatTime(time1 - time2);
   }
 
   // 시간을 형식화하는 함수
@@ -155,13 +194,13 @@ const init = async () => {
           document.getElementById("startWorkTime").innerText = `출근 시간: ${actualArriveTime}`;
           isWorking = true;
           document.getElementById("statusBadge").innerText = "근무중";
-          alert(`출근 시간을 ${actualArriveTime}로 설정하였습니다.`);
+          await reloadCommuteData();
+          setInterval(updateClock, 1000); // 1초마다 시계 업데이트
         } else {
           throw new Error("출근 처리 실패");
         }
       } catch (error) {
         console.error(error);
-        alert("출근 처리에 실패했습니다.");
         document.getElementById("workToggle").checked = false;
       }
     } else if (workAction === 'leave') {
@@ -179,7 +218,9 @@ const init = async () => {
           document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
           isWorking = false;
           document.getElementById("statusBadge").innerText = "근무종료";
-          alert(`퇴근 시간을 ${time}로 설정하였습니다.`);
+          await reloadCommuteData();
+          clearInterval();
+          document.querySelector(`.${cx('slider')}`).classList.add(`${cx('disabled')}`);
         } else {
           throw new Error("퇴근 처리 실패");
         }
@@ -212,14 +253,14 @@ const init = async () => {
     document.getElementById("workToggle").checked = isWorking;
   });
 
-  btnCloseModal.addEventListener("click", () => {
+  btnCloseModal?.addEventListener("click", () => {
     modal.style.display = "none";
     document.getElementById("workToggle").checked = isWorking;
   });
 
   function initialize() {
     updateClock(); // 초기 시계 설정
-    setInterval(updateClock, 1000); // 1초마다 시계 업데이트
+    commute=='ing' && setInterval(updateClock, 1000); // 1초마다 시계 업데이트
   }
 
   initialize();
