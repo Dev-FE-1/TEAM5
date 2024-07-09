@@ -104,9 +104,13 @@ const init = async () => {
       name: document.querySelector("#modal-name").value,
       team: document.querySelector("#modal-team").value,
       position: document.querySelector("#modal-position").value,
-      imgUrl: "http://localhost:8080/profile/Panda-raccoon.jpg",
+      imgUrl: document.querySelector("#modal-image").value,
     };
 
+
+    document.getElementById("userId").textContent = userId;
+
+    document.getElementById("profile-image").setAttribute("src", imgUrl);
     const modifyResult = await axios.put(
       `http://localhost:8080/api/users/${loginUser}`,
       props
@@ -202,7 +206,8 @@ const init = async () => {
           const modifyResult = await axios.post(
             `http://localhost:8080/api/commutes/leave`,
             props2
-          );
+          ); 
+          console.log("안녕", modifyResult)
           if (modifyResult.data.status === "success") {
             // const actualLeaveTime = modifyResult.data.data.leaveTime || time;
             document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;

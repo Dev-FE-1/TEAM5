@@ -56,7 +56,7 @@ const render = () => `
           </div>
           <div class="${cx("attends-content")}"></div>
         </div>
-        <a href="./now.html"><button class="${cx("attends-btn", "btn")}">근태신청 바로가기</button></a>
+        <a href="/user/attend"><button class="${cx("attends-btn", "btn")}">근태신청 바로가기</button></a>
     </div>
 
     <!-- 모달  -->
