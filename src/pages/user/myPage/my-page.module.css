@@ -5,7 +5,6 @@
   /* background-color: aqua; */
 }
 
-
 /* 마이페이지(프로필,출퇴근,공지사항,근태관리)  */
 .content-container {
   display: grid;
@@ -15,21 +14,18 @@
   padding: 30px;
   background-color: aqua;
   height: 80vh;
-  /* overflow: auto; 회색배경이 감싸도록 하고 싶은데 스크롤이 발생이 됨 */
 }
- 
-.content  {
+
+.content {
   padding: 20px;
   background-color: #fff;
   border: 3px solid var(--primary);
   box-sizing: border-box;
   min-width: 250px;
   border-radius: 10px;
-  /* overflow: auto; */
 }
 
-
-.content h2  {
+.content h2 {
   margin-bottom: 20px;
   font-weight: bold;
   font-size: 24px;
@@ -56,7 +52,6 @@
   grid-row: 2 / 3;
 }
 
-
 /* 버튼공통 */
 .btn {
   padding: 5px 10px; 
@@ -74,9 +69,6 @@
 }
 
 /* 프로필 */
-
-
-
 .profile img {
   width: 100px;
   height: 130px;
@@ -98,8 +90,6 @@
 .open-modal-btn:hover {
   background-color: var(--primary-500);
 }
-
-
 
 /* 공지사항 */
 .notices-content {
@@ -134,15 +124,7 @@
   margin-bottom: 10px; /* 각 p 태그 간의 간격을 설정 */
 }
 
- /* .notices p {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 50px;
-  padding: 8px 0;
- } */
-
-
 /* 출퇴근 */
-
 .work-timer {
   align-items: center; /* 수평 가운데 정렬 */
   text-align: center; /* 텍스트 가운데 정렬 */
@@ -184,23 +166,6 @@
   border-radius: 5px;
   font-size: 16px;
 }
-
-.start-btn {
-  background-color: #28a745;
-}
-
-.start-btn:hover {
-  background-color: #218838;
-}
-
-.stop-btn {
-  background-color: #dc3545;
-}
-
-.stop-btn:hover {
-  background-color: #c82333;
-}
-
 
 .switch {
   position: relative;
@@ -254,10 +219,7 @@ input:checked + .slider:before {
   margin-top: 10px;
 }
 
-
-
 /* 근태현황 */
-
 .attends-list {
   margin-bottom: 50px;
 }
@@ -282,17 +244,15 @@ input:checked + .slider:before {
   white-space: nowrap; /*배지의 글자가 길어지지 않도록 설정*/
 }
 
-
 .attends-btn {
   border-radius: 15px;
   background-color: var(--primary-300);
   float: right;
 }
 
-.attends-button:hover {
+.attends-btn:hover {
   background-color: yellowgreen;
 }
-
 
 /* 모달 창 */
 .modal {
@@ -360,8 +320,6 @@ input:checked + .slider:before {
   display: inline-block;
   width: 100px;
 }
-
-
 
 /* 반응형 디자인 */
 /* 1. 화면 너비가 768px 이하일 때 */
