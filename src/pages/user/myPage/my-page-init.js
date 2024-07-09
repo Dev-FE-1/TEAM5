@@ -173,7 +173,7 @@ const init = async () => {
       }
   }
 
-// 출근 눌렀을때
+// 출근 버튼 클릭 이벤트 수정
 document.getElementById('startButton').addEventListener("click", async () => {
     const now = new Date();
     const arriveTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
@@ -183,13 +183,19 @@ document.getElementById('startButton').addEventListener("click", async () => {
       arriveTime: arriveTime,
     }
 
-    if (confirm(`출근 시간을 ${arriveTime}로 설정하시겠습니까?`)) { // 확인 대화상자 표시
+    if (confirm(`출근 시간을 ${arriveTime}로 설정하시겠습니까?`)) {
         try {
           const modifyResult = await axios.post(`http://localhost:8080/api/commutes/arrive`, props2);
           if (modifyResult.data.status === "success") {
             const actualArriveTime = modifyResult.data.data.arriveTime || arriveTime;
             document.getElementById('startWorkTime').innerText = `출근 시간: ${actualArriveTime}`;
             startWork(); // 중복 제거 후 startWork 함수 호출 (근무 상태 업데이트 및 UI 변경)
+            // 출근 버튼 비활성화 및 색상 변경
+            document.getElementById('startButton').disabled = true;
+            document.getElementById('startButton').style.backgroundColor = "#ccc";
+            // 퇴근 버튼 활성화 및 색상 복원
+            document.getElementById('endButton').disabled = false;
+            document.getElementById('endButton').style.backgroundColor = "#dc3545";
           } else {
             throw new Error('출근 처리 실패');
           }
@@ -201,24 +207,7 @@ document.getElementById('startButton').addEventListener("click", async () => {
     }
 });
 
-
-
-
-  
-  function endWork() {
-      if (isWorking) {
-          isWorking = false; // 근무 상태 해제
-          document.getElementById('workToggle').checked = false;
-          document.getElementById('statusBadge').innerText = '근무종료';
-
-          // 퇴근 시간 표시 추가
-          const now = new Date();
-          const formattedTime = now.toLocaleTimeString();
-          document.getElementById('endWorkTime').innerText = `퇴근 시간: ${formattedTime}`;
-      }
-  }
-
-// 퇴근 눌렀을때
+// 퇴근 버튼 클릭 이벤트 수정
 document.getElementById('endButton').addEventListener("click", async () => {
     const now = new Date();
     const leaveTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
@@ -226,7 +215,7 @@ document.getElementById('endButton').addEventListener("click", async () => {
     const props2 = {
       userId: loginUser,
       leaveTime: leaveTime,
-    }
+    };
 
     if (confirm(`퇴근 시간을 ${leaveTime}로 설정하시겠습니까?`)) {
         try {
@@ -234,19 +223,21 @@ document.getElementById('endButton').addEventListener("click", async () => {
           if (modifyResult.data.status === "success") {
             const actualLeaveTime = modifyResult.data.data.leaveTime || leaveTime;
             document.getElementById('endWorkTime').innerText = `퇴근 시간: ${actualLeaveTime}`;
-            endWork();
             alert(`퇴근 처리 성공: ${actualLeaveTime}`);
+            const endButton = document.getElementById('endButton');
+            endButton.disabled = true;
+            endButton.style.backgroundColor = "#ccc";
           } else {
             throw new Error('퇴근 처리 실패');
           }
         } catch (error) {
+          console.error(error);
           alert("퇴근 처리에 실패했습니다.");
         }
     } else {
         alert("퇴근 처리가 취소되었습니다.");
     }
 });
-
 
 
   
