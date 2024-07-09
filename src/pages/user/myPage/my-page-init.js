@@ -38,9 +38,9 @@ const init = async () => {
         <img class="${cx("notices-image")}" 
              src=${imgUrl ?? placeholder} alt="이미지"/>
         <div class="${cx("notice-text")}">
-          <p class="${cx("subject")}">${subject}</p>
-          <p class="${cx("content")}">${content}</p>
-          <p class="${cx("date")}">${date}</p>
+          <h3 class="${cx("subject")}">${subject}</h3>
+          <p class="${cx("notice-text-content")}">${content}</p>
+          <p class="${cx("notice-date")}">${date}</p>
         </div>
       </div>
     `;

@@ -24,7 +24,12 @@ const render = () => `
     <!-- 공지사항 -->
     <div class="${cx("notices", "content")}">
       <h2 class="${cx("subtitle")}">공지사항</h2>
-      <div class="${cx("notices-content")}"></div>
+      
+      <div class="${cx("notices-content-wrapper")}">
+        <div class="${cx("notices-content")}">
+        <!-- 공지 컨텐츠 -->
+        </div>
+      </div>
     </div>
 
     <!-- 출퇴근 -->
