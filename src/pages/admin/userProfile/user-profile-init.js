@@ -8,14 +8,10 @@ const cx = classNames.bind(styles);
 async function init() {
   const userId = getUserId();
   const { imgUrl, name, team, position, email } = await fetchUser(userId);
-  // TODO: params 잔재 죽이기
   const placeholder = "https://via.placeholder.com/250x300";
-
   const template = `
     <div class="${cx("image-container")}">
-        <img id="profile-picture" src="${
-          imgUrl ?? placeholder
-        }" alt="Profile Picture">
+        <img id="profile-picture" src="${imgUrl ?? placeholder}" alt="Profile Picture">
     </div>
     <div class="${cx("info")}">
         <div class="${cx("info-item")}">
@@ -32,9 +28,7 @@ async function init() {
         </div>
         <div class="${cx("info-item")}">
             <span class="${cx("label")}">직급:</span>
-            <span class="${cx(
-              "value"
-            )}" id="profile-position">${position}</span>
+            <span class="${cx("value")}" id="profile-position">${position}</span>
         </div>
         <div class="${cx("info-item")}">
             <span class="${cx("label")}">이메일:</span>

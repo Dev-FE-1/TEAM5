@@ -16,7 +16,7 @@ const render = () => `
     <div id="modal" class="${cx("modal")}">
         <div class="${cx("modal-content")}">
             <span class="${cx("close")}">&times;</span>
-            <h2>정보 변경</h2>
+
             <div class="${cx("image-container")}">
                 <img id="modal-profile-picture" src="https://via.placeholder.com/100" alt="Profile Picture">
                 <div class="${cx("button-container")}">
@@ -46,7 +46,7 @@ const render = () => `
             </div>
             <div class="${cx("info-item")}">
                 <label for="modal-password">비밀번호:</label>
-                <input type="text" id="modal-password">
+                <input type="password" id="modal-password">
             </div>
             <button id="modal-save" class="${cx("modal-save")}">Save</button>
         </div>

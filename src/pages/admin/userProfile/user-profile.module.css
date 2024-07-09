@@ -45,7 +45,7 @@
   display: flex;
   flex-direction: column; /* 컨테이너를 열 방향으로 설정 */
   align-items: center;
-  padding: 20px;
+  padding: 50px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #fafafa;
@@ -110,6 +110,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
 /* 정보변경 모달 */
