@@ -212,6 +212,7 @@ const init = async () => {
             throw new Error("퇴근 처리 실패");
           }
         } catch (error) {
+          console.error(error);
           alert("퇴근 처리에 실패했습니다.");
           document.getElementById("workToggle").checked = true;
         }
