@@ -4,13 +4,11 @@ import styles from "./user-list.module.css";
 const cx = classNames.bind(styles);
 
 const render = () => `
-<section class="${cx("section")}">
+<section>
     <!-- 등록 -->
-    <div class="${cx("add-container")}">
-        <button class="${cx("add-button")}">
-        등록
-        </button>
-    </div>
+    <button class="${cx("add-button")}">
+        직원 등록
+    </button>
     <!-- 프로필카드 전체 박스 -->
     <div class="${cx("container")}" id="profile-container">
     <!-- 기존 프로필 카드가 여기 렌더링될 것입니다 -->
@@ -25,7 +23,7 @@ const render = () => `
     <div id="modal" class="${cx("modal")}">
         <div class="${cx("modal-content")}">
             <span class="${cx("close")}">&times;</span>
-            <h2>새 프로필 추가</h2> <br> <br>
+            <h2>새 직원 추가</h2> <br> <br>
             <div class="${cx("info-item")}">
                 <label for="modal-name">이름:</label>
                 <input type="text" id="modal-name">
@@ -50,11 +48,7 @@ const render = () => `
                 <label for="modal-password">비밀번호:</label>
                 <input type="password" id="modal-password">
             </div>
-            <div class="${cx("info-item")}">
-                <label for="modal-image">이미지 첨부:</label>
-                <input type="file" id="modal-image" accept="image/*">
-            </div>
-            <button id="modal-save">Save</button>
+            <button id="modal-save">추가하기</button>
         </div>
     </div>
 

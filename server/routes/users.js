@@ -1,7 +1,7 @@
 import express from "express";
 import db from "../database.js";
 import { ERROR_STATUS, HOST, SUCCESS_STATUS } from "../constants.js";
-import { checkUserIdExists, validateUserData } from '../middleware/index.js';
+import { checkUserIdExists, validateUserData } from "../middleware/index.js";
 import upload from "../multer/multer-config.js";
 
 const router = express.Router();
@@ -208,8 +208,8 @@ router.post("/login", (req, res) => {
  *       400:
  *         description: Bad request
  */
-router.post("/", validateUserData, (req, res) => {
-  console.log('post', req.body);
+router.post("/", (req, res) => {
+  console.log("post", req.body);
   const { userId, password, email, name, team, position, imgUrl } = req.body;
   // TODO: 중복 아이디가 있는지 먼저 확인
   const sql = `
@@ -343,7 +343,6 @@ router.put(
  *               $ref: '#/components/schemas/User'
  */
 router.put("/:userId", validateUserData, (req, res) => {
-  
   const { userId } = req.params;
   const { password, email, name, team, position, imgUrl } = req.body;
 
