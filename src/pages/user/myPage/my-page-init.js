@@ -108,6 +108,7 @@ const init = async () => {
   } else if (commute === 'after') {
     document.getElementById("workToggle").checked = false;
     document.getElementById("workToggle").disabled = 'disabled';
+    document.querySelector(`.${cx('slider')}`).classList.add(`${cx('disabled')}`);
     document.getElementById("startWorkTime").innerText = `출근 시간: ${row.arriveTime}`;
     document.getElementById("endWorkTime").innerText = `퇴근 시간: ${row.leaveTime}`;
     document.getElementById("statusBadge").innerText = "근무종료";
@@ -219,6 +220,7 @@ const init = async () => {
           document.getElementById("statusBadge").innerText = "근무종료";
           await reloadCommuteData();
           clearInterval();
+          document.querySelector(`.${cx('slider')}`).classList.add(`${cx('disabled')}`);
         } else {
           throw new Error("퇴근 처리 실패");
         }

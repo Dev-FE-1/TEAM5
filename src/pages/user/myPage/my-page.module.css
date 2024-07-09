@@ -198,6 +198,11 @@
   border-radius: 50%;
 }
 
+.slider.disabled {
+  cursor: not-allowed;
+}
+
+
 input:checked + .slider {
   background-color: #28a745;
 }
