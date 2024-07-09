@@ -87,46 +87,11 @@ const init = async () => {
     modal.style.display = "block";
     // 데이터 불러오기
     document.querySelector("#modal-name").value = document.querySelector("#name").innerText;
-    document.querySelector("#modal-team").value = document.querySelector("#team").innerText;
-    document.querySelector("#modal-position").value = document.querySelector("#position").innerText;
-    document.querySelector("#modal-email").value = document.querySelector("#email").innerText;
   });
-
-  // 모달 수정하기 버튼
-  btnSaveModal.addEventListener("click", async () => {
-    // 1. api연동
-
-    // 1-1. 수정할 데이터 세팅
-    const props = {
-      userId: loginUser,
-      password: document.querySelector("#modal-password").value,
-      email: document.querySelector("#modal-email").value,
-      name: document.querySelector("#modal-name").value,
-      team: document.querySelector("#modal-team").value,
-      position: document.querySelector("#modal-position").value,
-      imgUrl: "http://localhost:8080/profile/Panda-raccoon.jpg",
-    };
-
-    const modifyResult = await axios.put(
-      `http://localhost:8080/api/users/${loginUser}`,
-      props
-    );
-
-    // 2. 데이터 삭제하기
-    document.querySelector("#modal-name").value = "";
-    document.querySelector("#modal-team").value = "";
-    document.querySelector("#modal-position").value = "";
-    document.querySelector("#modal-email").value = "";
-    document.querySelector("#modal-password").value = "";
-
-    // 3. 모달 닫기
+  btnCloseModal.addEventListener("click", () => {
     modal.style.display = "none";
   });
 
-  btnCloseModal.addEventListener("click", async () => {
-    // 3. 모달 닫기
-    modal.style.display = "none";
-  });
 
   // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수
@@ -153,6 +118,8 @@ const init = async () => {
   }
 
   async function toggleWork() {
+    const modal = document.querySelector(`.${cx("modal")}`);
+    const aText = document.querySelector(`.${cx("a-text")}`);
     const now = new Date();
     const time =
       now.getHours().toString().padStart(2, "0") +
@@ -168,26 +135,25 @@ const init = async () => {
         arriveTime: time,
       };
 
-      if (confirm(`출근 시간을 ${time}로 설정하시겠습니까?`)) {
-        try {
-          const modifyResult = await axios.post(
-            `http://localhost:8080/api/commutes/arrive`,
-            props2
-          );
-          if (modifyResult.data.status === "success") {
-            const actualArriveTime = modifyResult.data.data.arriveTime || time;
-            document.getElementById("startWorkTime").innerText = `출근 시간: ${actualArriveTime}`;
-            isWorking = true;
-            document.getElementById("statusBadge").innerText = "근무중";
-          } else {
-            throw new Error("출근 처리 실패");
-          }
-        } catch (error) {
-          alert("출근 처리에 실패했습니다.");
-          document.getElementById("workToggle").checked = false;
+      try {
+        const modifyResult = await axios.post(
+          `http://localhost:8080/api/commutes/arrive`,
+          props2
+        );
+        if (modifyResult.data.status === "success") {
+          const actualArriveTime = modifyResult.data.data.arriveTime || time;
+          document.getElementById("startWorkTime").innerText = `출근 시간: ${actualArriveTime}`;
+          isWorking = true;
+          document.getElementById("statusBadge").innerText = "근무중";
+          aText.innerText = `출근 시간을 ${actualArriveTime}로 설정하였습니다.`; // 메시지 업데이트
+          modal.style.display = "block"; // 모달창 표시
+        } else {
+          throw new Error("출근 처리 실패");
         }
-      } else {
-        alert("출근 처리가 취소되었습니다.");
+      } catch (error) {
+        console.error(error);
+        aText.innerText = "출근 처리에 실패했습니다."; // 메시지 업데이트
+        modal.style.display = "block"; // 모달창 표시
         document.getElementById("workToggle").checked = false;
       }
     } else {
@@ -197,27 +163,24 @@ const init = async () => {
         leaveTime: time,
       };
 
-      if (confirm(`퇴근 시간을 ${time}로 설정하시겠습니까?`)) {
-        try {
-          const modifyResult = await axios.post(
-            `http://localhost:8080/api/commutes/leave`,
-            props2
-          );
-          if (modifyResult.data.status === "success") {
-            // const actualLeaveTime = modifyResult.data.data.leaveTime || time;
-            document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
-            isWorking = false;
-            document.getElementById("statusBadge").innerText = "근무종료";
-          } else {
-            throw new Error("퇴근 처리 실패");
-          }
-        } catch (error) {
-          console.error(error);
-          alert("퇴근 처리에 실패했습니다.");
-          document.getElementById("workToggle").checked = true;
+      try {
+        const modifyResult = await axios.post(
+          `http://localhost:8080/api/commutes/leave`,
+          props2
+        );
+        if (modifyResult.data.status === "success") {
+          document.getElementById("endWorkTime").innerText = `퇴근 시간: ${time}`;
+          isWorking = false;
+          document.getElementById("statusBadge").innerText = "근무종료";
+          aText.innerText = `퇴근 시간을 ${time}로 설정하였습니다.`; // 메시지 업데이트
+          modal.style.display = "block"; // 모달창 표시
+        } else {
+          throw new Error("퇴근 처리 실패");
         }
-      } else {
-        alert("퇴근 처리가 취소되었습니다.");
+      } catch (error) {
+        console.error(error);
+        aText.innerText = "퇴근 처리에 실패했습니다."; // 메시지 업데이트
+        modal.style.display = "block"; // 모달창 표시
         document.getElementById("workToggle").checked = true;
       }
     }
