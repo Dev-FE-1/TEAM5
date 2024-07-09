@@ -149,8 +149,9 @@ const render = () => `
         <div class="${cx("info-item")}">
           <label for="modal-image">이미지 첨부:</label>
           <input type="file" id="modal-image" accept="image/*">
+          <img id="modal-image-preview" src="#" alt="이미지 미리보기" style="width: 100px; height: 100px; object-fit: cover; margin-top: 10px;">
         </div>
-        <button class="${cx('close-modal-btn', 'btn')}">수정완료</button>
+        <button class="${cx('modify-modal-btn', 'btn')}">수정완료</button>
       </div>
     </div>
 

@@ -67,6 +67,12 @@
   color: #fff;
 }
 
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
 /* 프로필 */
 
 
@@ -341,12 +347,12 @@ input:checked + .slider:before {
   width: 100%;
 }
 
-.close-modal-btn {
+.modify-modal-btn {
   background-color: var(--primary-300);
   border-radius: 15px;
 }
 
-.close-modal-btn:hover {
+.modify-modal-btn:hover {
   background-color: var(--primary-500);
 }
 

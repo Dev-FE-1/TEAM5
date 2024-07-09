@@ -5,6 +5,7 @@ import styles from "./my-page.module.css";
 const cx = classNames.bind(styles);
 
 const loginUser = `kimpra2989`;
+
 const init = async () => {
   
   // 프로필
@@ -86,8 +87,10 @@ const init = async () => {
   // 모달
   const modal = document.querySelector(`.${cx("modal")}`);
   const btnOpenModal = document.querySelector(`.${cx("open-modal-btn")}`);
-  const btnSaveModal = document.querySelector(`.${cx("close-modal-btn")}`);
+  const btnSaveModal = document.querySelector(`.${cx("modify-modal-btn")}`);
   const btnCloseModal = document.querySelector(`.${cx("close")}`);
+
+  
 
   // 모달 켜기
   btnOpenModal.addEventListener("click", () => {
@@ -137,9 +140,6 @@ const init = async () => {
     modal.style.display = "none";
 
 });
-
-
-
 
   // 출퇴근
   let isWorking = false; // 근무 상태를 나타내는 변수
