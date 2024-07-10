@@ -1,4 +1,5 @@
 // import { AttendList } from './components';
+import { addListEvent } from './components/AttendList';
 import { addModalEvent } from './components/Modal';
 import Layout from './layouts/Layout';
 
@@ -12,12 +13,17 @@ const init = async () => {
 
   section.innerHTML = await Layout();
 
+  addListEvent();
   addModalEvent();
-
 }
 
-// const route = () => {
-//   // const content = document.querySelector('#content');
-// }
+export const reRender = async (props) => {
+  const section = document.querySelector(`.main-content`);
+
+  section.innerHTML = await Layout(props?.type);
+
+  addListEvent();
+  addModalEvent();
+}
 
 document.addEventListener('DOMContentLoaded', app); 

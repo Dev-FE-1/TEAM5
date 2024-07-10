@@ -1,5 +1,6 @@
 import { findOne, modify, remove } from "../api";
 import Layout from "../layouts/Layout";
+import { reRender } from "../main";
 
 const createModal = (prop) => {
   return `
@@ -19,8 +20,8 @@ const createModal = (prop) => {
       </div>
       <div class="formItem able-item item4">
         <span>일시</span>
-        <input type="text" placeholder="yyyy-mm-dd" id="modal-startDate" /> ~
-        <input type="text" placeholder="yyyy-mm-dd" id="modal-endDate" />
+        <input type="date" placeholder="yyyy-mm-dd" id="modal-startDate" /> ~
+        <input type="date" placeholder="yyyy-mm-dd" id="modal-endDate" />
       </div>
       <div class="formItem item2">
         <span>사원명</span>
@@ -36,7 +37,6 @@ const createModal = (prop) => {
       </div>
       <div class="btnWrap">
         <button type="button" class="modalBtn modifyBtn"><div class="icon modifyIcon"></div>수정</button>
-        <button type="button" class="modalBtn deleteBtn"><div class="icon deleteIcon"></div>삭제</button>
       </div>
     </div>
   </div>
@@ -46,31 +46,10 @@ const createModal = (prop) => {
 export const addModalEvent = () => {
   const closeBtn = document.querySelector('.closeBtn').addEventListener('click', closeModal);
 
-  const openModalBtns = document.querySelectorAll('.btn-modify').forEach((item) => {
-    item.addEventListener('click', openModal);
-  });
-
-  const listDeleteBtns = document.querySelectorAll('.btn-delete').forEach((item) => {
-    item.addEventListener('click', deleteAttend);
-  });
-
-  const modalDeleteBtn = document.querySelector('.deleteBtn').addEventListener('click', deleteAttend);
   const modalModifyBtn = document.querySelector('.modifyBtn').addEventListener('click', modifyAttend);
 }
 
-// 모달 오픈 버튼, 
-export const openModal = async (event) => {
-  const id = event.target.closest('div.list-item').querySelector('.attendId').value;
-
-  const modalContainer = document.querySelector('.modal-container');
-  modalContainer.classList.remove('disappear');
-  modalContainer.classList.add('appear');
-
-  const {status, data} = await findOne({attendId: id});
-  if(status === 'OK') setModifyData({data: data, obj: modalContainer});
-}
-
-const setModifyData = ({data: attendData, obj: container}) => {
+export const setModifyData = ({data: attendData, obj: container}) => {
   container.querySelector('#attendId').value = attendData.id;
   container.querySelector(`#modal-type`).value = attendData.type;
   container.querySelector('#modal-startDate').value = attendData.startDate;
@@ -80,16 +59,9 @@ const setModifyData = ({data: attendData, obj: container}) => {
   container.querySelector('#modal-content').innerText = attendData.content;
 }
 
-const reloadLayout = async () => {
-  document.querySelector(`.main-content`).innerHTML = await Layout();
+const reloadLayout = async (type) => {
+  document.querySelector(`.main-content`).innerHTML = await Layout(type);
   addModalEvent();
-}
-
-export const deleteAttend = async (event) => {
-  const id = event.target.closest('div.list-item').querySelector('.attendId').value;
-
-  const apiResult = await remove({attendId: id});
-  if(apiResult?.status === "DELETE") reloadLayout();
 }
 
 export const closeModal = (event) => {
@@ -114,7 +86,7 @@ export const modifyAttend = async (event) => {
 
   if(apiResult.status === "UPDATE") {
     closeModal();
-    reloadLayout();
+    reRender();
   }
 }
 

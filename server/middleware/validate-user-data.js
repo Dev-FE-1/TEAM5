@@ -1,3 +1,5 @@
+import { ERROR_STATUS } from "../constants.js";
+
 // 유효성 검사 미들웨어
 const validateUserData = (req, res, next) => {
   console.log("validate");
