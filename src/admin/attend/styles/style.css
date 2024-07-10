@@ -146,3 +146,17 @@ header select {
 .request-btn {
   cursor: pointer;
 }
+
+.pagenation {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  line-height: 2rem;
+}
+.pagenation > .pageNum {
+  cursor: pointer;
+}
+.curPage {
+  font-weight: bold;
+  color: var(--primary-400);
+}

@@ -1,0 +1,338 @@
+/* 전체 컨테이너를 뷰포트 높이에 맞춤 */
+.content-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr; /* 기존 설정 유지 */
+  grid-template-rows: 50% 50%; /* 두 행이 전체 높이의 50%씩 차지하도록 조정 */
+  gap: 20px;
+  background-color: white;
+  height: 80vh; /* 뷰포트 높이에 맞춤 */
+}
+
+/* 내부 콘텐츠의 최소 높이 조정 */
+.content {
+  padding: 20px;
+  padding-top: 0;
+  background-color: #fff;
+  border: 3px solid var(--primary-400);
+  box-sizing: border-box;
+  min-width: 250px;
+  border-radius: 5px;
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 스크롤 허용 */
+}
+
+/* 버튼공통 */
+.btn {
+  padding: 5px 10px;
+  border: none;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #fff;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
+/* 서브타이틀 */
+.subtitle {
+  position: sticky;
+  top: 0;
+  display: block;
+  background-color: white;
+  padding: 20px 0;
+}
+
+.attends-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.attends-subtitle a:hover {
+  color: var(--primary-400);
+}
+/* 프로필 */
+.profile img {
+  width: 100px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 16px;
+}
+
+.profile p {
+  margin-bottom: 16px;
+}
+
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* 공지사항 */
+.notices {
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.notices-content-wrapper {
+  scroll-snap-type: x mandatory;
+  width: 100%;
+  height: calc(100% - 64px);
+  overflow-x: auto;
+}
+
+.notices-content {
+  display: flex;
+}
+
+.notices-item {
+  flex: 0 0 100%;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  scroll-snap-align: start;
+}
+
+.notices img {
+  width: 180px;
+  border-radius: 5px;
+}
+
+.notice-text h3 {
+  margin-bottom: 20px;
+} 
+
+.notice-text .notice-date {
+  margin-top: 16px;
+  color: var(--gray-400);
+}
+
+/* 출퇴근 */
+.work-timer {
+  text-align: center;
+}
+
+.work-timer .timer {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 4px double var(--primary);
+  width: 160px;
+  color: var(--primary-400);
+}
+
+.commutes p .badge {
+  background-color: var(--primary-500);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.work-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.work-timer p {
+  margin-bottom: 5px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 57px;
+  height: 30px;
+  margin-bottom: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 5px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.slider.disabled {
+  cursor: not-allowed;
+}
+
+input:checked + .slider {
+  background-color: #28a745;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* 추가된 출근, 퇴근 시간 표시 스타일 */
+#startWorkTime,
+#endWorkTime {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 근태현황 */
+.attends-grid {
+  display: grid;
+  grid-template-columns: 45px 90px 120px 1fr;
+  gap: 15px;
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+  background-color: white;
+}
+
+.attends-header {
+  position: sticky;
+  top: 64px; /* subtitle 높이 */
+  background-color: white;
+}
+
+.attends-item .badge {
+  /* background-color: var(--primary-400); */
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap; /*배지의 글자가 길어지지 않도록 설정*/
+}
+
+.연차 {
+  background-color: var(--primary-300);
+}
+.반차 {
+  background-color: var(--primary-200);
+}
+.조퇴 {
+  background-color: var(--primary-900);
+}
+
+/* 모달 창 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: var(--primary-100);
+  border-radius: 10px;
+  margin: 5% auto;
+  padding: 40px;
+  border: 3px solid #f6f5f0;
+  width: 60%;
+  max-width: 300px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.modal button {
+  margin: 30px 15px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.btn-confirm {
+  background-color: #28a745;
+}
+
+.btn-confirm:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.modal-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* 반응형 디자인 */
+/* 1. 화면 너비가 768px 이하일 때 */
+@media (max-width: 768px) {
+  .content-container {
+    grid-template-columns: 1fr; /* 단일 열 구성 */
+    grid-template-rows: auto; /* 자동 행 구성 */
+  }
+
+  .profile,
+  .notices,
+  .commutes,
+  .attends {
+    grid-column: 1 / 2; /* 모든 항목이 한 열에 배치 */
+    grid-row: auto; /* 자동 행 구성 */
+  }
+
+  .notices-item {
+    flex-direction: column; /* 이미지와 텍스트가 세로로 배치 */
+    align-items: flex-start; /* 텍스트가 이미지 아래로 이동 */
+  }
+
+  .notices img {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .work-controls {
+    flex-direction: column;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}

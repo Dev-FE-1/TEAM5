@@ -8,19 +8,19 @@ export class AttendComp {
   constructor(dataList) {
     this.title = "근태관리 (관리자)";
     this.select_options = [{
-      value: "all",
+      value: "",
       text: "모두보기"
     }, 
     {
-      value: "leave",
+      value: "연차",
       text: "연차"
     },
     {
-      value: "halfday",
+      value: "반차",
       text: "반차"
     },
     {
-      value: "absent",
+      value: "조퇴",
       text: "조퇴"
     }];
     this.list_headers = ["구분", "일시", "사원명", "제목", "내용", "수정/삭제"];
@@ -53,7 +53,9 @@ export const findOne = async (props) => {
 }
 
 export const create = async (props) => {
-
+  try {
+    const response = await axios.post(attendURL, {});
+  }
 }
 
 export const modify = async (props) => {
