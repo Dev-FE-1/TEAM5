@@ -7,7 +7,7 @@ const mockUsers = [
     name: "김성현",
     team: "Development",
     position: "FE-Developer",
-    imgUrl: null,
+    imgUrl: `${HOST}/profile/kimisadev27.jpg`,
   },
   {
     userId: "kimpra2989",
