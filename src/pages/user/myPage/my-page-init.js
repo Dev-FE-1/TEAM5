@@ -10,8 +10,6 @@ const init = async () => {
   // 프로필
   const 데이터 = await axios(`http://localhost:8080/api/users/${loginUser}`);
 
-  console.log("데이터", 데이터);
-
   const { name, team, position, email, userId, imgUrl } = 데이터.data.data;
 
   document.getElementById("name").textContent = name;
@@ -30,7 +28,6 @@ const init = async () => {
   let noticesHtml = ""; // 템플릿을 저장할 변수
 
   const notices = noticesResponse.data.data;
-  console.log("Notices", notices);
 
   notices.slice(0, 5).forEach(({ imgUrl, subject, content, date }) => {
     const template = `
@@ -57,7 +54,6 @@ const init = async () => {
   let attendsHtml = ""; // 템플릿을 저장할 변수
 
   const attends = attendssResponse.data.data;
-  console.log("attends", attends);
 
   attends.slice(0, 4).forEach(({ type, startDate, endDate, content }) => {
     const typeClass = cx(type);
@@ -74,7 +70,6 @@ const init = async () => {
     attendsHtml += template;
   });
 
-  console.log("attendsHtml", attendsHtml);
 
   document.querySelector(`.${cx("attends-content")}`).innerHTML = attendsHtml;
 
@@ -157,7 +152,7 @@ const init = async () => {
     const time2 = Number(aHour ?? 0) * 3600 + Number(aMin ?? 0) * 60 + (Number(aSec ?? 0));
 
 
-    console.log(row, time1, time2);
+    // console.log(row, time1, time2);
     // 계산된 시간 출력
     timer.innerText = formatTime(time1 - time2);
   }
