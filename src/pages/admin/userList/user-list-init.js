@@ -122,6 +122,13 @@ const init = () => {
 
   function closeModal() {
     const modal = document.getElementById("modal");
+    document.getElementById("modal-name").value = '';
+    document.getElementById("modal-userId").value = '';
+    document.getElementById("modal-team").value = '';
+    document.getElementById("modal-position").value = '';
+    document.getElementById("modal-email").value = '';
+    document.getElementById("modal-password").value = '';
+
     if (modal) modal.style.display = "none";
   }
 
