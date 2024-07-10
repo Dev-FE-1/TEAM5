@@ -5,7 +5,6 @@ import {
   Admin_Notice,
   Admin_UserList,
   Admin_UserProfile,
-  Home,
   Login,
   NotFound,
   User_Attend,
@@ -36,8 +35,7 @@ async function router() {
 
 const routes = {
   //common
-  "/": Home,
-  "/login": Login,
+  "/": Login,
 
   //admin
   "/admin/attend": Admin_Attend,

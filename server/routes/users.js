@@ -1,6 +1,12 @@
 import express from "express";
 import db from "../database.js";
-import { ERROR_STATUS, HOST, SUCCESS_STATUS } from "../constants.js";
+import {
+  ERROR_STATUS,
+  HOST,
+  LOGIN_FAIL,
+  SUCCESS_STATUS,
+  USER_NOT_FOUND,
+} from "../constants.js";
 import { checkUserIdExists, validateUserData } from "../middleware/index.js";
 import upload from "../multer/multer-config.js";
 
@@ -166,7 +172,7 @@ router.post("/login", (req, res) => {
     if (!user)
       return res.status(400).json({
         status: ERROR_STATUS,
-        message: USER_NOT_FOUND,
+        message: LOGIN_FAIL,
       });
 
     const isAdmin = userId === "admin";
@@ -174,6 +180,7 @@ router.post("/login", (req, res) => {
     res.json({
       status: SUCCESS_STATUS,
       message: "로그인 성공",
+      userId,
       isAdmin,
     });
   });

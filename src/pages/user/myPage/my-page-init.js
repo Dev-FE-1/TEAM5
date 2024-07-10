@@ -4,7 +4,7 @@ import styles from "./my-page.module.css";
 
 const cx = classNames.bind(styles);
 
-const loginUser = `kimpra2989`;
+const loginUser = localStorage.getItem('loginUser') ?? `kimpra2989`;
 
 const init = async () => {
   // 프로필

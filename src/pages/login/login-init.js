@@ -1,5 +1,6 @@
-import styles from "./login.module.css";
 import classNames from "classnames/bind";
+import { login } from "../../api/loginApi";
+import styles from "./login.module.css";
 
 const cx = classNames.bind(styles);
 
@@ -26,45 +27,23 @@ const init = () => {
 
   updateButtonState();
 
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // 기본 form 제출 동작을 막습니다.
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     const userId = idInput.value;
     const password = pwInput.value;
 
-    console.log("Attempting to log in with:", { userId, password }); // 디버깅용 로그
+    const response = await login({ userId, password });
 
-    fetch(`http://localhost:8080/api/users/login`, {
-      // URL 수정
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, password }), // 데이터를 JSON 문자열로 변환
-    })
-      .then((response) => {
-        console.log("Server response:", response); // 디버깅용 로그
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Server response data:", data); // 디버깅용 로그
-        if (data.status === "OK") {
-          if (data.data[0].isAdmin) {
-            window.location.href = "/admin.html";
-          } else {
-            window.location.href = "/user.html";
-          }
-        } else {
-          alert("Login failed");
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error); // 오류 로그
-        alert("An error occurred while logging in");
-      });
+    if (response.status == "error") {
+      alert(response.message);
+      return;
+    }
+
+    // 로그인 정보 처리
+    localStorage.setItem('loginUser',response.userId)
+
+    window.location.href = response.isAdmin ? "/admin/users" : "/user/my-page";
   });
 };
 

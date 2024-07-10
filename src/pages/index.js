@@ -9,5 +9,3 @@ export { default as User_MyPage } from "./user/myPage";
 
 export { default as Login } from "./login";
 export { default as NotFound } from "./not-found";
-
-export { default as Home } from "./Home";
