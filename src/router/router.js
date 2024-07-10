@@ -8,6 +8,7 @@ import {
   Login,
   NotFound,
   User_Attend,
+  User_Commute,
   User_MyPage,
 } from "../pages";
 
@@ -46,6 +47,7 @@ const routes = {
 
   //user
   "/user/attend": User_Attend,
+  "/user/commute": User_Commute,
   "/user/my-page": User_MyPage,
 };
 

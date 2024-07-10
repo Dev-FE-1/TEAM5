@@ -39,17 +39,14 @@ export const init = () => {
 
   /**
    * addEventListener
-   * @check 
    * 리스트 수정버튼  click
    * 리스트 삭제버튼  click
    * 모달 수정버튼    click
    * 리스트 타입      change
    */
   const addListEvent = () => {
-    // 수정 버튼(open modal)
     document.querySelectorAll(`.${cx("btn-modify")}`).forEach(item => item.addEventListener('click', openModal));
 
-    // 삭제 버튼
     document.querySelectorAll(`.${cx("btn-delete")}`).forEach(item => item.addEventListener("click", deleteAttend));
 
     document.querySelector("#searchType").addEventListener("change", chgType);
@@ -65,9 +62,7 @@ export const init = () => {
 
     const apiResult = await remove({ attendId: id });
 
-    // @check 리로드 해
     if (apiResult?.status === "DELETE") reRender(pageProps);
-    // reRender(pageProps);
   };
 
   const chgType = (event) => {
@@ -155,7 +150,7 @@ export const init = () => {
             <button type="button" class="${cx(
               "modalBtn",
               "modifyBtn"
-            )}">${edit_icon()}수정</button>
+            )}">${edit_icon({})}수정</button>
           </div>
       </div>`;
   }
@@ -256,11 +251,11 @@ export const renderList = async (data = null, type = '', curPage = 1) => {
             <div class="${cx("request-content")}">${prop.content}</div>
             <div class="${cx("request-tools")}">
               <div class="${cx("request-btn", "btn-modify")}">
-                ${edit_icon('black')}
+                ${edit_icon({color: 'black'})}
               </div>
 
               <div class="${cx("request-btn", "btn-delete")}">
-                ${delete_icon('black')}
+                ${delete_icon({color: 'black'})}
               </div>
             </div>
           </div>`

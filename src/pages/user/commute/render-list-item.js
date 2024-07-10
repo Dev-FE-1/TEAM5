@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { fetchCommutes } from "../../../api/commuteApi";
+import { fetchCommutes, fetchCommutesByUserId } from "../../../api/commuteApi";
 import { delete_icon, edit_icon } from "../../../assets/icons";
 import { black } from "../../../constants/colors";
 import styles from "./commute.module.css";
@@ -7,9 +7,13 @@ import setCommuteStatus from "./setCommuteStatus";
 
 const cx = classNames.bind(styles);
 
+const loginUser = `kimpra2989`;
+
+
 const render_list_items = async (param = "all", from = "select") => {
   if (window.commuteData.length == 0) {
-    window.commuteData = await fetchCommutes();
+    window.commuteData = await fetchCommutesByUserId(`${loginUser}`);
+
     window.commuteData = window.commuteData.map((data) => ({
       ...data,
       status: setCommuteStatus(data.arriveTime, data.leaveTime),
@@ -37,8 +41,7 @@ const render_list_items = async (param = "all", from = "select") => {
       <div>${arriveTime}</div>
       <div>${leaveTime}</div>
       <div class="${cx("request-tools")}">
-        ${edit_icon({color: 'black'})}
-        ${delete_icon({color: 'black'})}
+        -
       </div>
     </div>
   `

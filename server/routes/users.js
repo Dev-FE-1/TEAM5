@@ -216,7 +216,6 @@ router.post("/login", (req, res) => {
  *         description: Bad request
  */
 router.post("/", (req, res) => {
-  console.log("post", req.body);
   const { userId, password, email, name, team, position, imgUrl } = req.body;
   // TODO: 중복 아이디가 있는지 먼저 확인
   const sql = `
