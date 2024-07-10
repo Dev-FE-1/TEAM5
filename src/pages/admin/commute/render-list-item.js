@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 import { fetchCommutes } from "../../../api/commuteApi";
 import { delete_icon, edit_icon } from "../../../assets/icons";
+import { black } from "../../../constants/colors";
 import styles from "./commute.module.css";
 import setCommuteStatus from "./setCommuteStatus";
 
@@ -36,8 +37,8 @@ const render_list_items = async (param = "all", from = "select") => {
       <div>${arriveTime}</div>
       <div>${leaveTime}</div>
       <div class="${cx("request-tools")}">
-        <img src=${edit_icon} class="${cx("icon")}" alt="edit-icon">
-        <img src=${delete_icon} class="${cx("icon")}" alt="delete-icon">
+        ${edit_icon(black)}
+        ${delete_icon(black)}
       </div>
     </div>
   `

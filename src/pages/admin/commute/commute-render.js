@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
+import { delete_icon, edit_icon, search_icon } from "../../../assets/icons";
+import { black } from "../../../constants/colors";
 import styles from "./commute.module.css";
-import { search_icon } from "../../../assets/icons";
 
 const cx = classNames.bind(styles);
 
@@ -11,7 +12,7 @@ const render = () => `
         <h1>출퇴근 관리(admin)</h1>
         <div class="${cx("search")}">
           <input type="text" placeholder="사원명" />
-          <img src=${search_icon} class="${cx("icon")}" alt='search-icon'>
+          ${search_icon()}
         </div>
       </div>
       <select>

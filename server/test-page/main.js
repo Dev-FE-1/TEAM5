@@ -135,8 +135,59 @@ const login = async () => {
   alert(resjson.message);
 };
 
-document.getElementById("req").addEventListener("click", login
-);
+const setProfileImage = async (userId) => {
+  const input = document.getElementById("input");
+  const profileImage = input.files[0];
+  const formData = new FormData();
+  formData.append('profile-image', profileImage); 
+
+  const res = await fetch(
+    `http://localhost:8080/api/users/${userId}/profile-image`,
+    {
+      method: "PUT",
+      body: formData,
+    }
+  );
+
+  if (!res.ok) {
+    console.log('not ok')
+    const responses = await res.json();
+    console.error("Error:", responses.message);
+    console.log("res", responses);
+    alert("error : " + responses.message);
+    return;
+  }
+
+  const resjson = await res.json();
+  console.log(resjson);
+  alert(resjson.message);
+};
+
+const deleteProfileImage = async (userId) => {
+  const res = await fetch(
+    `http://localhost:8080/api/users/${userId}/profile-image`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!res.ok) {
+    console.log('not ok')
+    const responses = await res.json();
+    console.error("Error:", responses.message);
+    console.log("res", responses);
+    alert("error : " + responses.message);
+    return;
+  }
+
+  const resjson = await res.json();
+  console.log(resjson);
+  alert(resjson.message);
+};
+
+document
+  .getElementById("req")
+  .addEventListener("click", async () => await setProfileImage("kimpra2989"));
 
 document
   .getElementById("fetch-user-info")
@@ -158,3 +209,8 @@ document
     const placeholder = "https://placehold.co/300x300";
     profile.setAttribute("src", imgUrl ?? placeholder);
   });
+
+const input = document.getElementById("input");
+input.addEventListener("change", () => {
+  console.log(input.files[0]);
+});

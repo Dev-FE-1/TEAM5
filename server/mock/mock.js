@@ -1,8 +1,10 @@
 import database from "../database.js";
-import mockUsers from "./user-data.js";
-import mockAttends from "./attend-data.js";
-import mockCommutes from "./commute-data.js";
-import mockNotices from "./notice-data.js";
+import {
+  mockUsers,
+  mockAttends,
+  mockCommutes,
+  mockNotices,
+} from "./data/index.js";
 
 // 모의 데이터 삽입 함수
 const insertMockData = async () => {
