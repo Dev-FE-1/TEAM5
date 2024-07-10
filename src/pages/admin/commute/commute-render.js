@@ -1,12 +1,11 @@
 import classNames from "classnames/bind";
-import { fetchCommutes } from "../../../api/commuteApi";
 import { delete_icon, edit_icon, search_icon } from "../../../assets/icons";
-import styles from "./commute.module.css";
 import { black } from "../../../constants/colors";
+import styles from "./commute.module.css";
 
 const cx = classNames.bind(styles);
 
-const render = async () => `
+const render = () => `
   <section class="${cx("container")}">
     <header class="${cx("header")}">
       <div class="${cx("header-title")}">
@@ -18,10 +17,10 @@ const render = async () => `
       </div>
       <select>
         <option value="all">모두 보기</option>
-        <option value="present">정상</option>
-        <option value="absent">결근</option>
-        <option value="late">지각</option>
-        <option value="early-leave">조퇴</option>
+        <option>정상</option>
+        <option>결근</option>
+        <option>지각</option>
+        <option>조퇴</option>
       </select>
     </header>
     <div class="${cx("requests")}">
@@ -33,28 +32,8 @@ const render = async () => `
         <div>퇴근 시간</div>
         <div>수정 / 삭제</div>
       </div>
-    ${await list_items()}    
-`;
-
-const list_items = async () => {
-  const res = await fetchCommutes();
-  return res
-    .map(
-      ({ userId, date, arriveTime, leaveTime }) => `
-    <div class="${cx("grid", "request-item")}">
-      <div>정상</div>
-      <div>${userId}</div>
-      <div>${date}</div>
-      <div>${arriveTime}</div>
-      <div>${leaveTime}</div>
-      <div class="${cx("request-tools")}">
-        ${edit_icon(black)}
-        ${delete_icon(black)}
+      <div class="${cx("request-item-container")}">
       </div>
-    </div>
-  `
-    )
-    .join("");
-};
+`;
 
 export default render;
