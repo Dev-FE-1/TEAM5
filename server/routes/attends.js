@@ -149,6 +149,43 @@ router.get("/:attendId", (req, res) => {
 
 /**
  * @swagger
+ * /api/attends/user/{userId}:
+ *   get:
+ *     summary: 특정유저의 근태 정보를 가져옵니다
+ *     tags: [Attends]
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         description: 사용자 ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 근태 정보
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Attends'
+ *       404:
+ *         description: 해당 근태 정보가 존재하지 않음
+ */
+router.get("/user/:userId", (req, res) => {
+  const { userId } = req.params;
+  const sql = `SELECT * FROM Attends WHERE userId = ?`;
+
+  db.all(sql, [userId], (err, rows) => {
+    if (err) return handleError(res, err);
+
+    res.json({
+      status: "OK",
+      data: rows,
+    });
+  });
+});
+
+/**
+ * @swagger
  * /api/attends:
  *   post:
  *     summary: 근태 정보를 등록합니다.
@@ -171,12 +208,12 @@ router.get("/:attendId", (req, res) => {
  */
 router.post("/", validateAttendData, (req, res) => {
   const { userId, subject, content, startDate, endDate, type } = req.body;
-
+  
   const sql = `
-    INSERT INTO Attends (userId, subject, content, startDate, endDate, type)
-    VALUES (?, ?, ?, ?, ?, ?)
+  INSERT INTO Attends (userId, subject, content, startDate, endDate, type)
+  VALUES (?, ?, ?, ?, ?, ?)
   `;
-
+  
   const params = [userId, subject, content, startDate, endDate, type];
 
   db.run(sql, params, (err) => {
