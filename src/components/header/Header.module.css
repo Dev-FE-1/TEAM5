@@ -23,9 +23,9 @@
     transition: color 0.2s ease-in-out;
 }
 
-.menu a[href="/user/my-page"] {
-    color: var(--primary);
-}
+/*.menu a[href="/user/my-page"] {*/
+/*    color: var(--primary);*/
+/*}*/
 
 .menu img {
     border-radius: 50%;
