@@ -39,17 +39,14 @@ export const init = () => {
 
   /**
    * addEventListener
-   * @check 
    * 리스트 수정버튼  click
    * 리스트 삭제버튼  click
    * 모달 수정버튼    click
    * 리스트 타입      change
    */
   const addListEvent = () => {
-    // 수정 버튼(open modal)
     document.querySelectorAll(`.${cx("btn-modify")}`).forEach(item => item.addEventListener('click', openModal));
 
-    // 삭제 버튼
     document.querySelectorAll(`.${cx("btn-delete")}`).forEach(item => item.addEventListener("click", deleteAttend));
 
     document.querySelector("#searchType").addEventListener("change", chgType);
