@@ -1,7 +1,6 @@
 import classNames from "classnames/bind";
 import { fetchCommutes } from "../../../api/commuteApi";
 import { delete_icon, edit_icon } from "../../../assets/icons";
-import { black } from "../../../constants/colors";
 import styles from "./commute.module.css";
 import setCommuteStatus from "./setCommuteStatus";
 

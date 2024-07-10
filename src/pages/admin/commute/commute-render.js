@@ -9,7 +9,7 @@ const render = () => `
   <section class="${cx("container")}">
     <header class="${cx("header")}">
       <div class="${cx("header-title")}">
-        <h1>출퇴근 관리(admin)</h1>
+        <h1>출퇴근 관리 (관리자)</h1>
         <div class="${cx("search")}">
           <input type="text" placeholder="사원명" />
           ${search_icon()}
