@@ -7,7 +7,7 @@ import setCommuteStatus from "./setCommuteStatus";
 
 const cx = classNames.bind(styles);
 
-const loginUser = `kimpra2989`;
+const loginUser = localStorage.getItem('loginUser') ?? `kimpra2989`;
 
 
 const render_list_items = async (param = "all", from = "select") => {

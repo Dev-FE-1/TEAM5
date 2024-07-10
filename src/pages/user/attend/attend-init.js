@@ -279,7 +279,6 @@ export const init = () => {
    * 리스트 render
    */
 export const renderList = async (data = null, type = '', curPage = 1) => {
-  localStorage.setItem('loginUser', 'kimisadev27');
 
   let renderData = data;
   if(!!!renderData) {
