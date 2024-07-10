@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+  justify-content: center;
   height: 100%;
+  width: 80%;
+  margin : auto;
 }
 
 /* 정보변경 버튼 */

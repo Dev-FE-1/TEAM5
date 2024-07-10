@@ -1,6 +1,6 @@
-import { white } from "../../constants/colors";
+import { black } from "../../constants/colors";
 
-const delete_icon = ({ color = white, size = "24px" }) => `
+const delete_icon = ({ color = black, size = "24px" }) => `
 <svg
   xmlns="http://www.w3.org/2000/svg"
   height="${size}"
