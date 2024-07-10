@@ -32,7 +32,7 @@ const init = async () => {
   const notices = noticesResponse.data.data;
   console.log("Notices", notices);
 
-  notices.slice(0, 3).forEach(({ imgUrl, subject, content, date }) => {
+  notices.slice(0, 5).forEach(({ imgUrl, subject, content, date }) => {
     const template = `
       <div class="${cx("notices-item")}">
         <img class="${cx("notices-image")}" 
