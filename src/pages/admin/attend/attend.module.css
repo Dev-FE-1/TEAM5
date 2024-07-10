@@ -227,15 +227,6 @@ header svg {
   right: 5%;
   cursor: pointer;
 }
-.closeIcon {
-  background-image: url("./../../../assets/icons/close_primary.svg");
-}
-.modifyIcon {
-  background-image: url("./../../../assets/icons/edit_white.svg");
-}
-.deleteIcon {
-  background-image: url("./../../../assets/icons/delete_white.svg");
-}
 
 .formItem {
   display: inline-grid;
