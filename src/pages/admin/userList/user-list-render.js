@@ -5,10 +5,17 @@ const cx = classNames.bind(styles);
 
 const render = () => `
 <section>
-    <!-- 등록 -->
-    <button class="${cx("add-button")}">
-        직원 등록
-    </button>
+    <header class="${cx('main-content-header')}">
+        <div class="${cx('header-title')}">
+            <h1 >직원정보 (관리자)</h1>
+        </div>
+        <div class="${cx('header-sub')}">
+
+            <!-- 등록 -->
+            <button class="${cx("add-button")}">직원 등록</button>
+        </div>
+    </header>
+    
     <!-- 프로필카드 전체 박스 -->
     <div class="${cx("container")}" id="profile-container">
     <!-- 기존 프로필 카드가 여기 렌더링될 것입니다 -->

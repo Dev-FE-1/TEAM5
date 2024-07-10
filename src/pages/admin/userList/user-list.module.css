@@ -7,6 +7,7 @@
   border: none;
   border-radius: 4px;
   color: white;
+  cursor: pointer;
 }
 
 /* 기본 스타일 */
@@ -182,4 +183,37 @@
 .info-item label {
   display: inline-block;
   width: 100px;
+}
+
+
+/* header */
+.main-content-header {
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 20px;
+
+}
+
+.header-title {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: var(--primary-300);
+  font-weight: 500;
+}
+
+.header-sub {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-content-header .add-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }

@@ -2,7 +2,6 @@ import { Layout } from "../components";
 import {
   Admin_Attend,
   Admin_Commute,
-  Admin_Notice,
   Admin_UserList,
   Admin_UserProfile,
   Login,
@@ -41,7 +40,6 @@ const routes = {
   //admin
   "/admin/attend": Admin_Attend,
   "/admin/commute": Admin_Commute,
-  "/admin/notice": Admin_Notice,
   "/admin/users": Admin_UserList,
   "/admin/users/profile/": Admin_UserProfile,
 
