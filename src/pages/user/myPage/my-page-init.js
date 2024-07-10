@@ -144,17 +144,20 @@ const init = async () => {
     //          time1     time2
     // ing -> 현재시간 - 출근시간
     // after -> 퇴근시간 - 출근시간
+    
     let time1 = 0;
     if(commute == 'ing') {
       time1 = hours * 3600 + minutes * 60 + seconds;
     } else if (commute == 'after') {
       const [lHour, lMin, lSec] = row.leaveTime?.split(':');
-      time1 = Number(lHour) * 3600 + Number(lMin) * 60 + Number(lSec);
+      time1 = Number(lHour ?? 0) * 3600 + Number(lMin ?? 0) * 60 + (Number(lSec ?? 0));
     }
     
     const [aHour, aMin, aSec] = row.arriveTime?.split(':');
-    const time2 = Number(aHour) * 3600 + Number(aMin) * 60 + Number(aSec);
+    const time2 = Number(aHour ?? 0) * 3600 + Number(aMin ?? 0) * 60 + (Number(aSec ?? 0));
 
+
+    console.log(row, time1, time2);
     // 계산된 시간 출력
     timer.innerText = formatTime(time1 - time2);
   }
