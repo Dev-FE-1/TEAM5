@@ -8,7 +8,6 @@ const attendURL = baseURL + '/api/attends';
 export const findAll = async () => {
   try {
     const {data} = await axios.get(attendURL);
-    console.log(data);
 
     return data;
   } catch(err) {

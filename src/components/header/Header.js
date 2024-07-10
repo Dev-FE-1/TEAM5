@@ -22,6 +22,7 @@ const Header = () => {
   // 일반 사용자용 메뉴 항목
   const userMenu = `
     <a href="/user/attend">근태현황</a>
+    <a href="/user/commute">출퇴근현황</a>
     <a href="/user/my-page">마이페이지</a>
   `;
   const menuItems = isAdmin() ? adminMenu : userMenu;

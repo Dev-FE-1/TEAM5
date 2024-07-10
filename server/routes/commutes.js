@@ -110,14 +110,14 @@ router.get("/", (req, res) => {
 
 /**
  * @swagger
- * /api/commutes/{commuteId}:
+ * /api/commutes/{userId}:
  *   get:
- *     summary: ID로 특정 출퇴근 기록을 조회합니다
+ *     summary: userID로 특정 사용자의 출퇴근 기록을 조회합니다
  *     tags: [Commutes]
  *     parameters:
  *       - name: commuteId
  *         in: path
- *         description: 출퇴근 ID
+ *         description: 사용자 ID
  *         required: true
  *         schema:
  *           type: integer
@@ -131,12 +131,12 @@ router.get("/", (req, res) => {
  *       404:
  *         description: 출퇴근 기록을 찾을 수 없음
  */
-router.get("/:commuteId", (req, res) => {
-  const { commuteId } = req.params;
+router.get("/:userId", (req, res) => {
+  const { userId } = req.params;
 
-  const sql = `SELECT * FROM Commutes WHERE id = ?`;
+  const sql = `SELECT * FROM Commutes WHERE userId = ?`;
 
-  db.get(sql, [commuteId], (err, row) => {
+  db.all(sql, [userId], (err, row) => {
     if (err) return handleError(res, err);
 
     if (!row)
