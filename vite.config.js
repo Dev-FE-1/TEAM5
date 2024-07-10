@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
+import svgr from 'vite-plugin-svgr';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
@@ -10,5 +10,6 @@ export default defineConfig({
         secure: false,
       }
     }
-  }
+  },
+  plugins: [svgr()],
 })
