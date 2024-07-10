@@ -1,0 +1,35 @@
+.lottie-container {
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
+}
+
+.message {
+  text-align: center;
+  font-size: 32px;
+}
+
+.emotion-container {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.emotion {
+  width: fit-content;
+  animation-name: rotate;
+  animation-duration: .7s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  margin-left: auto;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
