@@ -27,7 +27,7 @@ async function router() {
 
   const { render, init } = routes[path] ?? NotFound;
 
-  root.innerHTML = path !== "/login" ? Layout(await render()) : render();
+  root.innerHTML = path !== "/" ? Layout(await render()) : render();
 
   if (init) {
     init(props?.param);
