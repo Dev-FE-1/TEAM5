@@ -16,8 +16,8 @@ const init = () => {
   });
 
   //검색어에 따른 필터링
-  const searchInput = document.querySelector(`.${cx("search")}`);
-  const searchIcon = document.querySelector(`.${cx("search")} img`);
+  const searchInput = document.querySelector(`.${cx("search")} input`);
+  const searchIcon = document.querySelector(`.${cx("search")} svg`);
 
   searchIcon.addEventListener("click", () => {
     const search_keyword = searchInput.value;
