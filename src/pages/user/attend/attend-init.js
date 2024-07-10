@@ -126,7 +126,7 @@ export const init = () => {
     return openType == 'modify' ?
       `<div class="${cx("modifyForm")}">
           <div class="${cx("closeBtn", "icon")}">
-            ${close_icon('black')}
+            ${close_icon({color: 'black', size: '24px'})}
           </div>
           <h2>근태 상세조회</h2>
           <input type='hidden' id='attendId'/>
@@ -166,7 +166,7 @@ export const init = () => {
       : 
       `<div class="${cx("modifyForm")}">
         <div class="${cx("closeBtn", "icon")}">
-          ${close_icon('black')}
+        ${close_icon({color: 'black', size: '24px'})}
         </div>
         <h2>근태 등록</h2>
         <input type='hidden' id='attendId'/>

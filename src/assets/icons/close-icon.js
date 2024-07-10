@@ -1,6 +1,4 @@
-import { white } from "../../constants/colors";
-
-const close_icon = (color = "#999999", size = '24px') => `
+const close_icon = ({color = "#999999", size = '24px'}) => `
 <svg
   xmlns="http://www.w3.org/2000/svg"
   height='${size}'
