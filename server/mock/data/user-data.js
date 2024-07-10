@@ -1,6 +1,16 @@
 import { HOST } from "../../constants.js";
 const mockUsers = [
   {
+    userId: "admin",
+    password: "admin",
+    email: "admin@example.com",
+    name: "관리자",
+    team: "Admin",
+    position: "Admin",
+    imgUrl: null,
+    isAdmin: true,
+  },
+  {
     userId: "kimisadev27",
     password: "password1",
     email: "kimisadev27@example.com",

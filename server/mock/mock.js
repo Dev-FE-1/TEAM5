@@ -12,8 +12,8 @@ const insertMockData = async () => {
     // user data
     for (const user of mockUsers) {
       const sql = `
-        INSERT INTO Users (userId, password, email, name, team, position, imgUrl)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO Users (userId, password, email, name, team, position, imgUrl, isAdmin)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `;
       database.run(sql, [
         user.userId,
@@ -23,6 +23,7 @@ const insertMockData = async () => {
         user.team,
         user.position,
         user.imgUrl,
+        user.isAdmin ? user.isAdmin : false,
       ]);
     }
 
