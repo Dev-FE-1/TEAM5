@@ -43,7 +43,7 @@ const mockUsers = [
     name: "이연지",
     team: "Design",
     position: "FE-Developer",
-    imgUrl: `${HOST}/profile/panda.raccoon.jpg`,
+    imgUrl: `${HOST}/profile/panda-raccoon.jpg`,
   },
   // 25 more users with variations
   {
