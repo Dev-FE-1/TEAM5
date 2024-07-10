@@ -5,17 +5,13 @@ const cx = classNames.bind(styles);
 
 const placeholder = "https://via.placeholder.com/100";
 
-
 function isAdmin() { // 관리자 여부 확인
   const path = window.location.pathname;
-  console.log(path)
   // 실제 사용자 인증 로직으로 교체
-  return path.includes('/admin')
+  return path.includes('/admin');
 }
 
 const Header = () => {
-  console.log(isAdmin())
-
   // 관리자용 메뉴 항목
   const adminMenu = `
     <a href="/admin/notice">공지사항</a>
@@ -29,7 +25,7 @@ const Header = () => {
     <a href="/user/attend">근태현황</a>
     <a href="/user/my-page">마이페이지</a>
   `;
-  const menuItems = isAdmin ? adminMenu : userMenu;
+  const menuItems = isAdmin() ? adminMenu : userMenu;
 
   return `
     <header class="${cx("header")}">
