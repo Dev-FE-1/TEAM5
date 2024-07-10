@@ -1,7 +1,7 @@
 import { findAll, findOne, modify, remove } from "../../../api/attendApi";
 import styles from "./attend.module.css";
 import classNames from "classnames/bind";
-import { delete_icon, edit_icon } from "../../../assets/icons";
+import { close_icon, delete_icon, edit_icon } from "../../../assets/icons";
 
 const cx = classNames.bind(styles);
 
@@ -120,7 +120,9 @@ export const init = () => {
   const renderModal = () => {
     return `
         <div class="${cx("modifyForm")}">
-          <div class="${cx("closeBtn", "icon", "closeIcon")}"></div>
+          <div class="${cx("closeBtn", "icon")}">
+            ${close_icon({color: 'black', size: '24px'})}
+          </div>
           <h2>근태 상세조회</h2>
           <input type='hidden' id='attendId'/>
           <input type="hidden" id="userId" />
@@ -153,7 +155,7 @@ export const init = () => {
             <button type="button" class="${cx(
               "modalBtn",
               "modifyBtn"
-            )}"><div class="${cx("icon", "modifyIcon")}"></div>수정</button>
+            )}">${edit_icon()}수정</button>
           </div>
       </div>`;
   }
@@ -254,11 +256,11 @@ export const renderList = async (data = null, type = '', curPage = 1) => {
             <div class="${cx("request-content")}">${prop.content}</div>
             <div class="${cx("request-tools")}">
               <div class="${cx("request-btn", "btn-modify")}">
-                ${edit_icon()}
+                ${edit_icon('black')}
               </div>
 
               <div class="${cx("request-btn", "btn-delete")}">
-                ${delete_icon()}
+                ${delete_icon('black')}
               </div>
             </div>
           </div>`
