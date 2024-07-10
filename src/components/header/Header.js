@@ -15,7 +15,7 @@ const Header = () => {
   // 관리자용 메뉴 항목
   const adminMenu = `
     <a href="/admin/notice">공지사항</a>
-    <a href="/admin/user-list">직원정보</a>
+    <a href="/admin/users">직원정보</a>
     <a href="/admin/attend">근태관리</a>
     <a href="/admin/commute">출퇴근관리</a>
   `;
