@@ -5,7 +5,7 @@ import styles from "./user-list.module.css";
 const cx = classNames.bind(styles);
 
 const init = () => {
-  const profilesPerPage = 16;
+  const profilesPerPage = 12;
   let currentPage = 1;
   const pagesToShow = 5;
   let profileData = [];
