@@ -179,7 +179,6 @@ router.post("/login", (req, res) => {
 
     const isAdmin = userId === "admin";
 
-
     res.json({
       status: SUCCESS_STATUS,
       message: "로그인 성공",
@@ -354,28 +353,18 @@ router.put(
  */
 router.put("/:userId", validateUserData, (req, res) => {
   const { userId } = req.params;
-  const { password, email, name, team, position, imgUrl } = req.body;
+  const { password, email, name, team, position } = req.body;
+const updateSql = `
+  UPDATE Users SET 
+    password = ?,
+    email = ?,
+    name = ?,
+    team = ?,
+    position = ?
+  WHERE userId = ?;
+`;
 
-  const updateSql = `
-    UPDATE Users SET 
-      password = $password,
-      email = $email,
-      name = $name,
-      team = $team,
-      position = $position,
-      imgUrl = $imgUrl
-    WHERE userId = $userId
-  `;
-
-  const params = {
-    $password: password,
-    $email: email,
-    $name: name,
-    $team: team,
-    $position: position,
-    $imgUrl: imgUrl,
-    $userId: userId,
-  };
+  const params = [password, email, name, team, position, userId];
 
   db.run(updateSql, params, (err) => {
     if (err) return handleError(res, err);

@@ -16,13 +16,6 @@ const render = () => `
         <div class="${cx("modal-content")}">
             <span class="${cx("close")}">&times;</span>
 
-            <div class="${cx("image-container")}">
-                <img id="modal-profile-picture" src="${placeholder}" alt="Profile Picture">
-                <div class="${cx("button-container")}">
-                    <input type="file" id="modal-image" accept="image/*">
-                    <button id="delete-image" class="${cx("delete-image")}">이미지 삭제</button>
-                </div>
-            </div>
             <div class="${cx("info-item")}">
                 <label for="modal-name">이름:</label>
                 <input type="text" id="modal-name">

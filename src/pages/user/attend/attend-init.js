@@ -1,7 +1,18 @@
-import { create, findAllByUserId, findOne, modify, remove } from "../../../api/attendApi";
+import {
+  create,
+  findAllByUserId,
+  findOne,
+  modify,
+  remove,
+} from "../../../api/attendApi";
 import styles from "./attend.module.css";
 import classNames from "classnames/bind";
-import { add_icon, close_icon, delete_icon, edit_icon } from "../../../assets/icons";
+import {
+  add_icon,
+  close_icon,
+  delete_icon,
+  edit_icon,
+} from "../../../assets/icons";
 
 const cx = classNames.bind(styles);
 
@@ -10,28 +21,27 @@ const SELECTOR = {
   paginationDiv: "pagination",
 };
 
-
 const LIST_PROPS = {
   data: null,
-  type: '',
+  type: "",
   curPage: 1,
   curDataLength: 0,
-}
+};
 
 let pageProps = LIST_PROPS;
 
 export const init = () => {
-
   /* -------------함수 정의 --------------*/
   /**
    * 재 렌더링
    */
-  const reRender = async ({data, type, curPage} = LIST_PROPS) => {
-    
+  const reRender = async ({ data, type, curPage } = LIST_PROPS) => {
     const listDiv = document.querySelector(`.${cx(SELECTOR.listDiv)}`);
     listDiv.innerHTML = await renderList(data, type, curPage);
-    
-    const paginationDiv = document.querySelector(`.${cx(SELECTOR.paginationDiv)}`);
+
+    const paginationDiv = document.querySelector(
+      `.${cx(SELECTOR.paginationDiv)}`
+    );
     paginationDiv.innerHTML = renderPagination();
 
     addListEvent();
@@ -45,15 +55,27 @@ export const init = () => {
    * 리스트 타입      change
    */
   const addListEvent = () => {
-    document.querySelectorAll(`.${cx("btn-modify")}`).forEach(item => item.addEventListener('click', openModal));
+    document
+      .querySelectorAll(`.${cx("btn-modify")}`)
+      .forEach((item) => item.addEventListener("click", openModal));
 
-    document.querySelectorAll(`.${cx("btn-delete")}`).forEach(item => item.addEventListener("click", deleteAttend));
+    document.querySelectorAll(`.${cx("btn-delete")}`).forEach((item) =>
+      item.addEventListener("click", (e) => {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          deleteAttend(e);
+        }
+      })
+    );
 
     document.querySelector("#searchType").addEventListener("change", chgType);
 
-    document.querySelectorAll(`.${cx("pageNum")}`).forEach( item => item.addEventListener("click", chgPage));
+    document
+      .querySelectorAll(`.${cx("pageNum")}`)
+      .forEach((item) => item.addEventListener("click", chgPage));
 
-    document.querySelector(`.${cx('createBtn')} button`).addEventListener('click', openModal);
+    document
+      .querySelector(`.${cx("createBtn")} button`)
+      .addEventListener("click", openModal);
   };
 
   /* 버튼동작 */
@@ -73,57 +95,65 @@ export const init = () => {
     pageProps = {
       ...pageProps,
       type: curType,
-      curPage: 1
-    }
+      curPage: 1,
+    };
 
-    reRender( pageProps );
+    reRender(pageProps);
   };
 
   const chgPage = (event) => {
     const curPage = event.target.innerText;
     pageProps = {
       ...pageProps,
-      curPage: curPage
-    }
-    reRender( pageProps );
+      curPage: curPage,
+    };
+    reRender(pageProps);
   };
 
   const renderPagination = () => {
     const totalPageNum = Math.ceil(pageProps.curDataLength / 10);
 
     const pagination = [];
-    for(let i = 1; i <= totalPageNum; i++) {
-      pagination.push(`<div class='${cx('pageNum', i == pageProps?.curPage && 'curPage')}'>${i}</div>`);
+    for (let i = 1; i <= totalPageNum; i++) {
+      pagination.push(
+        `<div class='${cx(
+          "pageNum",
+          i == pageProps?.curPage && "curPage"
+        )}'>${i}</div>`
+      );
     }
 
-    return pagination.join('');
-  }
+    return pagination.join("");
+  };
 
   const openModal = async (event) => {
-    const modalContainer = document.querySelector(`.${cx('modal-container')}`);
-    const openType = event.target.closest(`div`).querySelector(`#openType`).value;
-    modalContainer.innerHTML = renderModal({type: openType});
+    const modalContainer = document.querySelector(`.${cx("modal-container")}`);
+    const openType = event.target
+      .closest(`div`)
+      .querySelector(`#openType`).value;
+    modalContainer.innerHTML = renderModal({ type: openType });
 
-    
-    modalContainer.classList.remove(`${cx('disappear')}`);
-    modalContainer.classList.add(`${cx('appear')}`);
-    
-    if(openType == 'modify') {
-      const id = event.target.closest(`div.${cx('list-item')}`).querySelector(`.${cx('attendId')}`).value;
-      const {status, data} = await findOne({attendId: id});
-      if(status === 'OK') setModifyData({data: data, obj: modalContainer});
-    } 
+    modalContainer.classList.remove(`${cx("disappear")}`);
+    modalContainer.classList.add(`${cx("appear")}`);
 
-    addModalEvent({type: openType});
-  }
+    if (openType == "modify") {
+      const id = event.target
+        .closest(`div.${cx("list-item")}`)
+        .querySelector(`.${cx("attendId")}`).value;
+      const { status, data } = await findOne({ attendId: id });
+      if (status === "OK") setModifyData({ data: data, obj: modalContainer });
+    }
 
-  const renderModal = ({type: openType}) => {
-    return openType == 'modify' ?
-      `<div class="${cx("modifyForm")}">
+    addModalEvent({ type: openType });
+  };
+
+  const renderModal = ({ type: openType }) => {
+    return openType == "modify"
+      ? `<div class="${cx("modifyForm")}">
           <div class="${cx("closeBtn", "icon")}">
-            ${close_icon({color: 'black', size: '24px'})}
+            ${close_icon({ color: "black", size: "24px" })}
           </div>
-          <h2>근태 상세조회</h2>
+          <h2>근태 수정</h2>
           <input type='hidden' id='attendId'/>
           <input type="hidden" id="userId" />
           <div class="${cx("formItem", "able-item", "item2")}">
@@ -155,13 +185,12 @@ export const init = () => {
             <button type="button" class="${cx(
               "modalBtn",
               "modifyBtn"
-            )}">${edit_icon({color: 'white'})}수정</button>
+            )}">${edit_icon({ color: "white" })}수정</button>
           </div>
       </div>`
-      : 
-      `<div class="${cx("modifyForm")}">
+      : `<div class="${cx("modifyForm")}">
         <div class="${cx("closeBtn", "icon")}">
-        ${close_icon({color: 'black', size: '24px'})}
+        ${close_icon({ color: "black", size: "24px" })}
         </div>
         <h2>근태 등록</h2>
         <input type='hidden' id='attendId'/>
@@ -181,7 +210,7 @@ export const init = () => {
         </div>
         <div class="${cx("formItem", "item2")}">
           <span>사원명</span>
-          <span id='modal-userId'>${localStorage.getItem('loginUser')}</span>
+          <span id='modal-userId'>${localStorage.getItem("loginUser")}</span>
         </div>
         <div class="${cx("formItem", "item2")}">
           <span >제목</span>
@@ -192,26 +221,33 @@ export const init = () => {
           <input type='text' placeholder='내용' id='modal-content' />
         </div>
         <div class="${cx("btnWrap")}">
-          <button type="button" class="${cx("modalBtn","addBtn")}">
-            ${add_icon({color: 'white', size: '24px'})}등록
+          <button type="button" class="${cx("modalBtn", "addBtn")}">
+            ${add_icon({ color: "white", size: "24px" })}등록
           </button>
         </div>
-      </div>`
-      ;
-  }
+      </div>`;
+  };
 
   const removeModal = (modalContainer) => {
-    modalContainer.innerHTML = '';
-  }
+    modalContainer.innerHTML = "";
+  };
 
-  const addModalEvent = ({type: openType}) => {
-    const closeBtn = document.querySelector(`.${cx('closeBtn')}`).addEventListener('click', closeModal);
-  
-    openType == 'modify' && document.querySelector(`.${cx('modifyBtn')}`).addEventListener('click', modifyAttend);
-    openType == 'add' && document.querySelector(`.${cx('addBtn')}`).addEventListener('click', addAttend);
-  }
+  const addModalEvent = ({ type: openType }) => {
+    const closeBtn = document
+      .querySelector(`.${cx("closeBtn")}`)
+      .addEventListener("click", closeModal);
 
-  const setModifyData = ({data: attendData, obj: container}) => {
+    openType == "modify" &&
+      document
+        .querySelector(`.${cx("modifyBtn")}`)
+        .addEventListener("click", modifyAttend);
+    openType == "add" &&
+      document
+        .querySelector(`.${cx("addBtn")}`)
+        .addEventListener("click", addAttend);
+  };
+
+  const setModifyData = ({ data: attendData, obj: container }) => {
     container.querySelector(`#attendId`).value = attendData.id;
     container.querySelector(`#modal-type`).value = attendData.type;
     container.querySelector(`#modal-startDate`).value = attendData.startDate;
@@ -219,89 +255,92 @@ export const init = () => {
     container.querySelector(`#modal-userId`).innerText = attendData.userId;
     container.querySelector(`#modal-subject`).innerText = attendData.subject;
     container.querySelector(`#modal-content`).innerText = attendData.content;
-  }
+  };
 
   const closeModal = (event) => {
-    const container = document.querySelector(`.${cx('modal-container')}`);
-    container.classList.remove(`${cx('appear')}`);
-    container.classList.add(`${cx('disappear')}`);
+    const container = document.querySelector(`.${cx("modal-container")}`);
+    container.classList.remove(`${cx("appear")}`);
+    container.classList.add(`${cx("disappear")}`);
 
     removeModal(container);
-  }
-  
+  };
+
   const modifyAttend = async (event) => {
-    const container = document.querySelector(`.${cx('modal-container')}`);
-  
+    const container = document.querySelector(`.${cx("modal-container")}`);
+
     const props = {
-      attendId: container.querySelector('#attendId').value,
+      attendId: container.querySelector("#attendId").value,
       type: container.querySelector(`#modal-type`).value,
-      startDate: container.querySelector('#modal-startDate').value,
-      endDate: container.querySelector('#modal-endDate').value,
-      userId: container.querySelector('#modal-userId').innerText,
-      subject: container.querySelector('#modal-subject').innerText,
-      content: container.querySelector('#modal-content').innerText,
-    }
-  
+      startDate: container.querySelector("#modal-startDate").value,
+      endDate: container.querySelector("#modal-endDate").value,
+      userId: container.querySelector("#modal-userId").innerText,
+      subject: container.querySelector("#modal-subject").innerText,
+      content: container.querySelector("#modal-content").innerText,
+    };
+
     const apiResult = await modify(props);
-  
-    if(apiResult.status === "UPDATE") {
+
+    if (apiResult.status === "UPDATE") {
       closeModal();
       reRender(pageProps);
     }
-  }
+  };
 
   // 등록, 등록후 리렌더링
   const addAttend = async (event) => {
-    const container = document.querySelector(`.${cx('modal-container')}`);
-  
+    const container = document.querySelector(`.${cx("modal-container")}`);
+
     const props = {
-      attendId: container.querySelector('#attendId').value,
+      attendId: container.querySelector("#attendId").value,
       type: container.querySelector(`#modal-type`).value,
-      startDate: container.querySelector('#modal-startDate').value,
-      endDate: container.querySelector('#modal-endDate').value,
-      userId: container.querySelector('#modal-userId').innerText,
-      subject: container.querySelector('#modal-subject').value,
-      content: container.querySelector('#modal-content').value,
-    }
-  
+      startDate: container.querySelector("#modal-startDate").value,
+      endDate: container.querySelector("#modal-endDate").value,
+      userId: container.querySelector("#modal-userId").innerText,
+      subject: container.querySelector("#modal-subject").value,
+      content: container.querySelector("#modal-content").value,
+    };
+
     const apiResult = await create(props);
-  
-    if(apiResult.status === "REGISTER") {
+
+    if (apiResult.status === "REGISTER") {
       closeModal();
       reRender(pageProps);
     }
-  }
+  };
 
   reRender(pageProps);
 };
 
 /**
-   * 리스트 render
-   */
-export const renderList = async (data = null, type = '', curPage = 1) => {
-
+ * 리스트 render
+ */
+export const renderList = async (data = null, type = "", curPage = 1) => {
   let renderData = data;
-  if(!!!renderData) {
-    const {data: findAllData} = await findAllByUserId({userId: localStorage.getItem('loginUser')});
+  if (!!!renderData) {
+    const { data: findAllData } = await findAllByUserId({
+      userId: localStorage.getItem("loginUser"),
+    });
     renderData = findAllData;
   }
 
   // 타입검색
-  !!type && (renderData = await renderData.filter(item => item.type==`${type}`));
+  !!type &&
+    (renderData = await renderData.filter((item) => item.type == `${type}`));
 
   pageProps = {
     ...pageProps,
     curDataLength: renderData.length,
-  }
+  };
   // 페이지네이션
-  renderData = await renderData.filter((_, index) => index >= ((curPage-1)*10 ) && index < (curPage*10));
-
+  renderData = await renderData.filter(
+    (_, index) => index >= (curPage - 1) * 10 && index < curPage * 10
+  );
 
   const html = [];
-  renderData?.length > 0 ? 
-    (renderData?.map((prop) => {
-      html.push(
-        `<div class='${cx("list-item")}'>
+  renderData?.length > 0
+    ? renderData?.map((prop) => {
+        html.push(
+          `<div class='${cx("list-item")}'>
             <input 
               type='hidden' 
               id='attendId-${prop.id}' 
@@ -321,16 +360,17 @@ export const renderList = async (data = null, type = '', curPage = 1) => {
             <div class="${cx("request-tools")}">
               <div class="${cx("request-btn", "btn-modify")}">
                 <input type='hidden' id='openType' value='modify' />
-                ${edit_icon({color: 'black'})}
+                ${edit_icon({ color: "black" })}
               </div>
 
               <div class="${cx("request-btn", "btn-delete")}">
-                ${delete_icon('black')}
+                ${delete_icon("black")}
               </div>
             </div>
           </div>`
-      );
-    })) : ('<div>No DataList</div>');
+        );
+      })
+    : "<div>No DataList</div>";
   return html.join("");
 };
 

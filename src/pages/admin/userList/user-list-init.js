@@ -1,5 +1,6 @@
 import axios from "axios";
 import classNames from "classnames/bind";
+import { host } from "../../../constants/host";
 import { placeholder } from "../../../constants/place-holder";
 import styles from "./user-list.module.css";
 
@@ -12,7 +13,7 @@ const init = () => {
   let profileData = [];
 
   async function fetchProfiles() {
-    const response = await axios.get("http://localhost:8080/api/users");
+    const response = await axios.get(`${host}/api/users`);
     console.log("API Response:", response.data);
     return response.data.data;
   }
@@ -24,30 +25,30 @@ const init = () => {
     profileCard.dataset.userid = userId;
 
     profileCard.innerHTML = `
-            <button class="${cx("close-button")}" title="Remove">×</button>
-            <img src="${imgUrl ?? placeholder}" alt="Profile Picture">
-            <div class="${cx("info")}">
-                <div class="${cx("info-item")}">
-                    <span class="${cx("label")}">이름 :</span>
-                    <span class="${cx("value")}">${name}</span>
-                </div>
-                <div class="${cx("info-item")}">
-                    <span class="${cx("label")}">사번 :</span>
-                    <span class="${cx("value")}">${userId}</span>
-                </div>
-                <div class="${cx("info-item")}">
-                    <span class="${cx("label")}">팀 :</span>
-                    <span class="${cx("value")}">${team}</span>
-                </div>
-                <div class="${cx("info-item")}">
-                    <span class="${cx("label")}">직급 :</span>
-                    <span class="${cx("value")}">${position}</span>
-                </div>
-                <div class="${cx("info-item")}">
-                    <span class="${cx("label")}">이메일 :</span>
-                    <span class="${cx("value")}">${email}</span>
-                </div>
-            </div>
+      <button class="${cx("close-button")}" title="Remove">×</button>
+      <img src="${imgUrl ?? placeholder}" alt="Profile Picture">
+      <div class="${cx("info")}">
+          <div class="${cx("info-item")}">
+              <span class="${cx("label")}">이름 :</span>
+              <span class="${cx("value")}">${name}</span>
+          </div>
+          <div class="${cx("info-item")}">
+              <span class="${cx("label")}">사번 :</span>
+              <span class="${cx("value")}">${userId}</span>
+          </div>
+          <div class="${cx("info-item")}">
+              <span class="${cx("label")}">팀 :</span>
+              <span class="${cx("value")}">${team}</span>
+          </div>
+          <div class="${cx("info-item")}">
+              <span class="${cx("label")}">직급 :</span>
+              <span class="${cx("value")}">${position}</span>
+          </div>
+          <div class="${cx("info-item")}">
+              <span class="${cx("label")}">이메일 :</span>
+              <span class="${cx("value")}">${email}</span>
+          </div>
+      </div>
         `;
 
     return profileCard;
@@ -156,17 +157,12 @@ const init = () => {
   }
 
   async function saveProfileToServer(profile) {
-    const response = await axios.post(
-      "http://localhost:8080/api/users",
-      profile
-    );
+    const response = await axios.post(`${host}/api/users`, profile);
     console.log("Profile saved:", response.data);
   }
 
   async function deleteProfileFromServer(userId) {
-    const response = await axios.delete(
-      `http://localhost:8080/api/users/${userId}`
-    );
+    const response = await axios.delete(`${host}/api/users/${userId}`);
     console.log("Profile deleted:", response.data);
     return response;
   }
@@ -179,6 +175,8 @@ const init = () => {
 
       if (e.target.classList.contains(cx("close-button"))) {
         e.stopPropagation();
+        if (!confirm("정말 삭제하시겠습니까?")) return;
+        
         try {
           const response = await deleteProfileFromServer(userId);
           alert(response.data.message);

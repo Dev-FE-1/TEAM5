@@ -1,4 +1,4 @@
-import {HOST} from "../../constants.js";
+import { HOST } from "../../constants.js";
 
 const mockUsers = [
   {
@@ -13,7 +13,7 @@ const mockUsers = [
   },
   {
     userId: "kimisadev27",
-    password: "password1",
+    password: "pw1",
     email: "kimisadev27@example.com",
     name: "김성현",
     team: "Development",
@@ -22,7 +22,7 @@ const mockUsers = [
   },
   {
     userId: "kimpra2989",
-    password: "password2",
+    password: "pw2",
     email: "kimpra2989@example.com",
     name: "강호연",
     team: "Marketing",
@@ -31,7 +31,7 @@ const mockUsers = [
   },
   {
     userId: "lovelace",
-    password: "password3",
+    password: "pw3",
     email: "lovelace@example.com",
     name: "김동영",
     team: "Engineering",
@@ -325,7 +325,7 @@ const mockUsers = [
     team: "Engineering",
     position: "DevOps Engineer",
     imgUrl: null,
-  }
+  },
 ];
 
 export default mockUsers;
