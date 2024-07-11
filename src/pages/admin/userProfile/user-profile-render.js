@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import { placeholder } from "../../../constants/place-holder";
 import styles from "./user-profile.module.css";
 
 const cx = classNames.bind(styles);
@@ -16,7 +17,7 @@ const render = () => `
             <span class="${cx("close")}">&times;</span>
 
             <div class="${cx("image-container")}">
-                <img id="modal-profile-picture" src="https://via.placeholder.com/100" alt="Profile Picture">
+                <img id="modal-profile-picture" src="${placeholder}" alt="Profile Picture">
                 <div class="${cx("button-container")}">
                     <input type="file" id="modal-image" accept="image/*">
                     <button id="delete-image" class="${cx("delete-image")}">이미지 삭제</button>

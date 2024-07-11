@@ -4,6 +4,7 @@ import {
   editProfileImage,
 } from "../../../api/profile-imageAPI";
 import { fetchUser } from "../../../api/userApi";
+import { placeholder } from "../../../constants/place-holder";
 import getUserId from "./getUserId";
 import styles from "./user-profile.module.css";
 
@@ -14,7 +15,6 @@ async function init() {
 
   const render = async () => {
     const { imgUrl, name, team, position, email } = await fetchUser(userId);
-    const placeholder = "https://via.placeholder.com/250x300";
     const template = `
       <div class="${cx("image-container")}">
           <img id="profile-picture" src="${

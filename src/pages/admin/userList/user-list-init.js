@@ -1,5 +1,6 @@
 import axios from "axios";
 import classNames from "classnames/bind";
+import { placeholder } from "../../../constants/place-holder";
 import styles from "./user-list.module.css";
 
 const cx = classNames.bind(styles);
@@ -18,7 +19,6 @@ const init = () => {
 
   function createProfileCard(profile) {
     const { imgUrl, name, userId, team, position, email } = profile;
-    const placeholder = "https://via.placeholder.com/100";
     const profileCard = document.createElement("div");
     profileCard.className = cx("profile-card");
     profileCard.dataset.userid = userId;
@@ -122,12 +122,12 @@ const init = () => {
 
   function closeModal() {
     const modal = document.getElementById("modal");
-    document.getElementById("modal-name").value = '';
-    document.getElementById("modal-userId").value = '';
-    document.getElementById("modal-team").value = '';
-    document.getElementById("modal-position").value = '';
-    document.getElementById("modal-email").value = '';
-    document.getElementById("modal-password").value = '';
+    document.getElementById("modal-name").value = "";
+    document.getElementById("modal-userId").value = "";
+    document.getElementById("modal-team").value = "";
+    document.getElementById("modal-position").value = "";
+    document.getElementById("modal-email").value = "";
+    document.getElementById("modal-password").value = "";
 
     if (modal) modal.style.display = "none";
   }
@@ -148,7 +148,7 @@ const init = () => {
       email,
       password,
     };
-    
+
     console.log("New Profile Data:", newProfile);
     await saveProfileToServer(newProfile);
     renderProfiles();

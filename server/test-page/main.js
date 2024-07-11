@@ -1,3 +1,4 @@
+import { placeholder } from "../../src/constants/place-holder.js";
 import { HOST } from "../constants.js";
 
 const getAllUser = async () => {
@@ -206,7 +207,6 @@ document
     document.getElementById("email").textContent = email;
     document.getElementById("userId").textContent = userId;
 
-    const placeholder = "https://placehold.co/300x300";
     profile.setAttribute("src", imgUrl ?? placeholder);
   });
 
