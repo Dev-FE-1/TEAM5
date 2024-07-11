@@ -1,17 +1,19 @@
-import styles from "./Header.module.css";
 import classNames from "classnames/bind";
+import { placeholder } from "../../constants/place-holder";
+import styles from "./Header.module.css";
 
 const cx = classNames.bind(styles);
 
-const placeholder = "https://via.placeholder.com/100";
-
-function isAdmin() { // 관리자 여부 확인
+function isAdmin() {
+  // 관리자 여부 확인
   const path = window.location.pathname;
   // 실제 사용자 인증 로직으로 교체
-  return path.includes('/admin');
+  return path.includes("/admin");
 }
 
 const Header = () => {
+  const profileImage = localStorage.getItem("profileImage");
+
   // 관리자용 메뉴 항목
   const adminMenu = `
     <a href="/admin/users">직원정보</a>
@@ -32,7 +34,7 @@ const Header = () => {
       <div class="${cx("logo")}">Intranet</div>
       <nav class="${cx("menu")}">
           ${menuItems}
-          <img alt="사진임" src=${placeholder}>
+          <img alt="사진임" src=${profileImage ?? placeholder}>
       </nav>
       <ion-icon class="${cx("toggle-btn")}" name="menu-outline"></ion-icon>
     </header>

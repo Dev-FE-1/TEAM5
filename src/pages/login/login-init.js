@@ -42,6 +42,7 @@ const init = () => {
 
     // 로그인 정보 처리
     localStorage.setItem('loginUser',response.userId)
+    localStorage.setItem('profileImage',response.imgUrl)
 
     window.location.href = response.isAdmin ? "/admin/users" : "/user/my-page";
   });

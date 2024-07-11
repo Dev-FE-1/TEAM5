@@ -175,12 +175,16 @@ router.post("/login", (req, res) => {
         message: LOGIN_FAIL,
       });
 
+    const { userId, imgUrl } = user;
+
     const isAdmin = userId === "admin";
+
 
     res.json({
       status: SUCCESS_STATUS,
       message: "로그인 성공",
       userId,
+      imgUrl,
       isAdmin,
     });
   });
