@@ -23,12 +23,6 @@ const init = () => {
     const search_keyword = searchInput.value;
     render_list_items(search_keyword, "search");
   });
-
-  const toolContainer = document.getElementsByClassName(
-    `${cx("request-tools")}`
-  );
-  toolContainer.child;
-  console.log("e", toolContainer);
 };
 
 export default init;

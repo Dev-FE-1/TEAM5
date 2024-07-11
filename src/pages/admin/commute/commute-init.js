@@ -25,9 +25,6 @@ const init = () => {
     // console.log("word", search_keyword);
   });
 
-  const toolContainer = document.getElementsByClassName(`${cx("request-tools")}`);
-  toolContainer.child
-  console.log("e", toolContainer);
 };
 
 export default init;

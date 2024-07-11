@@ -33,11 +33,19 @@ const render_list_items = async (param = "all", from = "select") => {
       <div>${status}</div>
       <div>${userId}</div>
       <div>${date}</div>
-      <div>${arriveTime}</div>
-      <div>${leaveTime}</div>
+      <div>${
+        arriveTime.split(":").length > 2 ? arriveTime.slice(0, -3) : arriveTime
+      }</div>
+      <div>${
+        !leaveTime
+          ? ""
+          : leaveTime.split(":").length > 2
+          ? leaveTime.slice(0, -3)
+          : leaveTime
+      }</div>
       <div class="${cx("request-tools")}">
-        ${edit_icon({color: 'black'})}
-        ${delete_icon({color: 'black'})}
+        ${edit_icon({ color: "black" })}
+        ${delete_icon({ color: "black" })}
       </div>
     </div>
   `
