@@ -1,6 +1,5 @@
 import classNames from "classnames/bind";
-import { delete_icon, edit_icon, search_icon } from "../../../assets/icons";
-import { black } from "../../../constants/colors";
+import { search_icon } from "../../../assets/icons";
 import styles from "./commute.module.css";
 
 const cx = classNames.bind(styles);
@@ -26,7 +25,7 @@ const render = () => `
     <div class="${cx("requests")}">
       <div class="${cx("grid", "request-header")}">
         <div>상태</div>
-        <div>사원명</div>
+        <div>사번</div>
         <div>일시</div>
         <div>출근 시간</div>
         <div>퇴근 시간</div>

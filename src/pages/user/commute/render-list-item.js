@@ -1,14 +1,11 @@
 import classNames from "classnames/bind";
-import { fetchCommutes, fetchCommutesByUserId } from "../../../api/commuteApi";
-import { delete_icon, edit_icon } from "../../../assets/icons";
-import { black } from "../../../constants/colors";
+import { fetchCommutesByUserId } from "../../../api/commuteApi";
 import styles from "./commute.module.css";
 import setCommuteStatus from "./setCommuteStatus";
 
 const cx = classNames.bind(styles);
 
-const loginUser = localStorage.getItem('loginUser') ?? `kimpra2989`;
-
+const loginUser = localStorage.getItem("loginUser") ?? `kimpra2989`;
 
 const render_list_items = async (param = "all", from = "select") => {
   if (window.commuteData.length == 0) {

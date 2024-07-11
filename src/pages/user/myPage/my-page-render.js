@@ -34,7 +34,10 @@ const render = () => `
 
     <!-- 출퇴근 -->
     <div class="${cx("commutes", "content")}">
-      <h2 class="${cx("subtitle")}"> 출퇴근현황</h2>
+      <div class="${cx("subtitle", "attends-subtitle")}">
+        <h2>출퇴근현황</h2>
+        <a href="./commute">${'> 자세히 보기'}</a>
+      </div>
       <div class="${cx("work-timer")}">
       <p> 상태 : <span id="statusBadge" class="${cx("badge")}">출근 전</span></p>
         <div class="${cx("timer")}">

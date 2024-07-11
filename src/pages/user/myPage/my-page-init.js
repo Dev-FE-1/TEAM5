@@ -1,6 +1,7 @@
 import axios from "axios";
 import classNames from "classnames/bind";
 import styles from "./my-page.module.css";
+import { placeholder } from "../../../constants/place-holder";
 
 const cx = classNames.bind(styles);
 
@@ -22,8 +23,6 @@ const init = async () => {
 
   // 공지사항
   const noticesResponse = await axios("http://localhost:8080/api/notices");
-
-  const placeholder = "https://via.placeholder.com/100";
 
   let noticesHtml = ""; // 템플릿을 저장할 변수
 
