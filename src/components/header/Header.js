@@ -13,6 +13,7 @@ function isAdmin() {
 
 const Header = () => {
   const profileImage = localStorage.getItem("profileImage");
+  const imageSrc = profileImage == 'null' ? placeholder : profileImage;
 
   // 관리자용 메뉴 항목
   const adminMenu = `
@@ -32,9 +33,9 @@ const Header = () => {
   return `
     <header class="${cx("header")}">
       <div class="${cx("logo")}">Intranet</div>
-      <nav class="${cx("menu")}">
+      <nav class="${cx("menu")}">0
           ${menuItems}
-          <img alt="사진임" src=${profileImage ?? placeholder}>
+          <img alt="사진임" src="${imageSrc}">
       </nav>
       <ion-icon class="${cx("toggle-btn")}" name="menu-outline"></ion-icon>
     </header>
